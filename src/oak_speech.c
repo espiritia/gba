@@ -73,7 +73,6 @@ static void Task_OakSpeech_FadeOutForPlayerNamingScreen(u8);
 static void Task_OakSpeech_DoNamingScreen(u8);
 static void Task_OakSpeech_ConfirmName(u8);
 static void Task_OakSpeech_HandleConfirmNameInput(u8);
-static void Task_OakSpeech_FadeOutOak(u8);
 static void Task_OakSpeech_FadeOutBrockPic(u8);
 static void Task_OakSpeech_IntroduceBrock(u8);
 static void Task_OakSpeech_ReshowPlayersPic(u8);
@@ -1298,7 +1297,7 @@ static void Task_OakSpeech_HandleConfirmNameInput(u8 taskId)
     {
     case 0: // YES
         PlaySE(SE_SELECT);
-        gTasks[taskId].func = Task_OakSpeech_FadeOutOak;
+        gTasks[taskId].func = Task_OakSpeech_AskPlayerGender;
         break;
     case 1: // NO
     case MENU_B_PRESSED:
@@ -1308,38 +1307,17 @@ static void Task_OakSpeech_HandleConfirmNameInput(u8 taskId)
     }
 }
 
-// The name is confirmed; OAK is still on screen (loaded in CB2_ReturnFromNamingScreen).
-// Clear his portrait and ask for gender next.
-static void Task_OakSpeech_FadeOutOak(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-
-    if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX))
-    {
-        ClearDialogWindowAndFrame(WIN_INTRO_TEXTBOX, 1);
-        CreateFadeInTask(taskId, 2);
-        tTimer = 48;
-        gTasks[taskId].func = Task_OakSpeech_AskPlayerGender;
-    }
-}
-
+// The name is confirmed; OAK is still on screen (loaded in CB2_ReturnFromNamingScreen)
+// and stays there for the gender question too — no fade, unlike the vanilla flow,
+// which used to blank his portrait here. It's swapped for Brock later, when Brock's
+// picture loads over it in Task_OakSpeech_LoadBrockPic.
 static void Task_OakSpeech_AskPlayerGender(u8 taskId)
 {
-    s16 *data = gTasks[taskId].data;
-
-    if (tTrainerPicFadeState != 0)
+    if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX))
     {
-        if (tTimer != 0)
-        {
-            tTimer--;
-        }
-        else
-        {
-            tTrainerPicPosX = -60;
-            ClearTrainerPic();
-            OakSpeechPrintMessage(gOakSpeech_Text_AskPlayerGender, sOakSpeechResources->textSpeed);
-            gTasks[taskId].func = Task_OakSpeech_ShowGenderOptions;
-        }
+        ClearDialogWindowAndFrame(WIN_INTRO_TEXTBOX, TRUE);
+        OakSpeechPrintMessage(gOakSpeech_Text_AskPlayerGender, sOakSpeechResources->textSpeed);
+        gTasks[taskId].func = Task_OakSpeech_ShowGenderOptions;
     }
 }
 

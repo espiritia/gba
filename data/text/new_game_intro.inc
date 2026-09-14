@@ -227,11 +227,11 @@ gOakSpeech_Text_WhatWasHisName::
     .string "conocerte y hablar contigo.\n"
     .string "Querrá saber qué puedes\p"
     .string "aportar a su equipo y valorar\n"
-    .string "tus habilidades y potencial.\p$"
+    .string "tu habilidad y potencial.\p$"
 
 gOakSpeech_Text_LetsGo::
     .string "¿Qué me dices?\n"
-    .string "¿Te interesa el reto?\p"
+    .string "¿Te interesa el trabajo?\p"
     .string "Es una oportunidad única,\p"
     .string "Te esperamos en el gimnasio\n"
     .string "de Ciudad Plateada.$"

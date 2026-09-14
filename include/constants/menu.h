@@ -69,6 +69,9 @@
 #define MULTICHOICE_62                                         62
 #define MULTICHOICE_JOIN_OR_LEAD                               63
 #define MULTICHOICE_TRAINER_TOWER_MODE                         64
+#define MULTICHOICE_GYM_QUIZ_TYPE_COUNT                        65
+#define MULTICHOICE_GYM_QUIZ_ROCK_WEAKNESS                     66
+#define MULTICHOICE_GYM_QUIZ_BADGE_COUNT                       67
 
 #define MULTICHOICE_NONE                                      255
 

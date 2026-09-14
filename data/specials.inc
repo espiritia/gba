@@ -382,6 +382,7 @@ gSpecials::
 	def_special SetFlavorTextFlagFromSpecialVars
 	def_special UpdatePickStateFromSpecialVar8005
 	def_special OverworldWhiteOutGetMoneyLoss
+	def_special OverworldWhiteOutTakeMoneyLoss
 	def_special PutMonInRoute5Daycare
 	def_special GetCostToWithdrawRoute5DaycareMon
 	def_special IsThereMonInRoute5Daycare

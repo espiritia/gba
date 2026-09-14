@@ -162,6 +162,7 @@ void SetWarpDestinationToHealLocation(u8 a0);
 bool32 Overworld_SendKeysToLinkIsRunning(void);
 bool32 Overworld_RecvKeysFromLinkIsRunning(void);
 void OverworldWhiteOutGetMoneyLoss(void);
+void OverworldWhiteOutTakeMoneyLoss(void);
 u8 GetCurrentMapBattleScene(void);
 void Overworld_ResetStateAfterFly(void);
 bool8 MetatileBehavior_IsSurfableInSeafoamIslands(u16 metatileBehavior);

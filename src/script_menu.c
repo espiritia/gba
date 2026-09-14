@@ -502,6 +502,21 @@ static const struct MenuAction sMultichoiceList_Exit[] = {
     { gOtherText_Exit }
 };
 
+static const struct MenuAction sMultichoiceList_GymQuizTypeCount[] = {
+    { gText_GymQuiz13Types },
+    { gText_GymQuiz15Types }
+};
+
+static const struct MenuAction sMultichoiceList_GymQuizRockWeakness[] = {
+    { gText_GymQuizFlying },
+    { gText_GymQuizFighting }
+};
+
+static const struct MenuAction sMultichoiceList_GymQuizBadgeCount[] = {
+    { gText_GymQuiz8Badges },
+    { gText_GymQuiz9Badges }
+};
+
 static const struct MultichoiceListStruct sMultichoiceLists[] = {
     [MULTICHOICE_YES_NO]                                     = MULTICHOICE(sMultichoiceList_YesNo),
     [MULTICHOICE_EEVEELUTIONS]                               = MULTICHOICE(sMultichoiceList_Eeveelutions),
@@ -568,6 +583,9 @@ static const struct MultichoiceListStruct sMultichoiceLists[] = {
     [MULTICHOICE_62]                                         = MULTICHOICE(sMultichoiceList_62),
     [MULTICHOICE_JOIN_OR_LEAD]                               = MULTICHOICE(sMultichoiceList_JoinOrLead),
     [MULTICHOICE_TRAINER_TOWER_MODE]                         = MULTICHOICE(sMultichoiceList_TrainerTowerMode),
+    [MULTICHOICE_GYM_QUIZ_TYPE_COUNT]                        = MULTICHOICE(sMultichoiceList_GymQuizTypeCount),
+    [MULTICHOICE_GYM_QUIZ_ROCK_WEAKNESS]                     = MULTICHOICE(sMultichoiceList_GymQuizRockWeakness),
+    [MULTICHOICE_GYM_QUIZ_BADGE_COUNT]                       = MULTICHOICE(sMultichoiceList_GymQuizBadgeCount),
 };
 
 // From Cool to Berries goes unused

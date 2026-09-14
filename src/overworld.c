@@ -274,6 +274,13 @@ void OverworldWhiteOutGetMoneyLoss(void)
     ConvertIntToDecimalStringN(gStringVar1, losings, STR_CONV_MODE_LEFT_ALIGN, CountDigits(losings));
 }
 
+void OverworldWhiteOutTakeMoneyLoss(void)
+{
+    u32 losings = ComputeWhiteOutMoneyLoss();
+    RemoveMoney(&gSaveBlock1Ptr->money, losings);
+    ConvertIntToDecimalStringN(gStringVar1, losings, STR_CONV_MODE_LEFT_ALIGN, CountDigits(losings));
+}
+
 static u8 CountBadgesForOverworldWhiteOutLossCalculation(void)
 {
     int i;

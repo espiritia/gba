@@ -120,3 +120,51 @@ PewterCity_Gym_Text_GymStatuePlayerWon::
     .string "WINNING TRAINERS:\n"
     .string "{RIVAL}, {PLAYER}$"
 
+PewterCity_Gym_Text_SecretaryWelcome::
+    .string "¡Bienvenido! Tú debes de ser…\n"
+    .string "{PLAYER}.\p"
+    .string "Te estaba esperando.\p"
+    .string "el proceso de selección …\n"
+    .string "consta de tres entrevistas\p"
+    .string "La primera es ...\n"
+    .string "una prueba teórica\p"
+    .string "en el que deberás\n"
+    .string "demostrar tus conocimientos\p"
+    .string "En la segunda entrevista ...\n"
+    .string "tendrás que demostrar tus habilidades\p"
+    .string "Y la tercera y última,\n"
+    .string "¡te reunirás con nuestro líder!\p"
+    .string "¿Nos autorizas a conservar\n"
+    .string "tus datos en nuestro sistema?$"
+
+PewterCity_Gym_Text_QuizQuestion1::
+    .string "¿Cuántos tipos de Pokémon\n"
+    .string "se han descubierto?$"
+
+PewterCity_Gym_Text_QuizQuestion2::
+    .string "¿Cuál tipo usarías contra\n"
+    .string "un pokémon tipo Roca?$"
+
+PewterCity_Gym_Text_QuizQuestion3::
+    .string "¿Cuántas medallas se requieren\n"
+    .string "para desafiar a la Liga Pokémon?$"
+
+PewterCity_Gym_Text_SecretaryQuizFailed::
+    .string "Lo siento pero ...\p"
+    .string "buscamos candidatos con ...\n"
+    .string "más experiencia y cultural fit\n"
+    .string "No te preocupes ... siempre\p"
+    .string "puedes volver más adelante$"
+
+PewterCity_Gym_Text_SecretaryLostMoney::
+    .string "Además, con los nervios se te cayó\n"
+    .string "¥{STR_VAR_1}...$"
+
+PewterCity_Gym_Text_SecretaryQuizPassed::
+    .string "¡Enhorabuena!\n"
+    .string "Has superado la primera entrevista.\p"
+    .string "Puedes continuar adelante.\p"
+    .string "Mi compañero está esperándote\n"
+    .string "para la siguiente entrevista.\p"
+    .string "¡Mucha suerte!$"
+

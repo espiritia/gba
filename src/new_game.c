@@ -29,6 +29,9 @@
 #include "berry_powder.h"
 #include "pokemon_jump.h"
 #include "event_scripts.h"
+#include "script_pokemon_util.h"
+#include "constants/heal_locations.h"
+#include "constants/items.h"
 
 // this file's functions
 static void ResetMiniGamesResults(void);
@@ -81,8 +84,16 @@ static void ClearBattleTower(void)
 
 static void WarpToPlayersRoom(void)
 {
-    SetWarpDestination(MAP_GROUP(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), MAP_NUM(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), -1, 6, 6);
+    SetWarpDestination(MAP_GROUP(MAP_PEWTER_CITY_HOUSE2), MAP_NUM(MAP_PEWTER_CITY_HOUSE2), WARP_ID_NONE, 4, 5);
     WarpIntoMap();
+}
+
+static void GiveStartingMon(void)
+{
+    ScriptGiveMon(SPECIES_SANDSHREW, 9, ITEM_NONE, 0, 0, 0);
+    FlagSet(FLAG_SYS_POKEMON_GET);
+    SetLastHealLocationWarp(HEAL_LOCATION_PEWTER_CITY);
+    VarSet(VAR_MAP_SCENE_PALLET_TOWN_PLAYERS_HOUSE_2F, 1);
 }
 
 void Sav2_ClearSetDefault(void)
@@ -146,6 +157,7 @@ void NewGameInitData(void)
     ClearMysteryGift();
     SetAllRenewableItemFlags();
     WarpToPlayersRoom();
+    GiveStartingMon();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
     ResetTrainerTowerResults();

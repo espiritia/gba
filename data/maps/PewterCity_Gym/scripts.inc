@@ -80,3 +80,133 @@ PewterCity_Gym_EventScript_GymStatuePostVictory::
 	msgbox PewterCity_Gym_Text_GymStatuePlayerWon
 	releaseall
 	end
+
+PewterCity_Gym_EventScript_SecretaryTriggerLeft::
+	lockall
+	setvar VAR_TEMP_2, 0
+	goto PewterCity_Gym_EventScript_SecretaryTrigger
+	end
+
+PewterCity_Gym_EventScript_SecretaryTriggerMid::
+	lockall
+	setvar VAR_TEMP_2, 1
+	goto PewterCity_Gym_EventScript_SecretaryTrigger
+	end
+
+PewterCity_Gym_EventScript_SecretaryTriggerRight::
+	lockall
+	setvar VAR_TEMP_2, 2
+	goto PewterCity_Gym_EventScript_SecretaryTrigger
+	end
+
+PewterCity_Gym_EventScript_SecretaryTrigger::
+	setvar VAR_TEMP_1, 1
+	goto_if_set FLAG_DEFEATED_BROCK, PewterCity_Gym_EventScript_SecretarySkip
+	goto_if_set FLAG_PASSED_PEWTER_GYM_INTERVIEW, PewterCity_Gym_EventScript_SecretarySkip
+	textcolor NPC_TEXT_COLOR_MALE
+	call_if_eq VAR_TEMP_2, 0, PewterCity_Gym_EventScript_SecretaryApproachLeft
+	call_if_eq VAR_TEMP_2, 1, PewterCity_Gym_EventScript_SecretaryApproachMid
+	call_if_eq VAR_TEMP_2, 2, PewterCity_Gym_EventScript_SecretaryApproachRight
+	msgbox PewterCity_Gym_Text_SecretaryWelcome, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Gym_EventScript_SecretaryExpel
+	goto PewterCity_Gym_EventScript_SecretaryQuiz
+	end
+
+PewterCity_Gym_EventScript_SecretarySkip::
+	releaseall
+	end
+
+PewterCity_Gym_EventScript_SecretaryApproachLeft::
+	applymovement LOCALID_PEWTER_GYM_GUY, PewterCity_Gym_Movement_SecretaryApproachLeft
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_SecretaryApproachMid::
+	applymovement LOCALID_PEWTER_GYM_GUY, PewterCity_Gym_Movement_SecretaryApproachMid
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_SecretaryApproachRight::
+	applymovement LOCALID_PEWTER_GYM_GUY, PewterCity_Gym_Movement_SecretaryApproachRight
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_SecretaryQuiz::
+	message PewterCity_Gym_Text_QuizQuestion1
+	waitmessage
+	multichoice 14, 8, MULTICHOICE_GYM_QUIZ_TYPE_COUNT, TRUE
+	goto_if_ne VAR_RESULT, 1, PewterCity_Gym_EventScript_SecretaryQuizFailedExpel
+	message PewterCity_Gym_Text_QuizQuestion2
+	waitmessage
+	multichoice 14, 8, MULTICHOICE_GYM_QUIZ_ROCK_WEAKNESS, TRUE
+	goto_if_ne VAR_RESULT, 1, PewterCity_Gym_EventScript_SecretaryQuizFailedExpel
+	message PewterCity_Gym_Text_QuizQuestion3
+	waitmessage
+	multichoice 14, 8, MULTICHOICE_GYM_QUIZ_BADGE_COUNT, TRUE
+	goto_if_ne VAR_RESULT, 0, PewterCity_Gym_EventScript_SecretaryQuizFailedExpel
+	msgbox PewterCity_Gym_Text_SecretaryQuizPassed
+	setflag FLAG_PASSED_PEWTER_GYM_INTERVIEW
+	call_if_eq VAR_TEMP_2, 0, PewterCity_Gym_EventScript_SecretaryReturnLeft
+	call_if_eq VAR_TEMP_2, 1, PewterCity_Gym_EventScript_SecretaryReturnMid
+	releaseall
+	end
+
+PewterCity_Gym_EventScript_SecretaryReturnLeft::
+	applymovement LOCALID_PEWTER_GYM_GUY, PewterCity_Gym_Movement_SecretaryReturnLeft
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_SecretaryReturnMid::
+	applymovement LOCALID_PEWTER_GYM_GUY, PewterCity_Gym_Movement_SecretaryReturnToPost
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_SecretaryExpel::
+	msgbox PewterCity_Gym_Text_SecretaryQuizFailed
+	closemessage
+	goto PewterCity_Gym_EventScript_SecretaryExpelWarpOut
+	end
+
+PewterCity_Gym_EventScript_SecretaryQuizFailedExpel::
+	msgbox PewterCity_Gym_Text_SecretaryQuizFailed
+	closemessage
+	checkmoney 1, 0
+	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_SecretaryExpelWarpOut
+	special OverworldWhiteOutTakeMoneyLoss
+	msgbox PewterCity_Gym_Text_SecretaryLostMoney
+	goto PewterCity_Gym_EventScript_SecretaryExpelWarpOut
+	end
+
+PewterCity_Gym_EventScript_SecretaryExpelWarpOut::
+	warp MAP_PEWTER_CITY, 2
+	waitstate
+	releaseall
+	end
+
+PewterCity_Gym_Movement_SecretaryApproachLeft::
+	walk_down
+	walk_left
+	walk_left
+	face_down
+	step_end
+
+PewterCity_Gym_Movement_SecretaryApproachMid::
+	walk_down
+	face_left
+	step_end
+
+PewterCity_Gym_Movement_SecretaryApproachRight::
+	walk_down
+	step_end
+
+PewterCity_Gym_Movement_SecretaryReturnLeft::
+	walk_right
+	walk_right
+	walk_up
+	face_down
+	step_end
+
+PewterCity_Gym_Movement_SecretaryReturnToPost::
+	walk_up
+	face_down
+	step_end

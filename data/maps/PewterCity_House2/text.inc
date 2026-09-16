@@ -1,14 +1,22 @@
 PewterCity_House2_Text_MonsLearnTechniquesAsTheyGrow::
-    .string "POKéMON learn new techniques as\n"
-    .string "they grow.\p"
-    .string "But some moves must be taught to\n"
-    .string "them by people.$"
+    .string "Buenos días chavalín\n"
+    .string "Recuerda, hoy es el gran día...\p"
+    .string "En mis días de mozo no existían\n"
+    .string "las entrevistas ni tantas tonterías... $"
 
 PewterCity_House2_Text_MonsEasierCatchIfStatused::
-    .string "A POKéMON becomes easier to \n"
-    .string "catch if it has a status problem.\p"
-    .string "Sleep, poison, burn, or paralysis…\n"
-    .string "Those are all effective.\p"
-    .string "But catching POKéMON is never\n"
-    .string "a sure thing!$"
+    .string "Buenos diás hijo, \p"
+    .string "Te he preparado tus pastelitos\n"
+    .string "favoritos para el desayuno\p"
+    .string "¿Sabes...? el vecino nuevo...\n"
+    .string "ese tal GREEN...\p"
+    .string "no es rival para ti\n"
+    .string "¡Buena suerte hijo!$"
+
+PewterCity_House2_Text_ObtainedASandshrew::
+    .string "¡{PLAYER} consiguió un SANDSHREW!$"
+
+PewterCity_House2_Text_DontForgetYourSandshrew::
+    .string "Hijo no te olvides de\n"
+    .string "llevarte a tu Sandrew.$"
 

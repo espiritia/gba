@@ -8,3 +8,62 @@ PewterCity_House2_EventScript_OldMan::
 PewterCity_House2_EventScript_LittleBoy::
 	msgbox PewterCity_House2_Text_MonsEasierCatchIfStatused, MSGBOX_NPC
 	end
+
+PewterCity_House2_EventScript_SandshrewBall::
+	lock
+	faceplayer
+	givemon SPECIES_SANDSHREW, 9
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, PewterCity_House2_EventScript_GetSandshrewParty
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, PewterCity_House2_EventScript_GetSandshrewPC
+	goto_if_eq VAR_RESULT, MON_CANT_GIVE, EventScript_NoMoreRoomForPokemon
+	release
+	end
+
+PewterCity_House2_EventScript_GetSandshrewParty::
+	removeobject LOCALID_SANDSHREW_POKEBALL
+	playfanfare MUS_LEVEL_UP
+	message PewterCity_House2_Text_ObtainedASandshrew
+	waitmessage
+	waitfanfare
+	bufferspeciesname STR_VAR_1, SPECIES_SANDSHREW
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_House2_EventScript_SetGotSandshrew
+	call EventScript_GetGiftMonPartySlot
+	call EventScript_ChangePokemonNickname
+	goto PewterCity_House2_EventScript_SetGotSandshrew
+	end
+
+PewterCity_House2_EventScript_GetSandshrewPC::
+	removeobject LOCALID_SANDSHREW_POKEBALL
+	playfanfare MUS_LEVEL_UP
+	message PewterCity_House2_Text_ObtainedASandshrew
+	waitmessage
+	waitfanfare
+	bufferspeciesname STR_VAR_1, SPECIES_SANDSHREW
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_House2_EventScript_TransferSandshrewToPC
+	call EventScript_NameReceivedBoxMon
+	goto PewterCity_House2_EventScript_TransferSandshrewToPC
+	end
+
+PewterCity_House2_EventScript_TransferSandshrewToPC::
+	call EventScript_TransferredToPC
+	goto PewterCity_House2_EventScript_SetGotSandshrew
+	end
+
+PewterCity_House2_EventScript_SetGotSandshrew::
+	setflag FLAG_SYS_POKEMON_GET
+	setflag FLAG_GOT_SANDSHREW
+	setvar VAR_MAP_SCENE_PEWTER_CITY_HOUSE2, 1
+	release
+	end
+
+PewterCity_House2_EventScript_BlockExitNoSandshrew::
+	lockall
+	textcolor NPC_TEXT_COLOR_FEMALE
+	msgbox PewterCity_House2_Text_DontForgetYourSandshrew, MSGBOX_DEFAULT
+	call EventScript_RestorePrevTextColor
+	applymovement LOCALID_PLAYER, Common_Movement_WalkUp
+	waitmovement 0
+	releaseall
+	end

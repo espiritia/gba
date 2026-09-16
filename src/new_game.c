@@ -88,10 +88,8 @@ static void WarpToPlayersRoom(void)
     WarpIntoMap();
 }
 
-static void GiveStartingMon(void)
+static void InitPewterCityHouse2Scene(void)
 {
-    ScriptGiveMon(SPECIES_SANDSHREW, 9, ITEM_NONE, 0, 0, 0);
-    FlagSet(FLAG_SYS_POKEMON_GET);
     SetLastHealLocationWarp(HEAL_LOCATION_PEWTER_CITY);
     VarSet(VAR_MAP_SCENE_PALLET_TOWN_PLAYERS_HOUSE_2F, 1);
 }
@@ -157,7 +155,7 @@ void NewGameInitData(void)
     ClearMysteryGift();
     SetAllRenewableItemFlags();
     WarpToPlayersRoom();
-    GiveStartingMon();
+    InitPewterCityHouse2Scene();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
     ResetTrainerTowerResults();

@@ -66,9 +66,11 @@ PewterCity_Gym_Text_DontHaveRoomForThis::
     .string "You don't have room for this.$"
 
 PewterCity_Gym_Text_LiamIntro::
-    .string "Stop right there, kid!\p"
-    .string "You're ten thousand light-years \n"
-    .string "from facing BROCK!$"
+    .string "¡Alto ahí, candidato!\p"
+    .string "Tu debes ser ese talento\n"
+    .string "del que tanto hablan...\p"
+    .string "¡Qué sepas que no \n"
+    .string "podrás derrotarme y obtener el puesto!$"
 
 PewterCity_Gym_Text_LiamDefeat::
     .string "Darn!\p"
@@ -134,10 +136,11 @@ PewterCity_Gym_Text_SecretaryWelcome::
     .string "tendrás que demostrar tus habilidades\p"
     .string "Y la tercera y última,\n"
     .string "¡te reunirás con nuestro líder!\p"
-    .string "¿Nos autorizas a conservar\n"
-    .string "tus datos en nuestro sistema?$"
+    .string "¿Nos autorizas a guardar\n"
+    .string "tus datos bajo GDPR?$"
 
 PewterCity_Gym_Text_QuizQuestion1::
+    .string "Bien, vamos a empezar...\p"
     .string "¿Cuántos tipos de Pokémon\n"
     .string "se han descubierto?$"
 

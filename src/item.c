@@ -172,6 +172,10 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
     if (ItemId_GetPocket(itemId) == 0)
         return FALSE;
 
+    // Player can only ever hold one Mom's Rice Cakes
+    if (itemId == ITEM_MOMS_RICE_CAKES && CheckBagHasItem(ITEM_MOMS_RICE_CAKES, 1))
+        return FALSE;
+
     pocket = ItemId_GetPocket(itemId) - 1;
     // Check for item slots that contain the item
     for (i = 0; i < gBagPockets[pocket].capacity; i++)
@@ -205,6 +209,10 @@ bool8 AddBagItem(u16 itemId, u16 count)
     s8 idx;
 
     if (ItemId_GetPocket(itemId) == 0)
+        return FALSE;
+
+    // Player can only ever hold one Mom's Rice Cakes
+    if (itemId == ITEM_MOMS_RICE_CAKES && CheckBagHasItem(ITEM_MOMS_RICE_CAKES, 1))
         return FALSE;
 
     pocket = ItemId_GetPocket(itemId) - 1;

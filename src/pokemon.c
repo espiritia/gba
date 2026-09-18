@@ -4055,6 +4055,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         return TRUE;
     if (gItemEffectTable[item - ITEM_POTION] == NULL && item != ITEM_ENIGMA_BERRY)
         return TRUE;
+    // Mom's Rice Cakes only works on CUBONE
+    if (item == ITEM_MOMS_RICE_CAKES && GetMonData(mon, MON_DATA_SPECIES, NULL) != SPECIES_CUBONE)
+        return TRUE;
 
     // Get item effect
     if (item == ITEM_ENIGMA_BERRY)
@@ -4582,6 +4585,9 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
     if (!IS_POKEMON_ITEM(item))
         return TRUE;
     if (gItemEffectTable[item - ITEM_POTION] == NULL && item != ITEM_ENIGMA_BERRY)
+        return TRUE;
+    // Mom's Rice Cakes only works on CUBONE
+    if (item == ITEM_MOMS_RICE_CAKES && GetMonData(mon, MON_DATA_SPECIES, NULL) != SPECIES_CUBONE)
         return TRUE;
 
     // Get item effect

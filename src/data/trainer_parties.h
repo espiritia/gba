@@ -858,9 +858,15 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SailorDwayne[] = {
 static const struct TrainerMonNoItemCustomMoves sParty_CamperLiam[] = {
     {
         .iv = 0,
-        .lvl = 7,
+        .lvl = 15,
         .species = SPECIES_GEODUDE,
-        .moves = {MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_NONE, MOVE_NONE},
+        .moves = {MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_MUD_SPORT, MOVE_ROCK_THROW},
+    },
+    {
+        .iv = 0,
+        .lvl = 17,
+        .species = SPECIES_SANDSHREW,
+        .moves = {MOVE_SCRATCH, MOVE_NONE, MOVE_SAND_ATTACK, MOVE_POISON_STING},
     },
 };
 

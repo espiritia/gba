@@ -66,20 +66,21 @@ PewterCity_Gym_Text_DontHaveRoomForThis::
     .string "You don't have room for this.$"
 
 PewterCity_Gym_Text_LiamIntro::
-    .string "¡Alto ahí, candidato!\p"
-    .string "Tu debes ser ese talento\n"
-    .string "del que tanto hablan...\p"
-    .string "¡Qué sepas que no podrás\n"
-    .string "derrotarme y obtener el puesto!$"
+    .string "¡Alto ahí, novato!\p"
+    .string "Tu debes ser el nuevo talento\n"
+    .string "del que tanto hablan…\p"
+    .string "¡No te lo pondré fácil,\n"
+    .string "pero espero que seamos compañeros!$"
 
 PewterCity_Gym_Text_LiamDefeat::
-    .string "Darn!\p"
-    .string "Light-years isn't time…\n"
-    .string "It measures distance!$"
+    .string "¡Zas!\p"
+    .string "No has estado nada mal pero…\n"
+    .string "¡La próxima volveré a ganar!$"
 
 PewterCity_Gym_Text_LiamPostBattle::
-    .string "You're pretty hot.\n"
-    .string "…But not as hot as BROCK!$"
+    .string "Es cierto lo que decían…\n"
+    .string "Pero a la próxima te venceré…\n"
+    .string "¡Estoy deseando la revancha!$"
 
 PewterCity_Gym_Text_LetMeTakeYouToTheTop::
     .string "Hiya!\n"

@@ -34,6 +34,11 @@ static const u8 sItemEffect_MaxPotion[7] = {
     [6] = ITEM6_HEAL_HP_FULL,
 };
 
+static const u8 sItemEffect_MomsRiceCakes[7] = {
+    [4] = ITEM4_HEAL_HP,
+    [6] = ITEM6_HEAL_HP_FULL,
+};
+
 static const u8 sItemEffect_HyperPotion[7] = {
     [4] = ITEM4_HEAL_HP,
     [6] = 200, // Amount of HP to recover
@@ -345,6 +350,7 @@ const u8 *const gItemEffectTable[] =
     [ITEM_PARALYZE_HEAL - ITEM_POTION] = sItemEffect_ParalyzeHeal,
     [ITEM_FULL_RESTORE - ITEM_POTION]  = sItemEffect_FullRestore,
     [ITEM_MAX_POTION - ITEM_POTION]    = sItemEffect_MaxPotion,
+    [ITEM_MOMS_RICE_CAKES - ITEM_POTION] = sItemEffect_MomsRiceCakes,
     [ITEM_HYPER_POTION - ITEM_POTION]  = sItemEffect_HyperPotion,
     [ITEM_SUPER_POTION - ITEM_POTION]  = sItemEffect_SuperPotion,
     [ITEM_FULL_HEAL - ITEM_POTION]     = sItemEffect_FullHeal,

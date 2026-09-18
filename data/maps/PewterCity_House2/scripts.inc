@@ -12,7 +12,7 @@ PewterCity_House2_EventScript_LittleBoy::
 PewterCity_House2_EventScript_SandshrewBall::
 	lock
 	faceplayer
-	givemon SPECIES_SANDSHREW, 9
+	givemon SPECIES_CUBONE, 12
 	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, PewterCity_House2_EventScript_GetSandshrewParty
 	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, PewterCity_House2_EventScript_GetSandshrewPC
 	goto_if_eq VAR_RESULT, MON_CANT_GIVE, EventScript_NoMoreRoomForPokemon
@@ -25,7 +25,7 @@ PewterCity_House2_EventScript_GetSandshrewParty::
 	message PewterCity_House2_Text_ObtainedASandshrew
 	waitmessage
 	waitfanfare
-	bufferspeciesname STR_VAR_1, SPECIES_SANDSHREW
+	bufferspeciesname STR_VAR_1, SPECIES_CUBONE
 	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PewterCity_House2_EventScript_SetGotSandshrew
 	call EventScript_GetGiftMonPartySlot
@@ -39,7 +39,7 @@ PewterCity_House2_EventScript_GetSandshrewPC::
 	message PewterCity_House2_Text_ObtainedASandshrew
 	waitmessage
 	waitfanfare
-	bufferspeciesname STR_VAR_1, SPECIES_SANDSHREW
+	bufferspeciesname STR_VAR_1, SPECIES_CUBONE
 	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PewterCity_House2_EventScript_TransferSandshrewToPC
 	call EventScript_NameReceivedBoxMon

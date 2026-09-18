@@ -2,6 +2,12 @@ PewterCity_Gym_MapScripts::
 	.byte 0
 
 PewterCity_Gym_EventScript_Brock::
+	goto_if_set FLAG_DEFEATED_BROCK, PewterCity_Gym_EventScript_BrockBattle
+	goto_if_not_defeated TRAINER_CAMPER_LIAM, PewterCity_Gym_EventScript_LiamIntercepts
+	goto PewterCity_Gym_EventScript_BrockBattle
+	end
+
+PewterCity_Gym_EventScript_BrockBattle::
 	famechecker FAMECHECKER_BROCK, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_BROCK, PewterCity_Gym_Text_BrockIntro, PewterCity_Gym_Text_BrockDefeat, PewterCity_Gym_EventScript_DefeatedBrock, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM39_FROM_BROCK, PewterCity_Gym_EventScript_GiveTM39
@@ -38,6 +44,28 @@ PewterCity_Gym_EventScript_NoRoomForTM39::
 PewterCity_Gym_EventScript_Liam::
 	trainerbattle_single TRAINER_CAMPER_LIAM, PewterCity_Gym_Text_LiamIntro, PewterCity_Gym_Text_LiamDefeat
 	msgbox PewterCity_Gym_Text_LiamPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+PewterCity_Gym_EventScript_LiamIntercepts::
+	lock
+	applymovement LOCALID_PEWTER_GYM_LIAM, Common_Movement_ExclamationMark
+	waitmovement 0
+	applymovement LOCALID_PEWTER_GYM_LIAM, Common_Movement_Delay48
+	waitmovement 0
+	applymovement LOCALID_PEWTER_GYM_LIAM, PewterCity_Gym_Movement_LiamIntercept
+	waitmovement 0
+	textcolor NPC_TEXT_COLOR_MALE
+	setvar VAR_LAST_TALKED, LOCALID_PEWTER_GYM_LIAM
+	message PewterCity_Gym_Text_LiamIntro
+	waitmessage
+	playbgm MUS_ENCOUNTER_BOY, 0
+	waitbuttonpress
+	trainerbattle_no_intro TRAINER_CAMPER_LIAM, PewterCity_Gym_Text_LiamDefeat
+	msgbox PewterCity_Gym_Text_LiamPostBattle
+	closemessage
+	applymovement LOCALID_PEWTER_GYM_LIAM, PewterCity_Gym_Movement_LiamReturnToPost
+	waitmovement 0
+	release
 	end
 
 PewterCity_Gym_EventScript_GymGuy::
@@ -209,4 +237,19 @@ PewterCity_Gym_Movement_SecretaryReturnLeft::
 PewterCity_Gym_Movement_SecretaryReturnToPost::
 	walk_up
 	face_down
+	step_end
+
+PewterCity_Gym_Movement_LiamIntercept::
+	walk_right
+	walk_right
+	walk_right
+	walk_up
+	step_end
+
+PewterCity_Gym_Movement_LiamReturnToPost::
+	walk_down
+	walk_left
+	walk_left
+	walk_left
+	face_right
 	step_end

@@ -864,7 +864,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_CamperLiam[] = {
     },
     {
         .iv = 0,
-        .lvl = 17,
+        .lvl = 16,
         .species = SPECIES_SANDSHREW,
         .moves = {MOVE_SCRATCH, MOVE_NONE, MOVE_SAND_ATTACK, MOVE_POISON_STING},
     },

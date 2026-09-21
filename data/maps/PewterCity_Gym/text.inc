@@ -69,8 +69,8 @@ PewterCity_Gym_Text_LiamIntro::
     .string "¡Alto ahí, novato!\p"
     .string "Tu debes ser el nuevo talento\n"
     .string "del que tanto hablan…\p"
-    .string "¡No te lo pondré fácil,\n"
-    .string "pero espero que seamos compañeros!$"
+    .string "¡No te lo pondré fácil pero\n"
+    .string "espero que seamos compañeros!$"
 
 PewterCity_Gym_Text_LiamDefeat::
     .string "¡Zas!\p"

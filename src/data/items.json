@@ -2820,7 +2820,7 @@
       "english": "PASTEL MAMA",
       "itemId": "ITEM_MOMS_RICE_CAKES",
       "price": 0,
-      "holdEffect": "HOLD_EFFECT_NONE",
+      "holdEffect": "HOLD_EFFECT_MOMS_RICE_CAKES",
       "holdEffectParam": 255,
       "description_english": "Un pastel casero hecho por mamá.\\nSolo CUBONE se anima a comerlo\\ny recupera todos sus PS.",
       "importance": 0,

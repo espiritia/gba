@@ -10,9 +10,8 @@ PewterCity_House2_Text_MonsLearnTechniquesAsTheyGrow::
 
 PewterCity_House2_Text_MonsEasierCatchIfStatused::
     .string "Buenos diás hijo, \p"
-    .string "Te he preparado los pastelitos\n"
-    .string "favoritos de Cubone\p"
-    .string "Los he dejado en tu bolsa...\p"
+    .string "Acabo de sacar del horno\n"
+    .string "los pastelitos favoritos de Cubone\p"
     .string "¿Sabes...? el vecino nuevo...\n"
     .string "ese tal GREEN...\p"
     .string "no es rival para ti\n"
@@ -24,4 +23,5 @@ PewterCity_House2_Text_ObtainedASandshrew::
 PewterCity_House2_Text_DontForgetYourSandshrew::
     .string "Hijo no te olvides de\n"
     .string "llevarte a tu Cubone.$"
+
 

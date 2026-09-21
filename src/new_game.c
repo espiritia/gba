@@ -146,7 +146,6 @@ void NewGameInitData(void)
     ClearRoamerData();
     gSaveBlock1Ptr->registeredItem = 0;
     ClearBag();
-    AddBagItem(ITEM_MOMS_RICE_CAKES, 1);
     NewGameInitPCItems();
     ClearEnigmaBerries();
     InitEasyChatPhrases();

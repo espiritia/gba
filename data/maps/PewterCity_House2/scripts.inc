@@ -12,7 +12,7 @@ PewterCity_House2_EventScript_LittleBoy::
 PewterCity_House2_EventScript_SandshrewBall::
 	lock
 	faceplayer
-	givemon SPECIES_CUBONE, 12
+	givemon SPECIES_CUBONE, 12, ITEM_MOMS_RICE_CAKES
 	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, PewterCity_House2_EventScript_GetSandshrewParty
 	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, PewterCity_House2_EventScript_GetSandshrewPC
 	goto_if_eq VAR_RESULT, MON_CANT_GIVE, EventScript_NoMoreRoomForPokemon

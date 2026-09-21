@@ -222,7 +222,10 @@ struct SpecialStatus
     u8 ppNotAffectedByPressure:1;
     u8 faintedHasReplacement:1;
     u8 focusBanded:1;
-    u8 field1[3];
+    u8 momsRiceCakeSaved:1;
+    u8 field1:6;
+    u8 field1_1;
+    u8 field1_2;
     s32 dmg;
     s32 physicalDmg;
     s32 specialDmg;

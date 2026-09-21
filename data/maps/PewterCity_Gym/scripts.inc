@@ -4,7 +4,15 @@ PewterCity_Gym_MapScripts::
 PewterCity_Gym_EventScript_Brock::
 	goto_if_set FLAG_DEFEATED_BROCK, PewterCity_Gym_EventScript_BrockBattle
 	goto_if_not_defeated TRAINER_CAMPER_LIAM, PewterCity_Gym_EventScript_LiamIntercepts
+	goto_if_unset FLAG_BROCK_GYM_BATTLE_UNLOCKED, PewterCity_Gym_EventScript_BrockNotReady
 	goto PewterCity_Gym_EventScript_BrockBattle
+	end
+
+PewterCity_Gym_EventScript_BrockNotReady::
+	lock
+	faceplayer
+	msgbox PewterCity_Gym_Text_BrockNotReadyYet
+	release
 	end
 
 PewterCity_Gym_EventScript_BrockBattle::

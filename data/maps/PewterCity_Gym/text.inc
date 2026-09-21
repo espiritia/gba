@@ -1,3 +1,11 @@
+PewterCity_Gym_Text_BrockNotReadyYet::
+    .string "¡Vaya, has superado a GREEN!\n"
+    .string "No está nada mal…\p"
+    .string "Pero antes de medirme contigo\p"
+    .string "en serio, hay algo más que\n"
+    .string "quiero comprobar.\p"
+    .string "Vuelve cuando estés listo.$"
+
 PewterCity_Gym_Text_BrockIntro::
     .string "So, you're here. I'm BROCK.\n"
     .string "I'm PEWTER's GYM LEADER.\p"
@@ -75,7 +83,7 @@ PewterCity_Gym_Text_LiamIntro::
 PewterCity_Gym_Text_LiamDefeat::
     .string "¡Zas!\p"
     .string "No has estado nada mal pero…\n"
-    .string "¡La próxima volveré a ganar!$"
+    .string "¡La próxima te ganaré!$"
 
 PewterCity_Gym_Text_LiamPostBattle::
     .string "Es cierto lo que decían…\n"

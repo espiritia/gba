@@ -4345,8 +4345,6 @@ BattleScript_FocusBandActivates::
 
 BattleScript_MomsRiceCakesActivates::
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
-	printstring STRINGID_PKMNHUNGONWITHX
-	waitmessage B_WAIT_TIME_LONG
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET

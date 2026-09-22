@@ -1,10 +1,14 @@
 PewterCity_Gym_Text_BrockNotReadyYet::
-    .string "¡Vaya, has superado a GREEN!\n"
-    .string "No está nada mal…\p"
-    .string "Pero antes de medirme contigo\p"
-    .string "en serio, hay algo más que\n"
-    .string "quiero comprobar.\p"
-    .string "Vuelve cuando estés listo.$"
+    .string "¡Vaya, tienes talento!\n"
+    .string "y un gran vinculo con Cubone\p"
+    .string "Pero para conseguir\n"
+    .string "el uniforme del gimnasio\p"
+    .string "debes superar una última prueba...\p"
+    .string "Adéntrate en el Bosque Verde \p"
+    .string "y encuentra Musgo Brillante\p"
+    .string "es vital para mantener\n"
+    .string "fuertes a nuestros POKéMON Roca\p"
+    .string "Vuelve cuando lo encuentres.$"
 
 PewterCity_Gym_Text_BrockIntro::
     .string "So, you're here. I'm BROCK.\n"

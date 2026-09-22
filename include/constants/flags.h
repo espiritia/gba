@@ -533,11 +533,11 @@
 #define FLAG_0x1FF               0x1FF
 #define FLAG_PASSED_PEWTER_GYM_INTERVIEW 0x200
 #define FLAG_BROCK_GYM_BATTLE_UNLOCKED 0x201
-#define FLAG_0x202               0x202
-#define FLAG_0x203               0x203
-#define FLAG_0x204               0x204
-#define FLAG_0x205               0x205
-#define FLAG_0x206               0x206
+#define FLAG_BROCK_GAVE_MOSS_QUEST 0x202
+#define FLAG_HIDE_MEW_FOREST_ENCOUNTER 0x203
+#define FLAG_HIDE_AGATHA_FOREST_AMBUSH 0x204
+#define FLAG_HIDE_FOREST_AMBUSH_GRUNT1 0x205
+#define FLAG_HIDE_FOREST_AMBUSH_GRUNT2 0x206
 #define FLAG_0x207               0x207
 #define FLAG_0x208               0x208
 #define FLAG_0x209               0x209

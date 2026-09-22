@@ -12,6 +12,7 @@ PewterCity_Gym_EventScript_BrockNotReady::
 	lock
 	faceplayer
 	msgbox PewterCity_Gym_Text_BrockNotReadyYet
+	setflag FLAG_BROCK_GAVE_MOSS_QUEST
 	release
 	end
 

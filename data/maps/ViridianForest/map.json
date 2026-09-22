@@ -168,6 +168,66 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ViridianForest_EventScript_ItemPotion2",
       "flag": "FLAG_HIDE_VIRIDIAN_FOREST_POTION_2"
+    },
+    {
+      "local_id": "LOCALID_VIRIDIAN_FOREST_MEW",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MEW",
+      "x": 12,
+      "y": 26,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "0x0",
+      "flag": "FLAG_HIDE_MEW_FOREST_ENCOUNTER"
+    },
+    {
+      "local_id": "LOCALID_VIRIDIAN_FOREST_AGATHA",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_AGATHA",
+      "x": 12,
+      "y": 31,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "0x0",
+      "flag": "FLAG_HIDE_AGATHA_FOREST_AMBUSH"
+    },
+    {
+      "local_id": "LOCALID_VIRIDIAN_FOREST_GRUNT1",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_POLICEMAN",
+      "x": 10,
+      "y": 31,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "0x0",
+      "flag": "FLAG_HIDE_FOREST_AMBUSH_GRUNT1"
+    },
+    {
+      "local_id": "LOCALID_VIRIDIAN_FOREST_GRUNT2",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_POLICEMAN",
+      "x": 14,
+      "y": 31,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "0x0",
+      "flag": "FLAG_HIDE_FOREST_AMBUSH_GRUNT2"
     }
   ],
   "warp_events": [
@@ -214,7 +274,17 @@
       "dest_warp_id": "1"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 12,
+      "y": 28,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_VIRIDIAN_FOREST",
+      "var_value": "0",
+      "script": "ViridianForest_EventScript_MewClearingTrigger"
+    }
+  ],
   "bg_events": [
     {
       "type": "sign",

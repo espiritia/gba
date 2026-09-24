@@ -12,6 +12,7 @@
 #include "battle.h"
 #include "fieldmap.h"
 #include "field_specials.h"
+#include "field_weather.h"
 #include "region_map.h"
 #include "task.h"
 #include "battle_tower.h"
@@ -2552,4 +2553,11 @@ static void Task_WingFlapSound(u8 taskId)
     }
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
+}
+
+void FadeWeatherGammaTo(void)
+{
+    // 8004 = Target gamma index (higher is darker)
+    // 8005 = Frame delay between gamma steps
+    WeatherBeginGammaFade(gWeatherPtr->gammaIndex, gSpecialVar_0x8004, gSpecialVar_0x8005);
 }

@@ -538,7 +538,7 @@
 #define FLAG_HIDE_AGATHA_FOREST_AMBUSH 0x204
 #define FLAG_HIDE_FOREST_AMBUSH_GRUNT1 0x205
 #define FLAG_HIDE_FOREST_AMBUSH_GRUNT2 0x206
-#define FLAG_0x207               0x207
+#define FLAG_HIDE_FOREST_ONIX_DEBRIS 0x207
 #define FLAG_0x208               0x208
 #define FLAG_0x209               0x209
 #define FLAG_0x20A               0x20A

@@ -103,107 +103,76 @@ ViridianForest_Text_LeavingViridianForest::
     .string "LEAVING VIRIDIAN FOREST\n"
     .string "PEWTER CITY AHEAD$"
 
-ViridianForest_Text_FoundMossThenSound::
-    .string "Encuentras el musgo brillante\n"
-    .string "que BROCK te pidió, más rápido\n"
-    .string "de lo que esperabas…\p"
-    .string "Pero entonces, escuchas un\n"
-    .string "sonido agudo y cristalino,\n"
-    .string "como una campanilla…\p"
-    .string "Un pequeño destello rosado\n"
-    .string "brilla entre los árboles.\p"
-    .string "Guiado por la curiosidad, y\n"
-    .string "sintiendo que tu POKéMON está\n"
-    .string "extrañamente atraído…\p"
-    .string "…sigues la luz y te sales\n"
-    .string "del sendero principal.\p"
-    .string "Sin darte cuenta, el cielo se\n"
-    .string "oscurece. Te has perdido en\n"
-    .string "una zona profunda del bosque.$"
+ViridianForest_Text_CrystalSound::
+    .string "Pareces oír un sonido agudo\n"
+    .string "y cristalino…$"
 
-ViridianForest_Text_MewVoice1::
-    .string "Sé que tienes muchas\n"
-    .string "preguntas…$"
+ViridianForest_Text_MewVoice::
+    .string "{COLOR RED}{SHADOW LIGHT_RED}MEW: … {PLAYER}, no temas…\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}soy un POKéMON biotraje ancestral…\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}llevo mucho tiempo esperándo que crecieras\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}para reunirme contigo\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}Tengo tantas cosas que contarte…\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}pero no mucho tiempo\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}hasta que me encuentren\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}la historia que conoces…\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}…está muy lejos de la verdad…\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}y ya has crecido lo suficiente\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}para entenderlo\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}…Ya llegan de nuevo…\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}tengo que marcharme…\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}ten cuidado y no hablas con nadie\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}Búscame en Ciudad Celeste.$"
 
-ViridianForest_Text_MewVoice2::
-    .string "La historia que os cuentan\n"
-    .string "es una jaula…$"
+ViridianForest_Text_AgathaConfront::
+    .string "AGATHA: Tú, novato…\n"
+    .string "Este lugar es peligroso\l"
+    .string "¿Qué estás haciendo\p"
+    .string "aquí?\n"
+    .string "AGATHA: ¿Has visto a una\n"
+    .string "criatura rosada flotante?$"
 
-ViridianForest_Text_MewVoice3::
-    .string "Parece que ya llegan…$"
-
-ViridianForest_Text_MewVoice4::
-    .string "Búscame en Ciudad Celeste$"
-
-ViridianForest_Text_AgathaConfront1::
-    .string "¡La maleza se destroza de\n"
-    .string "golpe! Un ARBOK emerge, y del\n"
-    .string "bosque salen soldados armados…\p"
-    .string "…y una anciana intimidante:\n"
-    .string "AGATHA, del Alto Mando.\p"
-    .string "“Tú, chiquillo. Hemos detectado\n"
-    .string "una anomalía psíquica aquí.\p"
-    .string "“¿Has visto a una criatura\n"
-    .string "rosada flotante?”$"
-
-ViridianForest_Text_PlayerLies::
-    .string "Decides mentir y hacerte\n"
-    .string "el tonto:\p"
-    .string "“No, señora… solo busco\n"
-    .string "musgo para el gimnasio.”$"
-
-ViridianForest_Text_AgathaDemandPokedex::
-    .string "AGATHA sonríe con malicia.\p"
-    .string "“¿Musgo? Eres un pésimo\n"
+ViridianForest_Text_AgathaCallsLiar::
+    .string "AGATHA: ¿Que solo buscabas\n"
+    .string "musgo brillante? …\p"
+    .string "AGATHA: Eres un pésimo\n"
     .string "mentiroso.\p"
-    .string "“Si no has visto nada, no te\n"
-    .string "importará entregarme tu\n"
-    .string "POKéDEX. ¡Dámela!”$"
+    .string "AGATHA: Si no has visto nada,\n"
+    .string "no te importará entregarme\l"
+    .string "tu POKéDEX...$"
 
-ViridianForest_Text_PlayerRefuses::
-    .string "Te niegas a entregar tu\n"
-    .string "posesión más preciada.$"
+ViridianForest_Text_AgathaTruthful::
+    .string "AGATHA: Al menos veo que no\n"
+    .string "eres tan necio como para\l"
+    .string "engañarme…\p"
+    .string "AGATHA: Esa criatura es asunto\n"
+    .string "de la Liga. Lo que hayas visto\l"
+    .string "debe quedar registrado.\p"
+    .string "AGATHA: ¡Arrestadlo y quitadle\n"
+    .string "la POKéDEX!$"
 
-ViridianForest_Text_AgathaOrdersArrest::
-    .string "AGATHA pierde la paciencia:\p"
-    .string "“Obstrucción a la justicia\n"
-    .string "de la Liga.\p"
-    .string "“¡Arrestadlo y quitadle la\n"
-    .string "POKéDEX por la fuerza!”\p"
-    .string "Los soldados se abalanzan\n"
-    .string "sobre ti…$"
+ViridianForest_Text_SoldierDemandPokedex::
+    .string "SOLDADO: ¡Entrega\n"
+    .string "inmediatamente tu POKé…$"
 
-ViridianForest_Text_OnixEmerges::
-    .string "¡La tierra tiembla! Un rugido\n"
-    .string "ensordecedor sacude el bosque.\p"
-    .string "El suelo bajo los soldados\n"
-    .string "empieza a resquebrajarse…\p"
-    .string "¡Un enorme ONIX salvaje\n"
-    .string "irrumpe desde las\n"
-    .string "profundidades!\p"
-    .string "AGATHA retrocede:\n"
-    .string "“¿Un ONIX aquí? ¡Esta zona\n"
-    .string "no es su hábitat!”$"
+ViridianForest_Text_AgathaOnixHere::
+    .string "AGATHA: ¿Un ONIX aquí?\n"
+    .string "Esta zona…$"
 
-ViridianForest_Text_OnixSandstormRescue::
-    .string "¡El ONIX desata una tormenta\n"
-    .string "de arena que ciega a AGATHA\n"
-    .string "y a sus soldados!\p"
-    .string "Aprovechando el caos, su cola\n"
-    .string "te envuelve con suavidad…\p"
-    .string "…usa Excavar y te arrastra\n"
-    .string "bajo tierra antes de que la\n"
-    .string "tormenta se disipe.$"
+ViridianForest_Text_SoldierChase::
+    .string "SOLDADO: ¿Los perseguimos?$"
 
-ViridianForest_Text_AgathaGivesUp::
-    .string "AGATHA, tosiendo polvo, da por\n"
-    .string "hecho que un ONIX salvaje te\n"
-    .string "ha aplastado o devorado.\p"
-    .string "Te da por muerto… y se retira\n"
-    .string "con sus soldados.$"
+ViridianForest_Text_AgathaRetreat1::
+    .string "AGATHA: No, sigamos la señal\n"
+    .string "de MEW, nada es más importante\l"
+    .string "ahora.$"
 
-ViridianForest_Text_LandInSecretCave::
-    .string "Caes por el túnel y aterrizas\n"
-    .string "en una cueva secreta bajo el\n"
-    .string "Gimnasio Plateada…$"
+ViridianForest_Text_AgathaRetreat2::
+    .string "AGATHA: Además, seguramente\n"
+    .string "ese chiquillo no siga con vida.$"
 
+ViridianForest_Text_AgathaRetreat3::
+    .string "AGATHA: La fuerza psíquica que\n"
+    .string "usamos para detectar a MEW\l"
+    .string "debió alterar a ese ONIX.\p"
+    .string "AGATHA: ¡En marcha!$"

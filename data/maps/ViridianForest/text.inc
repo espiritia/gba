@@ -109,16 +109,18 @@ ViridianForest_Text_CrystalSound::
 
 ViridianForest_Text_MewVoice::
     .string "{COLOR RED}{SHADOW LIGHT_RED}MEW: … {PLAYER}, no temas…\n"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}soy un POKéMON biotraje ancestral…\p"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}llevo mucho tiempo esperándo que crecieras\p"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}para reunirme contigo\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}soy un POKéMON muy antiguo…\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}llevo mucho tiempo esperándo que\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}crecieras para reunirme contigo\n"
     .string "{COLOR RED}{SHADOW LIGHT_RED}Tengo tantas cosas que contarte…\p"
     .string "{COLOR RED}{SHADOW LIGHT_RED}pero no mucho tiempo\n"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}hasta que me encuentren\p"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}la historia que conoces…\p"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}…está muy lejos de la verdad…\n"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}y ya has crecido lo suficiente\p"
-    .string "{COLOR RED}{SHADOW LIGHT_RED}para entenderlo\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}hasta que me encuentren otra vez\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}¡Qué mayor te has hecho!\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}Todo lo que sabes sobre POKéMON\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}está a punto de cambiar\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}Y ahora que eres un adulto\p"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}y entiendes mejor el mundo\n"
+    .string "{COLOR RED}{SHADOW LIGHT_RED}Puedo contartelo todo…\p"
     .string "{COLOR RED}{SHADOW LIGHT_RED}…Ya llegan de nuevo…\p"
     .string "{COLOR RED}{SHADOW LIGHT_RED}tengo que marcharme…\n"
     .string "{COLOR RED}{SHADOW LIGHT_RED}ten cuidado y no hablas con nadie\p"
@@ -129,7 +131,7 @@ ViridianForest_Text_AgathaConfront::
     .string "Este lugar es peligroso\l"
     .string "¿Qué estás haciendo\p"
     .string "aquí?\n"
-    .string "AGATHA: ¿Has visto a una\n"
+    .string "AGATHA: ¿Has visto a una\p"
     .string "criatura rosada flotante?$"
 
 ViridianForest_Text_AgathaCallsLiar::
@@ -172,7 +174,54 @@ ViridianForest_Text_AgathaRetreat2::
     .string "ese chiquillo no siga con vida.$"
 
 ViridianForest_Text_AgathaRetreat3::
-    .string "AGATHA: La fuerza psíquica que\n"
-    .string "usamos para detectar a MEW\l"
-    .string "debió alterar a ese ONIX.\p"
+    .string "AGATHA: La fuerza psíquica\n"
+    .string "de MEW debió alterar a ese ONIX\p"
     .string "AGATHA: ¡En marcha!$"
+
+ViridianForest_Text_SomethingGlitters::
+    .string "Algo brilla entre la hierba…\n"
+    .string "pero no sabes qué puede ser.$"
+
+ViridianForest_Text_CuboneSniff1::
+    .string "CUBONE: huele el rastro del musgo\n"
+    .string "brillante hacia el nor-este…$"
+
+ViridianForest_Text_CuboneSniff2::
+    .string "CUBONE: huele el rastro del musgo\n"
+    .string "brillante hacia el sur-este…$"
+
+ViridianForest_Text_CuboneSniff3::
+    .string "CUBONE: huele el rastro del musgo\n"
+    .string "brillante hacia el oeste…$"
+
+ViridianForest_Text_CuboneSniff4::
+    .string "CUBONE: huele el rastro del musgo\n"
+    .string "brillante hacia el norte…$"
+
+ViridianForest_Text_CuboneSniff5::
+    .string "CUBONE mueve su hueso-palo\n"
+    .string "hacia arriba…\p"
+    .string "El musgo brillante debe estar\n"
+    .string "a solo unos pasos.$"
+
+ViridianForest_Text_CuboneClue2::
+    .string "CUBONE: el rastro sigue\n"
+    .string "en la hierba que está\p"
+    .string "más al norte de todas.$"
+
+ViridianForest_Text_CuboneClue3::
+    .string "CUBONE: el rastro sigue\n"
+    .string "junto a los árboles\p"
+    .string "y lejos del camino.$"
+
+ViridianForest_Text_CuboneClue4::
+    .string "CUBONE: el rastro sigue\n"
+    .string "lo más lejos de la tierra…$"
+
+ViridianForest_Text_FakeMoss::
+    .string "¡El musgo brillante se mueve…!\n"
+    .string "¡Era un PARAS escondido!$"
+
+ViridianForest_Text_CuboneRemember::
+    .string "CUBONE: ese musgo \n"
+    .string "olía raro…$"

@@ -8087,12 +8087,18 @@ static void GetGroundEffectFlags_Reflection(struct ObjectEvent *objEvent, u32 *f
 
 static void GetGroundEffectFlags_TallGrassOnSpawn(struct ObjectEvent *objEvent, u32 *flags)
 {
+    // El brillo del Bosque Verde debe verse sobre la hierba alta
+    if (objEvent->graphicsId == OBJ_EVENT_GFX_SPARKLE)
+        return;
     if (MetatileBehavior_IsTallGrass(objEvent->currentMetatileBehavior))
         *flags |= GROUND_EFFECT_FLAG_TALL_GRASS_ON_SPAWN;
 }
 
 static void GetGroundEffectFlags_TallGrassOnBeginStep(struct ObjectEvent *objEvent, u32 *flags)
 {
+    // El brillo del Bosque Verde debe verse sobre la hierba alta
+    if (objEvent->graphicsId == OBJ_EVENT_GFX_SPARKLE)
+        return;
     if (MetatileBehavior_IsTallGrass(objEvent->currentMetatileBehavior))
         *flags |= GROUND_EFFECT_FLAG_TALL_GRASS_ON_MOVE;
 }

@@ -1181,6 +1181,11 @@ static const struct SpriteFrameImage sPicTable_Hole[] = {
     overworld_frame(gObjectEventPic_Hole, 2, 2, 0),
 };
 
+static const struct SpriteFrameImage sPicTable_Sparkle[] = {
+    overworld_frame(gObjectEventPic_Sparkle, 2, 2, 0),
+    overworld_frame(gObjectEventPic_Sparkle, 2, 2, 1),
+};
+
 static const struct SpriteFrameImage sPicTable_Ruby[] = {
     overworld_frame(gObjectEventPic_Ruby, 2, 2, 0),
 };

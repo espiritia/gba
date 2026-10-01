@@ -2561,3 +2561,16 @@ void FadeWeatherGammaTo(void)
     // 8005 = Frame delay between gamma steps
     WeatherBeginGammaFade(gWeatherPtr->gammaIndex, gSpecialVar_0x8004, gSpecialVar_0x8005);
 }
+
+bool8 IsSpeciesInPlayerParty(void)
+{
+    // 8004 = Species to look for
+    u8 i;
+
+    for (i = 0; i < gPlayerPartyCount; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) == gSpecialVar_0x8004)
+            return TRUE;
+    }
+    return FALSE;
+}

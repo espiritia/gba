@@ -10,8 +10,8 @@ echo "==> Instalando agbcc en tools/agbcc"
 
 echo "==> Generando la primera ROM (la primera vez tarda unos minutos)"
 make -j"$(nproc)"
-cp pokefirered.gba espiritia.gba
+cp pokefirered.gba room.gba
 
 echo ""
-echo "✅ Todo listo. ROM generada: espiritia.gba"
+echo "✅ Todo listo. ROM generada: room.gba"
 echo "   Para volver a generarla tras cambiar un texto: Ctrl+Shift+B"

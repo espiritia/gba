@@ -1,6 +1,6 @@
 # Guía: cambiar textos y generar el juego
 
-Esta guía explica cómo cambiar los textos del juego y generar el archivo `espiritia.gba` para jugarlo en tu
+Esta guía explica cómo cambiar los textos del juego y generar el archivo `room.gba` para jugarlo en tu
 ordenador. No tienes que instalar nada: todo funciona en el navegador con **GitHub Codespaces**.
 
 ---
@@ -11,7 +11,7 @@ ordenador. No tienes que instalar nada: todo funciona en el navegador con **GitH
 2. Pulsa el botón verde **Code** → pestaña **Codespaces** → **Create codespace on …**
 3. Se abrirá un editor (VS Code) en el navegador. **La primera vez tarda entre 5 y 10 minutos** porque instala
    todo y genera el juego. Verás un terminal abajo con mucho texto: es normal.
-4. Cuando aparezca `✅ Todo listo. ROM generada: espiritia.gba` ya puedes empezar.
+4. Cuando aparezca `✅ Todo listo. ROM generada: room.gba` ya puedes empezar.
 
 Las siguientes veces: **Code → Codespaces** y pulsa sobre el codespace que ya tienes (no crees uno nuevo).
 
@@ -61,20 +61,20 @@ Reglas:
 1. Guarda el archivo: **Ctrl+S**.
 2. Pulsa **Ctrl+Shift+B**.
 3. Espera a que en el terminal aparezca:
-   `✅ ROM lista: espiritia.gba`
+   `✅ ROM lista: room.gba`
 
-Cada vez que generas el juego, `espiritia.gba` **se sobrescribe** con la versión nueva.
+Cada vez que generas el juego, `room.gba` **se sobrescribe** con la versión nueva.
 
 ---
 
 ## 5. Descargar y jugar
 
-1. En el panel de archivos de la izquierda, busca `espiritia.gba` (está abajo del todo, en la raíz).
+1. En el panel de archivos de la izquierda, busca `room.gba` (está abajo del todo, en la raíz).
 2. **Clic derecho → Download**.
 3. Ábrelo en tu emulador de Windows (recomendado: [mGBA](https://mgba.io/downloads.html)).
 
 > Consejo: guarda siempre el `.gba` descargado **con el mismo nombre y en la misma carpeta**. Así mGBA sigue usando tu
-> partida guardada (`espiritia.sav`) con la versión nueva.
+> partida guardada (`room.sav`) con la versión nueva.
 
 ---
 
@@ -104,7 +104,7 @@ Revisa esa línea:
 - ¿Se borró el `$` del final del texto?
 - ¿Has usado algún símbolo raro (emoji, comillas tipográficas `“ ”`)? Usa solo comillas normales `"`.
 
-Si sale un error, el `espiritia.gba` anterior se queda como estaba (no se estropea).
+Si sale un error, el `room.gba` anterior se queda como estaba (no se estropea).
 
 **Quiero deshacer todos mis cambios de un archivo:** en **Source Control**, clic derecho sobre el archivo →
 **Discard Changes**.

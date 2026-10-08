@@ -453,4 +453,6 @@ gSpecials::
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
+	def_special FadeWeatherGammaTo
+	def_special IsSpeciesInPlayerParty
 gSpecialsEnd::

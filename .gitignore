@@ -61,6 +61,7 @@ _Deparsed_XSubs.pm
 porymap.*.cfg
 prefabs.json
 .vscode/*.*
+!.vscode/tasks.json
 *.js
 *.sym
 build-cmake-*/

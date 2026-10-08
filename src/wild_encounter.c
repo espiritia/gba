@@ -205,6 +205,18 @@ static u16 GetCurrentMapWildMonHeaderId(void)
     return HEADER_NONE;
 }
 
+// Sin encuentros salvajes en el Bosque Verde durante el evento de Mew (etapas 1-4)
+static bool8 IsViridianForestMewEventActive(void)
+{
+    u16 scene;
+
+    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_VIRIDIAN_FOREST)
+     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_VIRIDIAN_FOREST))
+        return FALSE;
+    scene = VarGet(VAR_MAP_SCENE_VIRIDIAN_FOREST);
+    return scene >= 1 && scene <= 4;
+}
+
 static bool8 UnlockedTanobyOrAreNotInTanoby(void)
 {
     if (FlagGet(FLAG_SYS_UNLOCKED_TANOBY_RUINS))
@@ -359,6 +371,8 @@ bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 
     if (sWildEncountersDisabled == TRUE)
         return FALSE;
+    if (IsViridianForestMewEventActive())
+        return FALSE;
 
     headerId = GetCurrentMapWildMonHeaderId();
     if (headerId != HEADER_NONE)
@@ -466,6 +480,8 @@ bool8 SweetScentWildEncounter(void)
     s16 x, y;
     u16 headerId;
 
+    if (IsViridianForestMewEventActive())
+        return FALSE;
     PlayerGetDestCoords(&x, &y);
     headerId = GetCurrentMapWildMonHeaderId();
     if (headerId != HEADER_NONE)

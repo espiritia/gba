@@ -21,46 +21,46 @@ Text_DreamEaterTaught::
     .string "I…can't eat…anymore…$"
 
 PewterCity_Text_ClefairyCameFromMoon::
-    .string "CLEFAIRY came from the moon.\n"
-    .string "That's what the rumor is.\p"
-    .string "They appeared after MOON STONES\n"
-    .string "fell on MT. MOON.$"
+        .string "¿Sabías qué Clefairy \n"
+    .string "viene del espacio?\p"
+    .string "Según la leyenda cayeron\n"
+    .string "en el Mt.Moon.$"
 
 PewterCity_Text_BrockOnlySeriousTrainerHere::
-    .string "There aren't many serious POKéMON\n"
-    .string "TRAINERS here.\p"
-    .string "They're all like BUG CATCHERS,\n"
-    .string "you know, just hobbyists.\p"
-    .string "But PEWTER GYM's BROCK isn't like\n"
-    .string "that, not one bit.$"
+    .string "Dicen que hay un fuerte entrenador\n"
+    .string "en el bosque verde.\p"
+    .string "Parece que es un cazabichos,\n"
+    .string "no es como los demás,él es disitnto.\p"
+    .string "Los demás cazabichos le tienen mucho\n"
+    .string "respeto porque trabajó más que nadie.$"
 
 PewterCity_Text_DidYouCheckOutMuseum::
-    .string "Did you check out the MUSEUM?$"
+    .string "¿Has visitado el museo?$"
 
 PewterCity_Text_WerentThoseFossilsAmazing::
-    .string "Weren't those fossils from MT. MOON\n"
-    .string "amazing?$"
+        .string "¿A qué estaban chulísimos los\n"
+    .string "fósiles?$"
 
 PewterCity_Text_ReallyYouHaveToGo::
-    .string "Really?\n"
-    .string "You absolutely have to go!$"
+    .string "¿De veras?\n"
+    .string "¡Te aseguro que tienes que ir!$"
 
 PewterCity_Text_ThisIsTheMuseum::
-    .string "This is it, the MUSEUM.\p"
-    .string "You have to pay to get in, but it's\n"
-    .string "worth it. See you around!$"
+    .string "Este es el museo.\p"
+    .string "Tienes que pagar para entrar,pero\n"
+    .string "merece la pena,¡Nos vemos!$"
 
 PewterCity_Text_DoYouKnowWhatImDoing::
-    .string "Psssst!\n"
-    .string "Do you know what I'm doing?$"
+        .string "¡Psssst,eh tú!\n"
+    .string "¿Sabes qué estoy haciendo?$"
 
 PewterCity_Text_ThatsRightItsHardWork::
-    .string "That's right!\n"
-    .string "It's hard work!$"
+    .string "Así es,\n"
+    .string "¡Es trabajo duro!$"
 
 PewterCity_Text_SprayingRepelToKeepWildMonsOut::
-    .string "I'm spraying REPEL to keep wild\n"
-    .string "POKéMON out of my garden!$"
+    .string "Estoy rociando con repelente\n"
+    .string "mi jardín para alejar a los pokémon.$"
 
 PewterCity_Text_BrocksLookingForChallengersFollowMe::
     .string "You're a TRAINER, right?\p"
@@ -72,28 +72,28 @@ PewterCity_Text_GoTakeOnBrock::
     .string "go take on BROCK!$"
 
 PewterCity_Text_TrainerTipsEarningEXP::
-    .string "TRAINER TIPS\p"
-    .string "All POKéMON that appear in battle,\n"
-    .string "however briefly, earn EXP Points.$"
+    .string "Consejos para entrenadores\p"
+    .string "Todos los pokémon a los que\n"
+    .string "venzas te darán puntos XP.$"
 
 PewterCity_Text_CallPoliceIfInfoOnThieves::
-    .string "NOTICE!\p"
-    .string "Thieves have been stealing POKéMON\n"
-    .string "fossils from MT. MOON.\p"
-    .string "Please call the PEWTER POLICE if\n"
-    .string "you have any information.$"
+    .string "¡NOTICIAS!\p"
+    .string "Ladrones robando fósiles\n"
+    .string "en el MT.Moon.\p"
+    .string "Por favor llama a la policía de\n"
+    .string "Ciudad Plateada si sabes algo.$"
 
 PewterCity_Text_MuseumOfScience::
-    .string "PEWTER MUSEUM OF SCIENCE$"
+    .string "Museo de las ciencias Plateado$"
 
 PewterCity_Text_GymSign::
-    .string "PEWTER CITY POKéMON GYM\n"
-    .string "LEADER: BROCK\l"
-    .string "The Rock-Solid POKéMON TRAINER!$"
+    .string "Gimnasio pokémon de Ciudad Plateada\n"
+    .string "Líder: Brock.\l"
+    .string "¡Hogar de los pokémon tipo roca!$"
 
 PewterCity_Text_CitySign::
-    .string "PEWTER CITY\n"
-    .string "A Stone Gray City$"
+    .string "CIUDAD PLATEADA\n"
+    .string "La ciudad de las rocas grises$"
 
 @ The below 3 JP texts are unused. Possibly a cut NPC meant to give the player the Berry Pouch
 PewterCity_Text_DefeatedBrockYouCanHaveTreasure::

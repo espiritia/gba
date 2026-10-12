@@ -10,8 +10,8 @@ PewterCity_PokemonCenter_1F_Text_Jigglypuff::
 
 PewterCity_PokemonCenter_1F_Text_WhenJiggylypuffSingsMonsGetDrowsy::
     .string "Awwwh…\p"
-    .string "Cuando Jigglypuff canta la gente se duerme…\n"
-    .string "Que sueño…\p"
+    .string "Cuando Jigglypuff canta la gente se \n"
+    .string "duerme... Que sueño…\p"
     .string "…Creo que m-e me duer- duer-mo…\n"
     .string "Ronquidos…$"
 
@@ -20,8 +20,8 @@ PewterCity_PokemonCenter_1F_Text_TradingMyClefairyForPikachu::
     .string "intercambio un Clefairy por uno.$"
 
 PewterCity_PokemonCenter_1F_Text_TradingPikachuWithKid::
-    .string "Estoy intercambiando un Pikachu con ese\n"
-    .string "chico de ahí.\p"
+    .string "Estoy intercambiando un Pikachu con\n"
+    .string "ese chico de ahí.\p"
     .string "Como tengo 2 Pikachus pensé que\n"
-    .string "seria una buena idea intercambiar 1.$"
+    .string "sería una buena idea intercambiar 1.$"
 

@@ -100,26 +100,26 @@ ViridianCity_Text_TooBusyForTeachyTV::
     .string "be ill spent…$"
 
 ViridianCity_Text_CitySign::
-    .string "VIRIDIAN CITY \n"
-    .string "The Eternally Green Paradise$"
+    .string "CIUDAD VERDE \n"
+    .string "EL eterno paraiso verde$"
 
 ViridianCity_Text_CatchMonsForEasierBattles::
-    .string "TRAINER TIPS\p"
-    .string "Catch POKéMON and expand your\n"
-    .string "collection.\p"
-    .string "The more you have, the easier it\n"
-    .string "is to battle.$"
+    .string "Consejo para entrenadores\p"
+    .string "Atrapa pokémon y expande tu\n"
+    .string "colección.\p"
+    .string "Mientras más tengas,más\n"
+    .string "fácil es combatir.$"
 
 ViridianCity_Text_MovesLimitedByPP::
-    .string "TRAINER TIPS\p"
-    .string "The battle moves of POKéMON are\n"
-    .string "limited by their POWER POINTS, PP.\p"
-    .string "To replenish PP, rest your tired\n"
-    .string "POKéMON at a POKéMON CENTER.$"
+    .string "Consejos para entrenadores\p"
+    .string "Los movimientos se dividen en\n"
+    .string "dos tipos:estado y ataque.\p"
+    .string "Los de estado pueden reducir \n"
+    .string "características,sonmuy útiles.$"
 
 ViridianCity_Text_GymSign::
-    .string "VIRIDIAN CITY POKéMON GYM$"
+    .string "GIMNASIO DE CIUDAD VERDE$"
 
 ViridianCity_Text_GymDoorsAreLocked::
-    .string "VIRIDIAN GYM's doors are locked…$"
+    .string "LAS PUERTAS ESTÄN CERRADAS$"
 

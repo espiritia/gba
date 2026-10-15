@@ -1,0 +1,24 @@
+{
+  "name": "Espiritia GBA",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.encoding": "utf8",
+        "files.eol": "\n",
+        "git.autofetch": true
+      }
+    },
+    "codespaces": {
+      "openFiles": [
+        "GUIA.md"
+      ]
+    }
+  }
+}

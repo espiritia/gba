@@ -28,15 +28,15 @@ Text_Dresser::
 	.string "It will hold a lot of stuff.$"
 
 Text_Snacks::
-	.string "There's a pile of snacks here.$"
+	.string "¡Hay muchos aperitivos aquí!$"
 
 Text_PokemartSign::
-	.string "All your item needs fulfilled!\n"
-	.string "POKéMON MART$"
+	.string "¡Tu mochila tiene que llenarse!\n"
+	.string "TIENDA POKÉMON$"
 
 Text_PokecenterSign::
-	.string "Heal Your POKéMON!\n"
-	.string "POKéMON CENTER$"
+	.string "¡Cura tus pokémon!\n"
+	.string "CENTRO POKÉMON$"
 
 Text_Indigo_UltimateGoal::
 	.string "INDIGO PLATEAU\p"

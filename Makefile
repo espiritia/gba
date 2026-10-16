@@ -69,14 +69,14 @@ MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 SHELL := bash -o pipefail
 
 # Set flags for tools
-ASFLAGS := -mcpu=arm7tdmi --defsym $(GAME_VERSION)=1 --defsym REVISION=$(GAME_REVISION) --defsym $(GAME_LANGUAGE)=1 --defsym MODERN=$(MODERN)
+ASFLAGS := -mcpu=arm7tdmi --defsym $(GAME_VERSION)=1 --defsym REVISION=$(GAME_REVISION) --defsym $(GAME_LANGUAGE)=1 --defsym MODERN=$(MODERN) --defsym DEBUG_SCENARIOS=$(DEBUG_SCENARIOS)
 
 INCLUDE_DIRS := include
 INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
 INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
 O_LEVEL ?= 2
-CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -D$(GAME_VERSION) -DREVISION=$(GAME_REVISION) -D$(GAME_LANGUAGE) -DMODERN=$(MODERN)
+CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -D$(GAME_VERSION) -DREVISION=$(GAME_REVISION) -D$(GAME_LANGUAGE) -DMODERN=$(MODERN) -DDEBUG_SCENARIOS=$(DEBUG_SCENARIOS)
 ifeq ($(MODERN),0)
   CPPFLAGS += -I tools/agbcc/include -I tools/agbcc -nostdinc -undef -std=gnu89
   CC1 := tools/agbcc/bin/agbcc$(EXE)
@@ -133,7 +133,7 @@ ALL_BUILDS := firered firered_rev1 firered_rev10 leafgreen leafgreen_rev1 leafgr
 ALL_BUILDS += $(ALL_BUILDS:%=%_modern)
 
 RULES_NO_SCAN += clean clean-assets tidy generated clean-generated
-.PHONY: all rom modern compare $(ALL_BUILDS) $(ALL_BUILDS:%=compare_%)
+.PHONY: all rom modern compare debug $(ALL_BUILDS) $(ALL_BUILDS:%=compare_%)
 .PHONY: $(RULES_NO_SCAN)
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
@@ -218,7 +218,7 @@ clean-assets:
 	find $(DATA_ASM_SUBDIR)/maps \( -iname 'connections.inc' -o -iname 'events.inc' -o -iname 'header.inc' \) -exec rm {} +
 
 tidy:
-	$(RM) $(ALL_BUILDS:%=poke%{.gba,.elf,.map})
+	$(RM) $(ALL_BUILDS:%=poke%{.gba,.elf,.map}) $(ALL_BUILDS:%=poke%_debug{.gba,.elf,.map})
 	$(RM) -r $(BUILD_DIR)
 
 # "friendly" target names for convenience sake
@@ -240,6 +240,10 @@ firered_modern:        ; @$(MAKE) GAME_VERSION=FIRERED MODERN=1
 firered_rev1_modern:   ; @$(MAKE) GAME_VERSION=FIRERED GAME_REVISION=1 MODERN=1
 leafgreen_modern:      ; @$(MAKE) GAME_VERSION=LEAFGREEN MODERN=1
 leafgreen_rev1_modern: ; @$(MAKE) GAME_VERSION=LEAFGREEN GAME_REVISION=1 MODERN=1
+
+# ROM de pruebas con el selector de escenarios (START > DEBUG)
+debug:
+	@$(MAKE) DEBUG_SCENARIOS=1
 
 # Other rules
 include graphics_file_rules.mk
@@ -330,7 +334,7 @@ ifneq ($(NODEP),1)
 endif
 
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
-	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) -DDEBUG_SCENARIOS=$(DEBUG_SCENARIOS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
 
 $(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.s
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
@@ -340,7 +344,7 @@ ifneq ($(NODEP),1)
 endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
-	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) -DDEBUG_SCENARIOS=$(DEBUG_SCENARIOS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
 
 $(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<

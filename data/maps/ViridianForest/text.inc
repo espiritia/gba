@@ -225,3 +225,11 @@ ViridianForest_Text_FakeMoss::
 ViridianForest_Text_CuboneRemember::
     .string "CUBONE: ese musgo \n"
     .string "olía raro…$"
+
+ViridianForest_Text_CuboneCameOut::
+    .string "¡CUBONE salió de su POKé BALL!\p"
+    .string "Parece que quiere ayudarte\n"
+    .string "a seguir el rastro.$"
+
+ViridianForest_Text_CuboneFollower::
+    .string "CUBONE: ¡Cubo, cubone!$"

@@ -1357,6 +1357,9 @@ Text_TestMsg::
 	.include "data/scripts/move_tutors.inc"
 	.include "data/scripts/trainer_tower.inc"
 	.include "data/scripts/test.inc"
+#if DEBUG_SCENARIOS
+	.include "data/scripts/debug_scenarios.inc"
+#endif
 	.include "data/text/save.inc"
 	.include "data/text/new_game_intro.inc"
 	.include "data/text/pokedude.inc"

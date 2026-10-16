@@ -8,10 +8,18 @@ CeruleanCity_OnTransition::
 	end
 
 CeruleanCity_EventScript_BlockExits::
+.if DEBUG_SCENARIOS
+	goto_if_set FLAG_DEBUG_GAME_MASTER, CeruleanCity_EventScript_DebugSkipBlockExits
+.endif
 	setobjectxyperm LOCALID_CERULEAN_POLICEMAN, 30, 12
 	setobjectxyperm LOCALID_CERULEAN_SLOWBRO, 26, 31
 	setobjectxyperm LOCALID_CERULEAN_LASS, 27, 31
 	return
+
+.if DEBUG_SCENARIOS
+CeruleanCity_EventScript_DebugSkipBlockExits::
+	return
+.endif
 
 CeruleanCity_EventScript_RivalTriggerLeft::
 	lockall

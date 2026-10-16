@@ -11,6 +11,9 @@ COMPARE       ?= 0
 
 KEEP_TEMPS    ?= 0
 
+# Builds the debug ROM with the scenario selector (START > DEBUG). See GUIA.md
+DEBUG_SCENARIOS ?= 0
+
 ifeq (modern,$(MAKECMDGOALS))
   MODERN := 1
 endif
@@ -50,6 +53,11 @@ endif
 # Modern GCC
 ifeq ($(MODERN),1)
   BUILD_NAME := $(BUILD_NAME)_modern
+endif
+
+# Debug scenario selector
+ifeq ($(DEBUG_SCENARIOS),1)
+  BUILD_NAME := $(BUILD_NAME)_debug
 endif
 
 # Language

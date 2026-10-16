@@ -78,6 +78,59 @@ Cada vez que generas el juego, `espiritia.gba` **se sobrescribe** con la versió
 
 ---
 
+## 5b. Probar un evento sin jugar desde el principio (ROM de pruebas)
+
+Hay una segunda ROM, **solo para probar**, con un menú que te pone directamente en cualquier punto de la historia
+(gimnasio, Bosque Verde…), con los Pokémon, flags y variables ya preparados. La ROM normal no lleva nada de esto.
+
+**Generarla:** **Ctrl+Shift+P** → *Tasks: Run Task* → **Generar ROM de pruebas (debug)**
+(o en el terminal: `make debug`). Se crea `pokefirered_debug.gba`.
+
+**Usarla:**
+
+1. En el menú del título, **mantén SELECT y pulsa A en "Nueva partida"**: te saltas el discurso de Oak.
+2. Ya en el juego, pulsa **START → DEBUG** y elige un escenario:
+
+| Escenario | Qué deja preparado | Dónde apareces |
+|---|---|---|
+| HERRAMIENTAS… | Curar, equipo nivel 50, dinero, objetos, medallas, modo NORMAL / GAME MASTER | — |
+| PLATEADA: CON CUBONE | Cubone recibido | Puerta de la casa del Cubone |
+| GIMNASIO: SECRETARIA | Cubone | Entrada del gimnasio (salta el test al dar un paso) |
+| GIMNASIO: VERDE | + test aprobado | Gimnasio, sin haber vencido a Verde |
+| GIMNASIO: ENCARGO BROCK | + Verde vencido | Delante de Brock |
+| BOSQUE 1: CRISTAL | + encargo del musgo | Bosque Verde, a la izquierda del trigger del cristal |
+| BOSQUE 2: MUSGO | + Mew ya ha cruzado | Dos pasos al sur del primer brillo |
+| BOSQUE 2: SEÑUELOS | + rastro en el paso 4 | Al sur del brillo con señuelos |
+| BOSQUE 3: MEW Y AGATHA | + rastro completo | Dos pasos al sur de la oscuridad |
+| BROCK: COMBATE | + bosque terminado, combate desbloqueado | Delante de Brock |
+| TRAS VENCER A BROCK | + medalla Roca, MT39 | Puerta del gimnasio |
+
+Cada escenario **reinicia la historia** antes de aplicarse, así que puedes saltar de uno a otro sin problemas.
+
+**HERRAMIENTAS → MODO** tiene dos opciones:
+
+- **NORMAL:** el juego tal cual.
+- **GAME MASTER:**
+  - **Sin bloqueos de paso:** el viejo de Ciudad Verde, el guía de Plateada que te lleva al gimnasio, los guardias de
+    medallas de la Ruta 22/23, las garitas de Azafrán, las de la bici, el ticket de Carmín, las salidas tapadas de Celeste
+    (se nota al volver a entrar en el mapa), etc.
+  - **Invisible a los entrenadores:** no te paran para luchar (si les hablas, sí luchan).
+
+  Los eventos de la historia (Bosque Verde, test del gimnasio…) siguen funcionando.
+
+El modo se guarda en la partida y los escenarios no lo cambian. Si creas un trigger nuevo que bloquee el paso, añade su
+script a `sDebugPassageBlockScripts` en `src/field_control_avatar.c`.
+
+**Añadir un escenario nuevo** (todo está en `data/scripts/debug_scenarios.inc`):
+
+1. Crea un `Debug_Setup_...` que llame (`call`) al setup anterior y añada sus `setflag` / `setvar`.
+2. Crea un `Debug_Scenario_...` que haga `call Debug_Setup_Reset`, `call` a tu setup y `warp` al sitio.
+3. Añade su `case` en `Debug_EventScript_ScenarioMenu` y su nombre en `src/field_specials.c`
+   (lista `LISTMENU_DEBUG_SCENARIOS`), **en el mismo orden**. Caben 12 entradas por lista.
+4. **Regla:** si creas un flag o variable nuevo de la historia, añádelo también a `Debug_Setup_Reset`.
+
+---
+
 ## 6. Guardar tus cambios en GitHub
 
 Cuando estés contento con los textos:

@@ -4900,11 +4900,13 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 
 {
     u8 i;
     struct ObjectEvent *curObject;
+    // El seguidor nunca bloquea: el jugador puede volver a pisar su casilla
+    struct ObjectEvent *follower = GetFollowerObjectEvent();
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         curObject = &gObjectEvents[i];
-        if (curObject->active && curObject != objectEvent)
+        if (curObject->active && curObject != objectEvent && curObject != follower)
         {
             if ((curObject->currentCoords.x == x && curObject->currentCoords.y == y) || (curObject->previousCoords.x == x && curObject->previousCoords.y == y))
             {

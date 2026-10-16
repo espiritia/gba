@@ -86,8 +86,8 @@
 #define VAR_QUEST_LOG_MON_COUNTS           0x4027
 #define VAR_WONDER_NEWS_STEP_COUNTER       0x4028
 #define VAR_VIRIDIAN_FOREST_MOSS_TRAIL     0x4029
-#define VAR_0x402A                         0x402A
-#define VAR_0x402B                         0x402B
+#define VAR_FOLLOWER_LOCAL_ID              0x402A // localId del objeto que sigue al jugador (0 = ninguno)
+#define VAR_FOLLOWER_MAP                   0x402B // (mapGroup << 8) | mapNum del mapa del seguidor
 #define VAR_0x402C                         0x402C
 #define VAR_0x402D                         0x402D
 #define VAR_0x402E                         0x402E

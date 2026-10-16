@@ -415,6 +415,23 @@ static void Task_HandleMenuInput(u8 taskId)
     }
 }
 
+#if DEBUG_SCENARIOS
+static void DebugQuickNewGame(void)
+{
+    static const u8 sDebugPlayerName[] = _("ROJO");
+    u8 i;
+
+    // Igual que StartNewGameScene: NewGameInitData() copia rivalName y necesita un EOS
+    gSaveBlock1Ptr->rivalName[0] = EOS;
+    gSaveBlock2Ptr->playerGender = MALE;
+    for (i = 0; i < PLAYER_NAME_LENGTH && sDebugPlayerName[i] != EOS; i++)
+        gSaveBlock2Ptr->playerName[i] = sDebugPlayerName[i];
+    for (; i < PLAYER_NAME_LENGTH + 1; i++)
+        gSaveBlock2Ptr->playerName[i] = EOS;
+    SetMainCallback2(CB2_NewGame);
+}
+#endif
+
 static void Task_ExecuteMainMenuSelection(u8 taskId)
 {
     s32 menuAction;
@@ -471,6 +488,14 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
             gExitStairsMovementDisabled = FALSE;
             FreeAllWindowBuffers();
             DestroyTask(taskId);
+#if DEBUG_SCENARIOS
+            // ROM de debug: SELECT + "Nueva partida" se salta el discurso de Oak
+            if (JOY_HELD(SELECT_BUTTON))
+            {
+                DebugQuickNewGame();
+                break;
+            }
+#endif
             StartNewGameScene();
             break;
         case MAIN_MENU_CONTINUE:

@@ -1143,6 +1143,10 @@ extern const u8 EventScript_TryDoRematchBattle[];
 extern const u8 EventScript_DoTrainerBattleFromApproach[];
 extern const u8 EventScript_TestSignpostMsg[];
 
+#if DEBUG_SCENARIOS
+extern const u8 Debug_EventScript_ScenarioMenu[];
+#endif
+
 // new_game
 extern const u8 EventScript_ResetAllMapFlags[];
 

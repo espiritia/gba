@@ -10,6 +10,10 @@ ViridianForest_OnTransition::
 	setflag FLAG_HIDE_FOREST_AMBUSH_GRUNT2
 	setflag FLAG_HIDE_FOREST_ONIX_DEBRIS
 	setflag FLAG_HIDE_FOREST_MOSS_SPARKLE
+	setflag FLAG_HIDE_FOREST_CUBONE_BALL
+	setflag FLAG_HIDE_FOREST_CUBONE_FOLLOWER
+	@ Cubone fuera de la POKé BALL siguiendo al jugador: reaparece a su lado al volver al bosque
+	call_if_eq VAR_FOLLOWER_LOCAL_ID, LOCALID_VIRIDIAN_FOREST_CUBONE, ViridianForest_EventScript_RestoreCubone
 	@ Señuelos: solo durante el rastro; sus flags se conservan para no reaparecer si ya se gastaron
 	call_if_ne VAR_MAP_SCENE_VIRIDIAN_FOREST, 2, ViridianForest_EventScript_HideDecoys
 	@ Rastro del musgo en curso: los brillos vuelven a la posición del paso actual
@@ -116,11 +120,74 @@ ViridianForest_EventScript_MewDashTrigger::
 	applymovement LOCALID_VIRIDIAN_FOREST_MEW, ViridianForest_Movement_MewDash
 	waitmovement 0
 	removeobject LOCALID_VIRIDIAN_FOREST_MEW
+	call ViridianForest_EventScript_TrySendOutCubone
 	@ Empieza el rastro del musgo brillante
 	setvar VAR_VIRIDIAN_FOREST_MOSS_TRAIL, 0
 	call ViridianForest_EventScript_PlaceSparkle
 	addobject LOCALID_VIRIDIAN_FOREST_SPARKLE
 	releaseall
+	end
+
+@ Cubone sale de su POKé BALL (si está en el equipo) y sigue al jugador durante el rastro
+@ hasta el encuentro con Mew. El seguimiento lo hace el código (StartFollower / StopFollower).
+ViridianForest_EventScript_TrySendOutCubone::
+	setvar VAR_0x8004, SPECIES_CUBONE
+	specialvar VAR_RESULT, IsSpeciesInPlayerParty
+	goto_if_eq VAR_RESULT, FALSE, ViridianForest_EventScript_CuboneReturn
+	special GetFollowerSpawnCoords
+	setobjectxyperm LOCALID_VIRIDIAN_FOREST_CUBONE_BALL, VAR_0x8005, VAR_0x8006
+	setobjectxyperm LOCALID_VIRIDIAN_FOREST_CUBONE, VAR_0x8005, VAR_0x8006
+	clearflag FLAG_HIDE_FOREST_CUBONE_BALL
+	playse SE_BALL_THROW
+	addobject LOCALID_VIRIDIAN_FOREST_CUBONE_BALL
+	waitse
+	delay 8
+	playse SE_BALL_OPEN
+	removeobject LOCALID_VIRIDIAN_FOREST_CUBONE_BALL
+	clearflag FLAG_HIDE_FOREST_CUBONE_FOLLOWER
+	addobject LOCALID_VIRIDIAN_FOREST_CUBONE
+	waitse
+	playmoncry SPECIES_CUBONE, CRY_MODE_NORMAL
+	waitmoncry
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox ViridianForest_Text_CuboneCameOut, MSGBOX_DEFAULT
+	closemessage
+	setvar VAR_0x8004, LOCALID_VIRIDIAN_FOREST_CUBONE
+	special StartFollower
+	return
+
+ViridianForest_EventScript_ReturnCubone::
+	goto_if_ne VAR_FOLLOWER_LOCAL_ID, LOCALID_VIRIDIAN_FOREST_CUBONE, ViridianForest_EventScript_CuboneReturn
+	special StopFollower
+	playse SE_BALL_TRADE
+	removeobject LOCALID_VIRIDIAN_FOREST_CUBONE
+	waitse
+	return
+
+ViridianForest_EventScript_RestoreCubone::
+	setvar VAR_0x8004, SPECIES_CUBONE
+	specialvar VAR_RESULT, IsSpeciesInPlayerParty
+	goto_if_eq VAR_RESULT, FALSE, ViridianForest_EventScript_StopCubone
+	getplayerxy VAR_0x8005, VAR_0x8006
+	setobjectxyperm LOCALID_VIRIDIAN_FOREST_CUBONE, VAR_0x8005, VAR_0x8006
+	clearflag FLAG_HIDE_FOREST_CUBONE_FOLLOWER
+	return
+
+ViridianForest_EventScript_StopCubone::
+	special StopFollower
+	return
+
+ViridianForest_EventScript_CuboneReturn::
+	return
+
+ViridianForest_EventScript_CuboneFollower::
+	lock
+	faceplayer
+	playmoncry SPECIES_CUBONE, CRY_MODE_NORMAL
+	waitmoncry
+	textcolor NPC_TEXT_COLOR_MON
+	msgbox ViridianForest_Text_CuboneFollower, MSGBOX_DEFAULT
+	release
 	end
 
 @ Etapa 2b: rastro del musgo brillante. 5 brillos; Cubone (en el equipo) indica hacia dónde sigue.
@@ -350,6 +417,7 @@ ViridianForest_EventScript_MewEncounter::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
 	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
+	call ViridianForest_EventScript_ReturnCubone
 	call ViridianForest_EventScript_Darken
 	call_if_eq VAR_0x8008, 31, ViridianForest_EventScript_AlignFromRow31
 	call_if_eq VAR_0x8008, 32, ViridianForest_EventScript_AlignFromRow32

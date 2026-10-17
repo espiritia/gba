@@ -1366,3 +1366,6 @@ Text_TestMsg::
 
 	.include "data/maps/gimnasio_plateado_parte_secreta/scripts.inc"
 	.include "data/maps/gimnasio_plateado_parte_secreta/text.inc"
+
+	.include "data/maps/Parte_Secreta_Gimnasio_Plateado/scripts.inc"
+	.include "data/maps/Parte_Secreta_Gimnasio_Plateado/text.inc"

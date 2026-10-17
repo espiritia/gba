@@ -4392,6 +4392,18 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/gimnasio_plateado_parte_secreta/border.bin",
       "blockdata_filepath": "data/layouts/gimnasio_plateado_parte_secreta/map.bin"
+    },
+    {
+      "id": "LAYOUT_PARTE_SECRETA_GIMNASIO_PLATEADO",
+      "name": "Parte_Secreta_Gimnasio_Plateado_Layout",
+      "width": 17,
+      "height": 14,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_TrainerTower",
+      "border_filepath": "data/layouts/Parte_Secreta_Gimnasio_Plateado/border.bin",
+      "blockdata_filepath": "data/layouts/Parte_Secreta_Gimnasio_Plateado/map.bin"
     }
   ]
 }

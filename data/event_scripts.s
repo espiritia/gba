@@ -886,21 +886,20 @@ gText_PkmnFainted3::
 	.string "$"
 
 Text_WelcomeWantToHealPkmn::
-	.string "Welcome to our POKéMON CENTER!\p"
-	.string "Would you like me to heal your\n"
-	.string "POKéMON back to perfect health?$"
+	.string "Bienvenido a este centro pokémon\p"
+	.string "¿Te gustaria que restaurase la\n"
+	.string "salud de tu equipo pokémon?$"
 
 Text_TakeYourPkmnForFewSeconds::
-	.string "Okay, I'll take your POKéMON for a\n"
-	.string "few seconds.$"
+	.string "Muy bien,dejame a tus pokémon\n"
+	.string "un segundo.$"
 
 Text_WeHopeToSeeYouAgain::
-	.string "We hope to see you again!$"
+	.string "¡Esperamos volver a verte!$"
 
 Text_RestoredPkmnToFullHealth::
-	.string "Thank you for waiting.\n"
-	.string "We've restored your POKéMON to\l"
-	.string "full health.$"
+	.string "He restaurado la salud de tu\l"
+	.string "equipo pokémon al máximo.$"
 
 	.include "data/text/surf.inc"
 
@@ -920,7 +919,8 @@ Text_WirelessClubUndergoingAdjustments::
 	.string "undergoing adjustments now.$"
 
 Text_AppearsToBeUndergoingAdjustments::
-	.string "It appears to be undergoing\n"
+	.string "ItThank you for waiting.\n"
+	.string "We' appears to be undergoing\n"
 	.string "adjustments…$"
 
 Text_HandedOverItem::
@@ -1357,6 +1357,15 @@ Text_TestMsg::
 	.include "data/scripts/move_tutors.inc"
 	.include "data/scripts/trainer_tower.inc"
 	.include "data/scripts/test.inc"
+#if DEBUG_SCENARIOS
+	.include "data/scripts/debug_scenarios.inc"
+#endif
 	.include "data/text/save.inc"
 	.include "data/text/new_game_intro.inc"
 	.include "data/text/pokedude.inc"
+
+	.include "data/maps/gimnasio_plateado_parte_secreta/scripts.inc"
+	.include "data/maps/gimnasio_plateado_parte_secreta/text.inc"
+
+	.include "data/maps/Parte_Secreta_Gimnasio_Plateado/scripts.inc"
+	.include "data/maps/Parte_Secreta_Gimnasio_Plateado/text.inc"

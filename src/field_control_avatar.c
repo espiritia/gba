@@ -1022,6 +1022,119 @@ static s8 GetWarpEventAtPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 e
     return -1;
 }
 
+#if DEBUG_SCENARIOS
+// ROM de debug: triggers que impiden el paso (mensaje + empujar al jugador, o
+// llevarlo a otro sitio). En modo GAME MASTER (FLAG_DEBUG_GAME_MASTER, HERRAMIENTAS >
+// MODO) se ignoran. Si se crea un bloqueo nuevo, añadirlo aquí.
+extern const u8 ViridianCity_EventScript_RoadBlocked[];
+extern const u8 ViridianCity_EventScript_GymDoorLocked[];
+extern const u8 PewterCity_EventScript_GymGuideTriggerTop[];
+extern const u8 PewterCity_EventScript_GymGuideTriggerMid[];
+extern const u8 PewterCity_EventScript_GymGuideTriggerBottom[];
+extern const u8 PewterCity_EventScript_GymGuideTriggerRight[];
+extern const u8 PewterCity_House2_EventScript_BlockExitNoSandshrew[];
+extern const u8 PewterCity_Museum_1F_EventScript_EntranceTriggerLeft[];
+extern const u8 PewterCity_Museum_1F_EventScript_EntranceTriggerMid[];
+extern const u8 PewterCity_Museum_1F_EventScript_EntranceTriggerRight[];
+extern const u8 PalletTown_EventScript_OakTriggerLeft[];
+extern const u8 PalletTown_EventScript_OakTriggerRight[];
+extern const u8 Route22_NorthEntrance_EventScript_BoulderBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_CascadeBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_ThunderBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_RainbowBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_SoulBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_MarshBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_VolcanoBadgeGuardTrigger[];
+extern const u8 Route23_EventScript_EarthBadgeGuardTrigger[];
+extern const u8 Route5_SouthEntrance_EventScript_GuardTriggerLeft[];
+extern const u8 Route5_SouthEntrance_EventScript_GuardTriggerMid[];
+extern const u8 Route5_SouthEntrance_EventScript_GuardTriggerRight[];
+extern const u8 Route6_NorthEntrance_EventScript_GuardTriggerLeft[];
+extern const u8 Route6_NorthEntrance_EventScript_GuardTriggerMid[];
+extern const u8 Route6_NorthEntrance_EventScript_GuardTriggerRight[];
+extern const u8 Route7_EastEntrance_EventScript_GuardTriggerTop[];
+extern const u8 Route7_EastEntrance_EventScript_GuardTriggerMid[];
+extern const u8 Route7_EastEntrance_EventScript_GuardTriggerBottom[];
+extern const u8 Route8_WestEntrance_EventScript_GuardTriggerTop[];
+extern const u8 Route8_WestEntrance_EventScript_GuardTriggerMid[];
+extern const u8 Route8_WestEntrance_EventScript_GuardTriggerBottom[];
+extern const u8 Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerTop[];
+extern const u8 Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerMidTop[];
+extern const u8 Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerMid[];
+extern const u8 Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerMidBottom[];
+extern const u8 Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerBottom[];
+extern const u8 Route18_EastEntrance_1F_EventScript_NeedBikeTriggerTop[];
+extern const u8 Route18_EastEntrance_1F_EventScript_NeedBikeTriggerMidTop[];
+extern const u8 Route18_EastEntrance_1F_EventScript_NeedBikeTriggerMid[];
+extern const u8 Route18_EastEntrance_1F_EventScript_NeedBikeTriggerMidBottom[];
+extern const u8 Route18_EastEntrance_1F_EventScript_NeedBikeTriggerBottom[];
+extern const u8 VermilionCity_EventScript_CheckTicketLeft[];
+extern const u8 VermilionCity_EventScript_CheckTicketRight[];
+extern const u8 CinnabarIsland_EventScript_GymDoorLocked[];
+
+static const u8 *const sDebugPassageBlockScripts[] = {
+    ViridianCity_EventScript_RoadBlocked,
+    ViridianCity_EventScript_GymDoorLocked,
+    PewterCity_EventScript_GymGuideTriggerTop,
+    PewterCity_EventScript_GymGuideTriggerMid,
+    PewterCity_EventScript_GymGuideTriggerBottom,
+    PewterCity_EventScript_GymGuideTriggerRight,
+    PewterCity_House2_EventScript_BlockExitNoSandshrew,
+    PewterCity_Museum_1F_EventScript_EntranceTriggerLeft,
+    PewterCity_Museum_1F_EventScript_EntranceTriggerMid,
+    PewterCity_Museum_1F_EventScript_EntranceTriggerRight,
+    PalletTown_EventScript_OakTriggerLeft,
+    PalletTown_EventScript_OakTriggerRight,
+    Route22_NorthEntrance_EventScript_BoulderBadgeGuardTrigger,
+    Route23_EventScript_CascadeBadgeGuardTrigger,
+    Route23_EventScript_ThunderBadgeGuardTrigger,
+    Route23_EventScript_RainbowBadgeGuardTrigger,
+    Route23_EventScript_SoulBadgeGuardTrigger,
+    Route23_EventScript_MarshBadgeGuardTrigger,
+    Route23_EventScript_VolcanoBadgeGuardTrigger,
+    Route23_EventScript_EarthBadgeGuardTrigger,
+    Route5_SouthEntrance_EventScript_GuardTriggerLeft,
+    Route5_SouthEntrance_EventScript_GuardTriggerMid,
+    Route5_SouthEntrance_EventScript_GuardTriggerRight,
+    Route6_NorthEntrance_EventScript_GuardTriggerLeft,
+    Route6_NorthEntrance_EventScript_GuardTriggerMid,
+    Route6_NorthEntrance_EventScript_GuardTriggerRight,
+    Route7_EastEntrance_EventScript_GuardTriggerTop,
+    Route7_EastEntrance_EventScript_GuardTriggerMid,
+    Route7_EastEntrance_EventScript_GuardTriggerBottom,
+    Route8_WestEntrance_EventScript_GuardTriggerTop,
+    Route8_WestEntrance_EventScript_GuardTriggerMid,
+    Route8_WestEntrance_EventScript_GuardTriggerBottom,
+    Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerTop,
+    Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerMidTop,
+    Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerMid,
+    Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerMidBottom,
+    Route16_NorthEntrance_1F_EventScript_NeedBikeTriggerBottom,
+    Route18_EastEntrance_1F_EventScript_NeedBikeTriggerTop,
+    Route18_EastEntrance_1F_EventScript_NeedBikeTriggerMidTop,
+    Route18_EastEntrance_1F_EventScript_NeedBikeTriggerMid,
+    Route18_EastEntrance_1F_EventScript_NeedBikeTriggerMidBottom,
+    Route18_EastEntrance_1F_EventScript_NeedBikeTriggerBottom,
+    VermilionCity_EventScript_CheckTicketLeft,
+    VermilionCity_EventScript_CheckTicketRight,
+    CinnabarIsland_EventScript_GymDoorLocked,
+};
+
+static bool8 IsDisabledPassageBlockScript(const u8 *script)
+{
+    u32 i;
+
+    if (!FlagGet(FLAG_DEBUG_GAME_MASTER))
+        return FALSE;
+    for (i = 0; i < ARRAY_COUNT(sDebugPassageBlockScripts); i++)
+    {
+        if (sDebugPassageBlockScripts[i] == script)
+            return TRUE;
+    }
+    return FALSE;
+}
+#endif
+
 static const u8 *TryRunCoordEventScript(const struct CoordEvent *coordEvent)
 {
     if (coordEvent != NULL)
@@ -1037,7 +1150,13 @@ static const u8 *TryRunCoordEventScript(const struct CoordEvent *coordEvent)
             return NULL;
         }
         if (VarGet(coordEvent->trigger) == (u8)coordEvent->index)
+        {
+#if DEBUG_SCENARIOS
+            if (IsDisabledPassageBlockScript(coordEvent->script))
+                return NULL;
+#endif
             return coordEvent->script;
+        }
     }
     return NULL;
 }

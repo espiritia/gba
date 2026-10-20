@@ -453,4 +453,12 @@ gSpecials::
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
+	def_special FadeWeatherGammaTo
+	def_special IsSpeciesInPlayerParty
+	def_special StartFollower
+	def_special StopFollower
+	def_special GetFollowerSpawnCoords
+.if DEBUG_SCENARIOS
+	def_special DebugResetParty
+.endif
 gSpecialsEnd::

@@ -12,6 +12,7 @@
 #include "battle.h"
 #include "fieldmap.h"
 #include "field_specials.h"
+#include "field_weather.h"
 #include "region_map.h"
 #include "task.h"
 #include "battle_tower.h"
@@ -1245,6 +1246,48 @@ void ListMenu(void)
         task->data[6] = 0;
         task->data[15] = taskId;
         break;
+#if DEBUG_SCENARIOS
+    case LISTMENU_DEBUG_SCENARIOS:
+        task->data[0] = 7;
+        task->data[1] = 12;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_TOOLS:
+        task->data[0] = 7;
+        task->data[1] = 8;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_MODE:
+        task->data[0] = 3;
+        task->data[1] = 3;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 6;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_TRAVEL:
+        task->data[0] = 7;
+        task->data[1] = 12;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+#endif
     case 99:
         break;
     default:
@@ -1253,6 +1296,42 @@ void ListMenu(void)
         break;
     }
 }
+
+#if DEBUG_SCENARIOS
+// Selector de escenarios de la ROM de debug. El orden debe coincidir con el
+// switch de Debug_EventScript_ScenarioMenu (data/scripts/debug_scenarios.inc).
+static const u8 sText_Debug_PewterCubone[]   = _("PLATEADA: CON CUBONE");
+static const u8 sText_Debug_GymSecretary[]   = _("GIMNASIO: SECRETARIA");
+static const u8 sText_Debug_GymGreen[]       = _("GIMNASIO: VERDE");
+static const u8 sText_Debug_GymBrockQuest[]  = _("GIMNASIO: ENCARGO BROCK");
+static const u8 sText_Debug_ForestCrystal[]  = _("BOSQUE 1: CRISTAL");
+static const u8 sText_Debug_ForestMoss[]     = _("BOSQUE 2: MUSGO");
+static const u8 sText_Debug_ForestDecoys[]   = _("BOSQUE 2: SEÑUELOS");
+static const u8 sText_Debug_ForestMew[]      = _("BOSQUE 3: MEW Y AGATHA");
+static const u8 sText_Debug_BrockBattle[]    = _("BROCK: COMBATE");
+static const u8 sText_Debug_AfterBrock[]     = _("TRAS VENCER A BROCK");
+static const u8 sText_Debug_Tools[]          = _("HERRAMIENTAS…");
+static const u8 sText_Debug_Heal[]           = _("CURAR EQUIPO");
+static const u8 sText_Debug_StrongTeam[]     = _("EQUIPO FUERTE NV50");
+static const u8 sText_Debug_Money[]          = _("DINERO +50000");
+static const u8 sText_Debug_Items[]          = _("OBJETOS");
+static const u8 sText_Debug_AllBadges[]      = _("TODAS LAS MEDALLAS");
+static const u8 sText_Debug_Mode[]           = _("MODO…");
+static const u8 sText_Debug_ModeNormal[]     = _("NORMAL");
+static const u8 sText_Debug_ModeGameMaster[] = _("GAME MASTER");
+static const u8 sText_Debug_Travel[]         = _("VIAJAR…");
+static const u8 sText_Debug_TravelPallet[]   = _("PUEBLO PALETA");
+static const u8 sText_Debug_TravelViridian[] = _("CIUDAD VERDE");
+static const u8 sText_Debug_TravelPewter[]   = _("CIUDAD PLATEADA");
+static const u8 sText_Debug_TravelCerulean[] = _("CIUDAD CELESTE");
+static const u8 sText_Debug_TravelVermilion[] = _("CIUDAD CARMÍN");
+static const u8 sText_Debug_TravelLavender[] = _("PUEBLO LAVANDA");
+static const u8 sText_Debug_TravelCeladon[]  = _("CIUDAD AZULONA");
+static const u8 sText_Debug_TravelSaffron[]  = _("CIUDAD AZAFRÁN");
+static const u8 sText_Debug_TravelFuchsia[]  = _("CIUDAD FUCSIA");
+static const u8 sText_Debug_TravelCinnabar[] = _("ISLA CANELA");
+static const u8 sText_Debug_TravelIndigo[]   = _("MESETA AÑIL");
+#endif
 
 static const u8 *const sListMenuLabels[][12] = {
     [LISTMENU_BADGES] = 
@@ -1325,7 +1404,57 @@ static const u8 *const sListMenuLabels[][12] = {
         gText_Rooftop,
         gText_B1F,
         gOtherText_Exit,
-    }
+    },
+#if DEBUG_SCENARIOS
+    [LISTMENU_DEBUG_SCENARIOS] =
+    {
+        sText_Debug_Tools,
+        sText_Debug_PewterCubone,
+        sText_Debug_GymSecretary,
+        sText_Debug_GymGreen,
+        sText_Debug_GymBrockQuest,
+        sText_Debug_ForestCrystal,
+        sText_Debug_ForestMoss,
+        sText_Debug_ForestDecoys,
+        sText_Debug_ForestMew,
+        sText_Debug_BrockBattle,
+        sText_Debug_AfterBrock,
+        gOtherText_Exit,
+    },
+    [LISTMENU_DEBUG_TOOLS] =
+    {
+        sText_Debug_Travel,
+        sText_Debug_Heal,
+        sText_Debug_StrongTeam,
+        sText_Debug_Money,
+        sText_Debug_Items,
+        sText_Debug_AllBadges,
+        sText_Debug_Mode,
+        gOtherText_Exit,
+    },
+    [LISTMENU_DEBUG_MODE] =
+    {
+        sText_Debug_ModeNormal,
+        sText_Debug_ModeGameMaster,
+        gOtherText_Exit,
+    },
+    // El orden debe coincidir con el switch de Debug_Tool_TravelMenu
+    [LISTMENU_DEBUG_TRAVEL] =
+    {
+        sText_Debug_TravelPallet,
+        sText_Debug_TravelViridian,
+        sText_Debug_TravelPewter,
+        sText_Debug_TravelCerulean,
+        sText_Debug_TravelVermilion,
+        sText_Debug_TravelLavender,
+        sText_Debug_TravelCeladon,
+        sText_Debug_TravelSaffron,
+        sText_Debug_TravelFuchsia,
+        sText_Debug_TravelCinnabar,
+        sText_Debug_TravelIndigo,
+        gOtherText_Exit,
+    },
+#endif
 };
 
 static void Task_CreateScriptListMenu(u8 taskId)
@@ -2553,3 +2682,33 @@ static void Task_WingFlapSound(u8 taskId)
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
 }
+
+void FadeWeatherGammaTo(void)
+{
+    // 8004 = Target gamma index (higher is darker)
+    // 8005 = Frame delay between gamma steps
+    WeatherBeginGammaFade(gWeatherPtr->gammaIndex, gSpecialVar_0x8004, gSpecialVar_0x8005);
+}
+
+bool8 IsSpeciesInPlayerParty(void)
+{
+    // 8004 = Species to look for
+    u8 i;
+
+    for (i = 0; i < gPlayerPartyCount; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) == gSpecialVar_0x8004)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+#if DEBUG_SCENARIOS
+// Selector de escenarios (ROM de debug): vacía el equipo para que cada escenario
+// empiece siempre con los mismos Pokémon, venga de donde venga el jugador.
+void DebugResetParty(void)
+{
+    ZeroPlayerPartyMons();
+    CalculatePlayerPartyCount();
+}
+#endif

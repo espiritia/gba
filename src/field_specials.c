@@ -1259,7 +1259,7 @@ void ListMenu(void)
         break;
     case LISTMENU_DEBUG_TOOLS:
         task->data[0] = 7;
-        task->data[1] = 7;
+        task->data[1] = 8;
         task->data[2] = 1;
         task->data[3] = 1;
         task->data[4] = 8;
@@ -1274,6 +1274,16 @@ void ListMenu(void)
         task->data[3] = 1;
         task->data[4] = 8;
         task->data[5] = 6;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_TRAVEL:
+        task->data[0] = 7;
+        task->data[1] = 12;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
         task->data[6] = 0;
         task->data[15] = taskId;
         break;
@@ -1309,6 +1319,18 @@ static const u8 sText_Debug_AllBadges[]      = _("TODAS LAS MEDALLAS");
 static const u8 sText_Debug_Mode[]           = _("MODO…");
 static const u8 sText_Debug_ModeNormal[]     = _("NORMAL");
 static const u8 sText_Debug_ModeGameMaster[] = _("GAME MASTER");
+static const u8 sText_Debug_Travel[]         = _("VIAJAR…");
+static const u8 sText_Debug_TravelPallet[]   = _("PUEBLO PALETA");
+static const u8 sText_Debug_TravelViridian[] = _("CIUDAD VERDE");
+static const u8 sText_Debug_TravelPewter[]   = _("CIUDAD PLATEADA");
+static const u8 sText_Debug_TravelCerulean[] = _("CIUDAD CELESTE");
+static const u8 sText_Debug_TravelVermilion[] = _("CIUDAD CARMÍN");
+static const u8 sText_Debug_TravelLavender[] = _("PUEBLO LAVANDA");
+static const u8 sText_Debug_TravelCeladon[]  = _("CIUDAD AZULONA");
+static const u8 sText_Debug_TravelSaffron[]  = _("CIUDAD AZAFRÁN");
+static const u8 sText_Debug_TravelFuchsia[]  = _("CIUDAD FUCSIA");
+static const u8 sText_Debug_TravelCinnabar[] = _("ISLA CANELA");
+static const u8 sText_Debug_TravelIndigo[]   = _("MESETA AÑIL");
 #endif
 
 static const u8 *const sListMenuLabels[][12] = {
@@ -1401,6 +1423,7 @@ static const u8 *const sListMenuLabels[][12] = {
     },
     [LISTMENU_DEBUG_TOOLS] =
     {
+        sText_Debug_Travel,
         sText_Debug_Heal,
         sText_Debug_StrongTeam,
         sText_Debug_Money,
@@ -1413,6 +1436,22 @@ static const u8 *const sListMenuLabels[][12] = {
     {
         sText_Debug_ModeNormal,
         sText_Debug_ModeGameMaster,
+        gOtherText_Exit,
+    },
+    // El orden debe coincidir con el switch de Debug_Tool_TravelMenu
+    [LISTMENU_DEBUG_TRAVEL] =
+    {
+        sText_Debug_TravelPallet,
+        sText_Debug_TravelViridian,
+        sText_Debug_TravelPewter,
+        sText_Debug_TravelCerulean,
+        sText_Debug_TravelVermilion,
+        sText_Debug_TravelLavender,
+        sText_Debug_TravelCeladon,
+        sText_Debug_TravelSaffron,
+        sText_Debug_TravelFuchsia,
+        sText_Debug_TravelCinnabar,
+        sText_Debug_TravelIndigo,
         gOtherText_Exit,
     },
 #endif

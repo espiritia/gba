@@ -506,9 +506,7 @@ ViridianForest_EventScript_OnixAttack::
 	removeobject LOCALID_VIRIDIAN_FOREST_ROCK1
 	removeobject LOCALID_VIRIDIAN_FOREST_ROCK2
 	removeobject LOCALID_VIRIDIAN_FOREST_ROCK3
-	@ TODO: sustituir por "warphole MAP_PEWTER_CITY_SECRET_CAVE" en cuanto exista esa cueva
-	@ (tarea futura). Warp temporal para no dejar al jugador bloqueado con la pantalla en negro.
-	warp MAP_ROUTE2_VIRIDIAN_FOREST_NORTH_ENTRANCE, 1
+	warp MAP_GIMNASIO_PLATEADO_PARTE_SECRETA, 5, 4
 	waitstate
 	fadescreen FADE_FROM_BLACK
 	releaseall

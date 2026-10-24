@@ -251,12 +251,83 @@ Debug_EventScript_ToolsMenu::
 	special ListMenu
 	waitstate
 	switch VAR_RESULT
-	case 0, Debug_Tool_Heal
-	case 1, Debug_Tool_StrongTeam
-	case 2, Debug_Tool_Money
-	case 3, Debug_Tool_Items
-	case 4, Debug_Tool_AllBadges
-	case 5, Debug_Tool_ModeMenu
+	case 0, Debug_Tool_TravelMenu
+	case 1, Debug_Tool_Heal
+	case 2, Debug_Tool_StrongTeam
+	case 3, Debug_Tool_Money
+	case 4, Debug_Tool_Items
+	case 5, Debug_Tool_AllBadges
+	case 6, Debug_Tool_ModeMenu
+	releaseall
+	end
+
+@ VIAJAR: aparece delante del Centro Pokémon de la ciudad elegida (coordenadas de
+@ src/data/heal_locations.json). No cambia la historia. El orden debe coincidir con
+@ sListMenuLabels[LISTMENU_DEBUG_TRAVEL] (src/field_specials.c).
+Debug_Tool_TravelMenu::
+	setvar VAR_0x8004, LISTMENU_DEBUG_TRAVEL
+	special ListMenu
+	waitstate
+	switch VAR_RESULT
+	case 0, Debug_Travel_Pallet
+	case 1, Debug_Travel_Viridian
+	case 2, Debug_Travel_Pewter
+	case 3, Debug_Travel_Cerulean
+	case 4, Debug_Travel_Vermilion
+	case 5, Debug_Travel_Lavender
+	case 6, Debug_Travel_Celadon
+	case 7, Debug_Travel_Saffron
+	case 8, Debug_Travel_Fuchsia
+	case 9, Debug_Travel_Cinnabar
+	case 10, Debug_Travel_Indigo
+	goto Debug_EventScript_ToolsMenu
+
+Debug_Travel_Pallet::
+	warp MAP_PALLET_TOWN, 6, 8
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Viridian::
+	warp MAP_VIRIDIAN_CITY, 26, 27
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Pewter::
+	warp MAP_PEWTER_CITY, 17, 26
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Cerulean::
+	warp MAP_CERULEAN_CITY, 22, 20
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Vermilion::
+	warp MAP_VERMILION_CITY, 15, 7
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Lavender::
+	warp MAP_LAVENDER_TOWN, 6, 6
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Celadon::
+	warp MAP_CELADON_CITY, 48, 12
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Saffron::
+	warp MAP_SAFFRON_CITY, 24, 39
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Fuchsia::
+	warp MAP_FUCHSIA_CITY, 25, 32
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Cinnabar::
+	warp MAP_CINNABAR_ISLAND, 14, 12
+	goto Debug_EventScript_TravelDone
+
+Debug_Travel_Indigo::
+	warp MAP_INDIGO_PLATEAU_EXTERIOR, 11, 7
+	goto Debug_EventScript_TravelDone
+
+Debug_EventScript_TravelDone::
+	waitstate
 	releaseall
 	end
 

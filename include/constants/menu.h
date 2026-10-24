@@ -85,6 +85,7 @@
 #define LISTMENU_DEBUG_SCENARIOS           7 // Solo en la ROM de debug (make debug)
 #define LISTMENU_DEBUG_TOOLS               8 // Solo en la ROM de debug (make debug)
 #define LISTMENU_DEBUG_MODE                9 // Solo en la ROM de debug (make debug)
+#define LISTMENU_DEBUG_TRAVEL             10 // Solo en la ROM de debug (make debug)
 
 // Std String Ids
 #define STDSTRING_COOL              0

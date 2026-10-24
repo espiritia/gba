@@ -93,7 +93,7 @@ Hay una segunda ROM, **solo para probar**, con un menú que te pone directamente
 
 | Escenario | Qué deja preparado | Dónde apareces |
 |---|---|---|
-| HERRAMIENTAS… | Curar, equipo nivel 50, dinero, objetos, medallas, modo NORMAL / GAME MASTER | — |
+| HERRAMIENTAS… | Viajar a una ciudad, curar, equipo nivel 50, dinero, objetos, medallas, modo NORMAL / GAME MASTER | — |
 | PLATEADA: CON CUBONE | Cubone recibido | Puerta de la casa del Cubone |
 | GIMNASIO: SECRETARIA | Cubone | Entrada del gimnasio (salta el test al dar un paso) |
 | GIMNASIO: VERDE | + test aprobado | Gimnasio, sin haber vencido a Verde |
@@ -106,6 +106,9 @@ Hay una segunda ROM, **solo para probar**, con un menú que te pone directamente
 | TRAS VENCER A BROCK | + medalla Roca, MT39 | Puerta del gimnasio |
 
 Cada escenario **reinicia la historia** antes de aplicarse, así que puedes saltar de uno a otro sin problemas.
+
+**HERRAMIENTAS → VIAJAR…** te lleva a la puerta del Centro Pokémon de cualquier ciudad (Pueblo Paleta, Ciudad Verde,
+Ciudad Plateada, Ciudad Celeste… hasta la Meseta Añil) sin cambiar la historia.
 
 **HERRAMIENTAS → MODO** tiene dos opciones:
 

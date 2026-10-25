@@ -27,8 +27,9 @@ Debug_EventScript_ScenarioMenu::
 	case 6, Debug_Scenario_ForestMoss
 	case 7, Debug_Scenario_ForestDecoys
 	case 8, Debug_Scenario_ForestMew
-	case 9, Debug_Scenario_BrockBattle
-	case 10, Debug_Scenario_AfterBrock
+	case 9, Debug_Scenario_ForestCave
+	case 10, Debug_Scenario_BrockBattle
+	case 11, Debug_Scenario_AfterBrock
 	releaseall
 	end
 
@@ -107,6 +108,17 @@ Debug_Scenario_ForestMew::
 	releaseall
 	end
 
+@ Evento de Mew terminado: al principio de la cueva, con Brock esperando más adelante
+Debug_Scenario_ForestCave::
+	call Debug_Setup_Reset
+	call Debug_Setup_ForestMossDone
+	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
+	special HealPlayerParty
+	warp MAP_GIMNASIO_PLATEADO_PARTE_SECRETA, 5, 4
+	waitstate
+	releaseall
+	end
+
 @ Evento del bosque terminado y combate con Brock desbloqueado
 Debug_Scenario_BrockBattle::
 	call Debug_Setup_Reset
@@ -175,6 +187,17 @@ Debug_Setup_Reset::
 	setflag FLAG_HIDE_FOREST_MOSS_DECOY2
 	setvar VAR_FOLLOWER_LOCAL_ID, 0
 	setvar VAR_FOLLOWER_MAP, 0
+	@ Cueva tras el evento de Mew
+	setvar VAR_PEWTER_CAVE_STATE, 0
+	setvar VAR_PEWTER_CAVE_TIMER_START, 0
+	setvar VAR_PEWTER_CAVE_NEXT_QUAKE, 0
+	setvar VAR_PEWTER_CAVE_PAUSE_START, 0
+	clearflag FLAG_HIDE_PEWTER_CAVE_POTION
+	clearflag FLAG_HIDE_PEWTER_CAVE_POKE_BALL
+	clearflag FLAG_HIDE_PEWTER_CAVE_ANTIDOTE
+	clearflag FLAG_HIDE_PEWTER_CAVE_REPEL
+	clearflag FLAG_HIDE_PEWTER_CAVE_BROCK
+	clearflag FLAG_GOT_BROCK_GEODUDE
 	setrespawn HEAL_LOCATION_PEWTER_CITY
 	return
 
@@ -225,6 +248,7 @@ Debug_Setup_ForestMossDone::
 Debug_Setup_BrockUnlocked::
 	call Debug_Setup_ForestMossDone
 	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
+	setvar VAR_PEWTER_CAVE_STATE, 2
 	setflag FLAG_BROCK_GYM_BATTLE_UNLOCKED
 	return
 

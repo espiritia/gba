@@ -88,11 +88,11 @@
 #define VAR_VIRIDIAN_FOREST_MOSS_TRAIL     0x4029
 #define VAR_FOLLOWER_LOCAL_ID              0x402A // localId del objeto que sigue al jugador (0 = ninguno)
 #define VAR_FOLLOWER_MAP                   0x402B // (mapGroup << 8) | mapNum del mapa del seguidor
-#define VAR_0x402C                         0x402C
-#define VAR_0x402D                         0x402D
-#define VAR_0x402E                         0x402E
+#define VAR_PEWTER_CAVE_STATE              0x402C // Cueva tras el evento de Mew: 0 = Brock espera, 1 = huida en curso, 2 = superada
+#define VAR_PEWTER_CAVE_TIMER_START        0x402D // Segundos de juego (mod 65536) al empezar la huida
+#define VAR_PEWTER_CAVE_NEXT_QUAKE         0x402E // Segundos de huida en los que toca el siguiente temblor
 
-#define VAR_0x402F                         0x402F
+#define VAR_PEWTER_CAVE_PAUSE_START        0x402F // Segundo de juego al empezar un combate salvaje en la huida
 
 #define VAR_ICE_STEP_COUNT                 0x4030
 #define VAR_STARTER_MON                    0x4031 // 0: Bulbasaur, 1: Squirtle, 2: Charmander

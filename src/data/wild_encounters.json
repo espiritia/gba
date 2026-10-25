@@ -25415,7 +25415,7 @@
           "map": "MAP_GIMNASIO_PLATEADO_PARTE_SECRETA",
           "base_label": "ggimnasio_plateado_parte_secreta",
           "land_mons": {
-            "encounter_rate": 3,
+            "encounter_rate": 1,
             "mons": [
               {
                 "min_level": 6,

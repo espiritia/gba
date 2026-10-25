@@ -34,6 +34,7 @@
 #include "party_menu.h"
 #include "dynamic_placeholder_text_util.h"
 #include "new_menu_helpers.h"
+#include "event_scripts.h"
 #include "constants/songs.h"
 #include "constants/items.h"
 #include "constants/maps.h"
@@ -1249,7 +1250,7 @@ void ListMenu(void)
 #if DEBUG_SCENARIOS
     case LISTMENU_DEBUG_SCENARIOS:
         task->data[0] = 7;
-        task->data[1] = 12;
+        task->data[1] = 13;
         task->data[2] = 1;
         task->data[3] = 1;
         task->data[4] = 8;
@@ -1308,6 +1309,7 @@ static const u8 sText_Debug_ForestCrystal[]  = _("BOSQUE 1: CRISTAL");
 static const u8 sText_Debug_ForestMoss[]     = _("BOSQUE 2: MUSGO");
 static const u8 sText_Debug_ForestDecoys[]   = _("BOSQUE 2: SEÑUELOS");
 static const u8 sText_Debug_ForestMew[]      = _("BOSQUE 3: MEW Y AGATHA");
+static const u8 sText_Debug_ForestCave[]     = _("BOSQUE 4: CUEVA");
 static const u8 sText_Debug_BrockBattle[]    = _("BROCK: COMBATE");
 static const u8 sText_Debug_AfterBrock[]     = _("TRAS VENCER A BROCK");
 static const u8 sText_Debug_Tools[]          = _("HERRAMIENTAS…");
@@ -1333,7 +1335,7 @@ static const u8 sText_Debug_TravelCinnabar[] = _("ISLA CANELA");
 static const u8 sText_Debug_TravelIndigo[]   = _("MESETA AÑIL");
 #endif
 
-static const u8 *const sListMenuLabels[][12] = {
+static const u8 *const sListMenuLabels[][13] = {
     [LISTMENU_BADGES] = 
     {
         gText_BoulderBadge,
@@ -1417,6 +1419,7 @@ static const u8 *const sListMenuLabels[][12] = {
         sText_Debug_ForestMoss,
         sText_Debug_ForestDecoys,
         sText_Debug_ForestMew,
+        sText_Debug_ForestCave,
         sText_Debug_BrockBattle,
         sText_Debug_AfterBrock,
         gOtherText_Exit,
@@ -2701,6 +2704,110 @@ bool8 IsSpeciesInPlayerParty(void)
             return TRUE;
     }
     return FALSE;
+}
+
+// Huida de la cueva tras el evento de Mew. El minuto se mide con el tiempo de juego, que sigue
+// corriendo en los combates y se guarda con la partida. Segundos módulo 65536.
+#define PEWTER_CAVE_TIME_LIMIT 60
+#define PEWTER_CAVE_QUAKE_DELAY (10 + Random() % 6) // Un temblor cada 10-15 s
+
+static u16 GetPlayTimeSeconds(void)
+{
+    return gSaveBlock2Ptr->playTimeHours * 3600 + gSaveBlock2Ptr->playTimeMinutes * 60 + gSaveBlock2Ptr->playTimeSeconds;
+}
+
+void StartPewterCaveTimer(void)
+{
+    VarSet(VAR_PEWTER_CAVE_TIMER_START, GetPlayTimeSeconds());
+    VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, PEWTER_CAVE_QUAKE_DELAY);
+}
+
+static bool8 IsPewterCaveEscapeRunning(void)
+{
+    return VarGet(VAR_PEWTER_CAVE_STATE) == 1
+        && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA)
+        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA);
+}
+
+// El minuto no corre durante los combates salvajes: al volver se retrasa el inicio
+// lo que haya durado el combate (los temblores se cuentan desde ese inicio)
+void PausePewterCaveTimer(void)
+{
+    if (IsPewterCaveEscapeRunning())
+        VarSet(VAR_PEWTER_CAVE_PAUSE_START, GetPlayTimeSeconds());
+}
+
+void ResumePewterCaveTimer(void)
+{
+    u16 paused;
+
+    if (!IsPewterCaveEscapeRunning())
+        return;
+    paused = GetPlayTimeSeconds() - VarGet(VAR_PEWTER_CAVE_PAUSE_START);
+    VarSet(VAR_PEWTER_CAVE_TIMER_START, VarGet(VAR_PEWTER_CAVE_TIMER_START) + paused);
+}
+
+// Se comprueba cada frame en que el jugador está libre (ProcessPlayerFieldInput)
+bool8 TryRunPewterCaveTimeout(void)
+{
+    u16 elapsed;
+
+    if (!IsPewterCaveEscapeRunning())
+        return FALSE;
+
+    elapsed = GetPlayTimeSeconds() - VarGet(VAR_PEWTER_CAVE_TIMER_START);
+    if (elapsed >= PEWTER_CAVE_TIME_LIMIT)
+    {
+        ScriptContext_SetupScript(PewterCave_EventScript_TimeUp);
+        return TRUE;
+    }
+    if (elapsed >= VarGet(VAR_PEWTER_CAVE_NEXT_QUAKE))
+    {
+        VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, elapsed + PEWTER_CAVE_QUAKE_DELAY);
+        ScriptContext_SetupScript(PewterCave_EventScript_Quake);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// Escombros de los temblores: nubes de polvo (las de aterrizar de un salto) en casillas
+// libres al azar alrededor del jugador
+void SpawnCaveDebrisDust(void)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    u8 i;
+    s16 x, y;
+
+    for (i = 0; i < 6; i++)
+    {
+        x = player->currentCoords.x + (Random() % 9) - 4;
+        y = player->currentCoords.y + (Random() % 7) - 3;
+        if (MapGridGetCollisionAt(x, y))
+            continue;
+        gFieldEffectArguments[0] = x;
+        gFieldEffectArguments[1] = y;
+        gFieldEffectArguments[2] = player->currentElevation;
+        gFieldEffectArguments[3] = gSprites[player->spriteId].oam.priority;
+        FieldEffectStart(FLDEFF_DUST);
+    }
+}
+
+// GEODUDE de Brock: nivel 12 y ya sabe FUERZA. Resultado (MON_GIVEN_TO_*) en VAR_RESULT
+void GiveBrockGeodude(void)
+{
+    u16 nationalDexNum = SpeciesToNationalPokedexNum(SPECIES_GEODUDE);
+    struct Pokemon *mon = AllocZeroed(sizeof(struct Pokemon));
+
+    CreateMon(mon, SPECIES_GEODUDE, 12, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+    if (GiveMoveToMon(mon, MOVE_STRENGTH) == MON_HAS_MAX_MOVES)
+        DeleteFirstMoveAndGiveMoveToMon(mon, MOVE_STRENGTH);
+    gSpecialVar_Result = GiveMonToPlayer(mon);
+    if (gSpecialVar_Result != MON_CANT_GIVE)
+    {
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
+    }
+    Free(mon);
 }
 
 #if DEBUG_SCENARIOS

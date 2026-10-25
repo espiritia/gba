@@ -458,6 +458,9 @@ gSpecials::
 	def_special StartFollower
 	def_special StopFollower
 	def_special GetFollowerSpawnCoords
+	def_special StartPewterCaveTimer
+	def_special GiveBrockGeodude
+	def_special SpawnCaveDebrisDust
 .if DEBUG_SCENARIOS
 	def_special DebugResetParty
 .endif

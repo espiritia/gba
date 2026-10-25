@@ -1,4 +1,5 @@
 #include "global.h"
+#include "field_specials.h"
 #include "task.h"
 #include "help_system.h"
 #include "overworld.h"
@@ -251,6 +252,7 @@ static void DoStandardWildBattle(void)
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = 0;
+    PausePewterCaveTimer();
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
@@ -429,6 +431,7 @@ static void CB2_EndWildBattle(void)
     }
     else
     {
+        ResumePewterCaveTimer();
         SetMainCallback2(CB2_ReturnToField);
         gFieldCallback = FieldCB_SafariZoneRanOutOfBalls;
     }

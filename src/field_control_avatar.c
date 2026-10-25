@@ -212,6 +212,9 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (TryRunOnFrameMapScript() == TRUE)
         return TRUE;
 
+    if (TryRunPewterCaveTimeout() == TRUE)
+        return TRUE;
+
     if (input->tookStep)
     {
         IncrementGameStat(GAME_STAT_STEPS);

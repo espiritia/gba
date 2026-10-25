@@ -1,0 +1,2 @@
+CONEXIONPARTESECRETABROCK_MapScripts::
+	.byte 0

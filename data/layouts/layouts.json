@@ -1161,7 +1161,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_MtEmber",
+      "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/MtMoon_1F/border.bin",
       "blockdata_filepath": "data/layouts/MtMoon_1F/map.bin"
     },
@@ -4404,6 +4404,18 @@
       "secondary_tileset": "gTileset_TrainerTower",
       "border_filepath": "data/layouts/Parte_Secreta_Gimnasio_Plateado/border.bin",
       "blockdata_filepath": "data/layouts/Parte_Secreta_Gimnasio_Plateado/map.bin"
+    },
+    {
+      "id": "LAYOUT_CONEXIONPARTESECRETABROCK",
+      "name": "CONEXIONPARTESECRETABROCK_Layout",
+      "width": 9,
+      "height": 8,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_TrainerTower",
+      "border_filepath": "data/layouts/CONEXIONPARTESECRETABROCK/border.bin",
+      "blockdata_filepath": "data/layouts/CONEXIONPARTESECRETABROCK/map.bin"
     }
   ]
 }

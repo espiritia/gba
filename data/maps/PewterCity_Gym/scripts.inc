@@ -262,3 +262,7 @@ PewterCity_Gym_Movement_LiamReturnToPost::
 	walk_left
 	face_right
 	step_end
+
+Boulder_movement::
+	walk_left
+	step_end

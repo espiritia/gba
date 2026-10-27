@@ -1268,5 +1268,6 @@ extern const u8 TradeCenter_TerminateLink[];
 // Cueva tras el evento de Mew
 extern const u8 PewterCave_EventScript_TimeUp[];
 extern const u8 PewterCave_EventScript_Quake[];
+extern const u8 PewterCave_EventScript_RoofGivingWay[];
 
 #endif //GUARD_EVENT_SCRIPTS_H

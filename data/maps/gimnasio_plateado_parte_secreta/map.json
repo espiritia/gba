@@ -2,15 +2,15 @@
   "id": "MAP_GIMNASIO_PLATEADO_PARTE_SECRETA",
   "name": "gimnasio_plateado_parte_secreta",
   "layout": "LAYOUT_GIMNASIO_PLATEADO_PARTE_SECRETA",
-  "music": "MUS_MT_MOON",
+  "music": "MUS_SILPH",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
-  "weather": "WEATHER_SANDSTORM",
+  "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_NONE",
   "allow_cycling": false,
   "allow_escaping": false,
   "allow_running": false,
-  "show_map_name": true,
+  "show_map_name": false,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
@@ -200,5 +200,14 @@
       "script": "PewterCave_EventScript_ReachExit"
     }
   ],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 7,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "PewterCave_EventScript_TrainingSign"
+    }
+  ]
 }

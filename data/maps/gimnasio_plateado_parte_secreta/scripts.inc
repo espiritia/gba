@@ -6,13 +6,7 @@ gimnasio_plateado_parte_secreta_MapScripts::
 PewterCave_OnTransition::
 	call_if_eq VAR_PEWTER_CAVE_STATE, 0, PewterCave_EventScript_ShowBrock
 	call_if_ne VAR_PEWTER_CAVE_STATE, 0, PewterCave_EventScript_HideBrock
-	@ Huida en curso al cargar la partida: el motor borra la música guardada antes de este script
-	call_if_eq VAR_PEWTER_CAVE_STATE, 1, PewterCave_EventScript_RestoreEscape
 	end
-
-PewterCave_EventScript_RestoreEscape::
-	savebgm MUS_SILPH
-	return
 
 PewterCave_EventScript_ShowBrock::
 	clearflag FLAG_HIDE_PEWTER_CAVE_BROCK
@@ -115,6 +109,7 @@ PewterCave_EventScript_TimeUp::
 	closemessage
 	call ViridianForest_EventScript_LugiaShake
 	setvar VAR_PEWTER_CAVE_STATE, 0
+	setvar VAR_PEWTER_CAVE_NEXT_QUAKE, 0
 	warp MAP_GIMNASIO_PLATEADO_PARTE_SECRETA, 5, 4
 	waitstate
 	releaseall
@@ -137,6 +132,28 @@ PewterCave_EventScript_Quake::
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox PewterCave_Text_MoreDebris, MSGBOX_DEFAULT
 	closemessage
+	releaseall
+	end
+
+@ A mitad de tiempo (lo lanza TryRunPewterCaveTimeout en C): aviso urgente y tormenta de arena
+PewterCave_EventScript_RoofGivingWay::
+	lockall
+	playse SE_M_ROCK_THROW
+	special SpawnCaveDebrisDust
+	setvar VAR_0x8004, 2  @ Vertical pan
+	setvar VAR_0x8005, 3  @ Horizontal pan
+	setvar VAR_0x8006, 6  @ Num shakes
+	setvar VAR_0x8007, 2  @ Shake delay
+	special ShakeScreen
+	delay 16
+	playse SE_M_ROCK_THROW
+	special SpawnCaveDebrisDust
+	delay 20
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox PewterCave_Text_RoofGivingWay, MSGBOX_DEFAULT
+	closemessage
+	setweather WEATHER_SANDSTORM
+	doweather
 	releaseall
 	end
 
@@ -203,3 +220,7 @@ PewterCave_Movement_BrockLeave::
 	walk_fast_right
 	walk_fast_right
 	step_end
+
+PewterCave_EventScript_TrainingSign::
+	msgbox PewterCave_Text_TrainingSign, MSGBOX_SIGN
+	end

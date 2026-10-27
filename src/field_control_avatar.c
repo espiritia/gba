@@ -212,9 +212,6 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (TryRunOnFrameMapScript() == TRUE)
         return TRUE;
 
-    if (TryRunPewterCaveTimeout() == TRUE)
-        return TRUE;
-
     if (input->tookStep)
     {
         IncrementGameStat(GAME_STAT_STEPS);
@@ -229,6 +226,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
             return TRUE;
         }
     }
+
+    // Después de los scripts de paso: pisar la salida de la cueva gana al derrumbe
+    if (TryRunPewterCaveTimeout() == TRUE)
+        return TRUE;
     if (input->checkStandardWildEncounter)
     {
         if (input->dpadDirection == 0 || input->dpadDirection == playerDirection)

@@ -13,6 +13,7 @@
 #include "fieldmap.h"
 #include "field_specials.h"
 #include "field_weather.h"
+#include "constants/weather.h"
 #include "region_map.h"
 #include "task.h"
 #include "battle_tower.h"
@@ -2708,8 +2709,9 @@ bool8 IsSpeciesInPlayerParty(void)
 
 // Huida de la cueva tras el evento de Mew. El minuto se mide con el tiempo de juego, que sigue
 // corriendo en los combates y se guarda con la partida. Segundos módulo 65536.
-#define PEWTER_CAVE_TIME_LIMIT 60
+#define PEWTER_CAVE_TIME_LIMIT 75 // 1 min 15 s
 #define PEWTER_CAVE_QUAKE_DELAY (10 + Random() % 6) // Un temblor cada 10-15 s
+#define PEWTER_CAVE_INTRO_QUAKE_DELAY (5 + Random() % 6) // Antes de Brock, cada 5-10 s
 
 static u16 GetPlayTimeSeconds(void)
 {
@@ -2722,11 +2724,26 @@ void StartPewterCaveTimer(void)
     VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, PEWTER_CAVE_QUAKE_DELAY);
 }
 
+bool8 IsOnPewterCaveMap(void)
+{
+    return gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA)
+        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA);
+}
+
 static bool8 IsPewterCaveEscapeRunning(void)
 {
-    return VarGet(VAR_PEWTER_CAVE_STATE) == 1
-        && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA)
-        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA);
+    return VarGet(VAR_PEWTER_CAVE_STATE) == 1 && IsOnPewterCaveMap();
+}
+
+// Si el jugador se queda sin Pokémon dentro de la cueva (antes de salir), reaparece al
+// principio con el evento reiniciado en vez de en el Centro Pokémon (lo llama DoWhiteOut)
+void TrySetPewterCaveWhiteOutRespawn(void)
+{
+    if (VarGet(VAR_PEWTER_CAVE_STATE) == 2 || !IsOnPewterCaveMap())
+        return;
+    VarSet(VAR_PEWTER_CAVE_STATE, 0);
+    VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, 0);
+    SetWarpDestination(MAP_GROUP(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA), MAP_NUM(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA), WARP_ID_NONE, 5, 4);
 }
 
 // El minuto no corre durante los combates salvajes: al volver se retrasa el inicio
@@ -2752,6 +2769,22 @@ bool8 TryRunPewterCaveTimeout(void)
 {
     u16 elapsed;
 
+    // Antes de ver a Brock: un temblor nada más aparecer en la cueva y luego otros al azar.
+    // NEXT_QUAKE a 0 indica que el primero aún no ha salido en este intento; si no, es el
+    // segundo de juego (absoluto) del siguiente
+    if (VarGet(VAR_PEWTER_CAVE_STATE) == 0 && IsOnPewterCaveMap())
+    {
+        u16 now = GetPlayTimeSeconds();
+        u16 next = VarGet(VAR_PEWTER_CAVE_NEXT_QUAKE);
+
+        if (next != 0 && (s16)(now - next) < 0)
+            return FALSE;
+        next = now + PEWTER_CAVE_INTRO_QUAKE_DELAY;
+        VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, next != 0 ? next : 1);
+        ScriptContext_SetupScript(PewterCave_EventScript_Quake);
+        return TRUE;
+    }
+
     if (!IsPewterCaveEscapeRunning())
         return FALSE;
 
@@ -2759,6 +2792,14 @@ bool8 TryRunPewterCaveTimeout(void)
     if (elapsed >= PEWTER_CAVE_TIME_LIMIT)
     {
         ScriptContext_SetupScript(PewterCave_EventScript_TimeUp);
+        return TRUE;
+    }
+    // A mitad de tiempo: aviso urgente y se levanta la tormenta de arena (el warp de
+    // reintento la quita). Sin temblor pegado justo después del aviso
+    if (elapsed >= PEWTER_CAVE_TIME_LIMIT / 2 && GetCurrentWeather() != WEATHER_SANDSTORM)
+    {
+        VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, elapsed + PEWTER_CAVE_QUAKE_DELAY);
+        ScriptContext_SetupScript(PewterCave_EventScript_RoofGivingWay);
         return TRUE;
     }
     if (elapsed >= VarGet(VAR_PEWTER_CAVE_NEXT_QUAKE))

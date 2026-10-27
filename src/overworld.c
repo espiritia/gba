@@ -254,6 +254,7 @@ static void DoWhiteOut(void)
     HealPlayerParty();
     Overworld_ResetStateAfterWhitingOut();
     Overworld_SetWhiteoutRespawnPoint();
+    TrySetPewterCaveWhiteOutRespawn();
     WarpIntoMap();
 }
 
@@ -1562,7 +1563,11 @@ void CB2_WhiteOut(void)
         SetInitialPlayerAvatarStateWithDirection(DIR_NORTH);
         ScriptContext_Init();
         UnlockPlayerFieldControls();
-        gFieldCallback = FieldCB_RushInjuredPokemonToCenter;
+        // Derrota en la huida de la cueva: se reaparece en ella (TrySetPewterCaveWhiteOutRespawn)
+        if (IsOnPewterCaveMap())
+            gFieldCallback = FieldCB_DefaultWarpExit;
+        else
+            gFieldCallback = FieldCB_RushInjuredPokemonToCenter;
         val = 0;
         DoMapLoadLoop(&val);
         QuestLog_CutRecording();

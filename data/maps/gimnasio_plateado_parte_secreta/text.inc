@@ -38,3 +38,11 @@ PewterCave_Text_RoofCollapses::
 
 PewterCave_Text_MoreDebris::
     .string "¡Cada vez caen más escombros!$"
+
+PewterCave_Text_RoofGivingWay::
+    .string "¡El techo está empezando a ceder!\n"
+    .string "¡Hay que darse prisa!$"
+
+PewterCave_Text_TrainingSign::
+    .string "Zona de entrenamiento privada\n"
+    .string "del Gimnasio Roca.$"

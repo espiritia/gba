@@ -88,7 +88,7 @@
 #define VAR_VIRIDIAN_FOREST_MOSS_TRAIL     0x4029
 #define VAR_FOLLOWER_LOCAL_ID              0x402A // localId del objeto que sigue al jugador (0 = ninguno)
 #define VAR_FOLLOWER_MAP                   0x402B // (mapGroup << 8) | mapNum del mapa del seguidor
-#define VAR_PEWTER_CAVE_STATE              0x402C // Cueva tras el evento de Mew: 0 = Brock espera, 1 = huida en curso, 2 = superada
+#define VAR_PEWTER_CAVE_STATE              0x402C // Cueva tras el evento de Mew: 0 = Brock espera, 1 = huida en curso, 2 = superada, 3 = trato con Brock aceptado
 #define VAR_PEWTER_CAVE_TIMER_START        0x402D // Segundos de juego (mod 65536) al empezar la huida
 #define VAR_PEWTER_CAVE_NEXT_QUAKE         0x402E // Segundos de huida en los que toca el siguiente temblor
 

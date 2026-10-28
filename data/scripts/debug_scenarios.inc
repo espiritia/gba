@@ -248,7 +248,7 @@ Debug_Setup_ForestMossDone::
 Debug_Setup_BrockUnlocked::
 	call Debug_Setup_ForestMossDone
 	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
-	setvar VAR_PEWTER_CAVE_STATE, 2
+	setvar VAR_PEWTER_CAVE_STATE, 3
 	setflag FLAG_BROCK_GYM_BATTLE_UNLOCKED
 	return
 

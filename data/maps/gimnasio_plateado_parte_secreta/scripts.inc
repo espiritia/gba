@@ -93,8 +93,7 @@ PewterCave_EventScript_AlignUp::
 PewterCave_EventScript_ReachExit::
 	lockall
 	setvar VAR_PEWTER_CAVE_STATE, 2
-	@ Destino provisional: cambiarlo cuando exista la conexión definitiva de la salida
-	warp MAP_PARTE_SECRETA_GIMNASIO_PLATEADO, 13, 3
+	warp MAP_PARTE_SECRETA_GIMNASIO_PLATEADO, 5, 3
 	waitstate
 	releaseall
 	end

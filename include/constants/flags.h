@@ -529,27 +529,26 @@
 #define FLAG_HIDE_SEVEN_ISLAND_SEVAULT_CANYON_HOUSE_LUCKY_PUNCH 0x1FD
 #define FLAG_HIDE_SILPH_CO_4F_TM41                              0x1FE
 
-// Unused?
-#define FLAG_0x1FF               0x1FF
+#define FLAG_DEBUG_GAME_MASTER 0x1FF // Solo ROM de debug: HERRAMIENTAS > MODO > GAME MASTER
 #define FLAG_PASSED_PEWTER_GYM_INTERVIEW 0x200
 #define FLAG_BROCK_GYM_BATTLE_UNLOCKED 0x201
-#define FLAG_0x202               0x202
-#define FLAG_0x203               0x203
-#define FLAG_0x204               0x204
-#define FLAG_0x205               0x205
-#define FLAG_0x206               0x206
-#define FLAG_0x207               0x207
-#define FLAG_0x208               0x208
-#define FLAG_0x209               0x209
-#define FLAG_0x20A               0x20A
-#define FLAG_0x20B               0x20B
-#define FLAG_0x20C               0x20C
-#define FLAG_0x20D               0x20D
-#define FLAG_0x20E               0x20E
-#define FLAG_0x20F               0x20F
-#define FLAG_0x210               0x210
-#define FLAG_0x211               0x211
-#define FLAG_0x212               0x212
+#define FLAG_BROCK_GAVE_MOSS_QUEST 0x202
+#define FLAG_HIDE_MEW_FOREST_ENCOUNTER 0x203
+#define FLAG_HIDE_AGATHA_FOREST_AMBUSH 0x204
+#define FLAG_HIDE_FOREST_AMBUSH_GRUNT1 0x205
+#define FLAG_HIDE_FOREST_AMBUSH_GRUNT2 0x206
+#define FLAG_HIDE_FOREST_ONIX_DEBRIS 0x207
+#define FLAG_HIDE_FOREST_MOSS_SPARKLE 0x208
+#define FLAG_HIDE_FOREST_MOSS_DECOY1 0x209
+#define FLAG_HIDE_FOREST_MOSS_DECOY2 0x20A
+#define FLAG_HIDE_FOREST_CUBONE_FOLLOWER 0x20B
+#define FLAG_HIDE_FOREST_CUBONE_BALL 0x20C
+#define FLAG_HIDE_PEWTER_CAVE_BROCK 0x20D
+#define FLAG_GOT_BROCK_GEODUDE 0x20E
+#define FLAG_HIDE_PEWTER_CAVE_POTION 0x20F
+#define FLAG_HIDE_PEWTER_CAVE_POKE_BALL 0x210
+#define FLAG_HIDE_PEWTER_CAVE_ANTIDOTE 0x211
+#define FLAG_HIDE_PEWTER_CAVE_REPEL 0x212
 #define FLAG_0x213               0x213
 #define FLAG_0x214               0x214
 #define FLAG_0x215               0x215

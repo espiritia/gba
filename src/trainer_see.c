@@ -11,6 +11,10 @@
 #include "constants/event_object_movement.h"
 #include "constants/event_objects.h"
 #include "constants/trainer_types.h"
+#if DEBUG_SCENARIOS
+#include "event_data.h"
+#include "constants/flags.h"
+#endif
 
 typedef u8 (*TrainerApproachFunc)(struct ObjectEvent *, s16, s16, s16);
 typedef bool8 (*TrainerSeeFunc)(u8, struct Task *, struct ObjectEvent *);
@@ -90,6 +94,11 @@ bool8 CheckForTrainersWantingBattle(void)
     u8 i;
     if (QL_IsTrainerSightDisabled() == TRUE)
         return FALSE;
+#if DEBUG_SCENARIOS
+    // ROM de debug, modo GAME MASTER: los entrenadores no ven al jugador
+    if (FlagGet(FLAG_DEBUG_GAME_MASTER))
+        return FALSE;
+#endif
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {

@@ -995,6 +995,20 @@ static const union AnimCmd *const sAnimTable_Inanimate[] = {
     [ANIM_STAY_STILL] = sAnim_StayStill
 };
 
+// Brillo en bucle; se usa la misma animación para todas las orientaciones
+static const union AnimCmd sAnim_Sparkle[] = {
+    ANIMCMD_FRAME(0, 16),
+    ANIMCMD_FRAME(1, 16),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd *const sAnimTable_Sparkle[] = {
+    [ANIM_STD_FACE_SOUTH] = sAnim_Sparkle,
+    [ANIM_STD_FACE_NORTH] = sAnim_Sparkle,
+    [ANIM_STD_FACE_WEST] = sAnim_Sparkle,
+    [ANIM_STD_FACE_EAST] = sAnim_Sparkle,
+};
+
 // Leftover from Ruby/Sapphire
 static const union AnimCmd *const sAnimTable_QuintyPlump[] = {
     [ANIM_STD_FACE_SOUTH] = sAnim_QuintyPlumpFaceSouth,

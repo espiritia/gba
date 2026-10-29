@@ -12,6 +12,8 @@
 #include "battle.h"
 #include "fieldmap.h"
 #include "field_specials.h"
+#include "field_weather.h"
+#include "constants/weather.h"
 #include "region_map.h"
 #include "task.h"
 #include "battle_tower.h"
@@ -33,6 +35,7 @@
 #include "party_menu.h"
 #include "dynamic_placeholder_text_util.h"
 #include "new_menu_helpers.h"
+#include "event_scripts.h"
 #include "constants/songs.h"
 #include "constants/items.h"
 #include "constants/maps.h"
@@ -1245,6 +1248,48 @@ void ListMenu(void)
         task->data[6] = 0;
         task->data[15] = taskId;
         break;
+#if DEBUG_SCENARIOS
+    case LISTMENU_DEBUG_SCENARIOS:
+        task->data[0] = 7;
+        task->data[1] = 13;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_TOOLS:
+        task->data[0] = 7;
+        task->data[1] = 8;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_MODE:
+        task->data[0] = 3;
+        task->data[1] = 3;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 6;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+    case LISTMENU_DEBUG_TRAVEL:
+        task->data[0] = 7;
+        task->data[1] = 12;
+        task->data[2] = 1;
+        task->data[3] = 1;
+        task->data[4] = 8;
+        task->data[5] = 12;
+        task->data[6] = 0;
+        task->data[15] = taskId;
+        break;
+#endif
     case 99:
         break;
     default:
@@ -1254,7 +1299,44 @@ void ListMenu(void)
     }
 }
 
-static const u8 *const sListMenuLabels[][12] = {
+#if DEBUG_SCENARIOS
+// Selector de escenarios de la ROM de debug. El orden debe coincidir con el
+// switch de Debug_EventScript_ScenarioMenu (data/scripts/debug_scenarios.inc).
+static const u8 sText_Debug_PewterCubone[]   = _("PLATEADA: CON CUBONE");
+static const u8 sText_Debug_GymSecretary[]   = _("GIMNASIO: SECRETARIA");
+static const u8 sText_Debug_GymGreen[]       = _("GIMNASIO: VERDE");
+static const u8 sText_Debug_GymBrockQuest[]  = _("GIMNASIO: ENCARGO BROCK");
+static const u8 sText_Debug_ForestCrystal[]  = _("BOSQUE 1: CRISTAL");
+static const u8 sText_Debug_ForestMoss[]     = _("BOSQUE 2: MUSGO");
+static const u8 sText_Debug_ForestDecoys[]   = _("BOSQUE 2: SEÑUELOS");
+static const u8 sText_Debug_ForestMew[]      = _("BOSQUE 3: MEW Y AGATHA");
+static const u8 sText_Debug_ForestCave[]     = _("BOSQUE 4: CUEVA");
+static const u8 sText_Debug_BrockBattle[]    = _("BROCK: COMBATE");
+static const u8 sText_Debug_AfterBrock[]     = _("TRAS VENCER A BROCK");
+static const u8 sText_Debug_Tools[]          = _("HERRAMIENTAS…");
+static const u8 sText_Debug_Heal[]           = _("CURAR EQUIPO");
+static const u8 sText_Debug_StrongTeam[]     = _("EQUIPO FUERTE NV50");
+static const u8 sText_Debug_Money[]          = _("DINERO +50000");
+static const u8 sText_Debug_Items[]          = _("OBJETOS");
+static const u8 sText_Debug_AllBadges[]      = _("TODAS LAS MEDALLAS");
+static const u8 sText_Debug_Mode[]           = _("MODO…");
+static const u8 sText_Debug_ModeNormal[]     = _("NORMAL");
+static const u8 sText_Debug_ModeGameMaster[] = _("GAME MASTER");
+static const u8 sText_Debug_Travel[]         = _("VIAJAR…");
+static const u8 sText_Debug_TravelPallet[]   = _("PUEBLO PALETA");
+static const u8 sText_Debug_TravelViridian[] = _("CIUDAD VERDE");
+static const u8 sText_Debug_TravelPewter[]   = _("CIUDAD PLATEADA");
+static const u8 sText_Debug_TravelCerulean[] = _("CIUDAD CELESTE");
+static const u8 sText_Debug_TravelVermilion[] = _("CIUDAD CARMÍN");
+static const u8 sText_Debug_TravelLavender[] = _("PUEBLO LAVANDA");
+static const u8 sText_Debug_TravelCeladon[]  = _("CIUDAD AZULONA");
+static const u8 sText_Debug_TravelSaffron[]  = _("CIUDAD AZAFRÁN");
+static const u8 sText_Debug_TravelFuchsia[]  = _("CIUDAD FUCSIA");
+static const u8 sText_Debug_TravelCinnabar[] = _("ISLA CANELA");
+static const u8 sText_Debug_TravelIndigo[]   = _("MESETA AÑIL");
+#endif
+
+static const u8 *const sListMenuLabels[][13] = {
     [LISTMENU_BADGES] = 
     {
         gText_BoulderBadge,
@@ -1325,7 +1407,58 @@ static const u8 *const sListMenuLabels[][12] = {
         gText_Rooftop,
         gText_B1F,
         gOtherText_Exit,
-    }
+    },
+#if DEBUG_SCENARIOS
+    [LISTMENU_DEBUG_SCENARIOS] =
+    {
+        sText_Debug_Tools,
+        sText_Debug_PewterCubone,
+        sText_Debug_GymSecretary,
+        sText_Debug_GymGreen,
+        sText_Debug_GymBrockQuest,
+        sText_Debug_ForestCrystal,
+        sText_Debug_ForestMoss,
+        sText_Debug_ForestDecoys,
+        sText_Debug_ForestMew,
+        sText_Debug_ForestCave,
+        sText_Debug_BrockBattle,
+        sText_Debug_AfterBrock,
+        gOtherText_Exit,
+    },
+    [LISTMENU_DEBUG_TOOLS] =
+    {
+        sText_Debug_Travel,
+        sText_Debug_Heal,
+        sText_Debug_StrongTeam,
+        sText_Debug_Money,
+        sText_Debug_Items,
+        sText_Debug_AllBadges,
+        sText_Debug_Mode,
+        gOtherText_Exit,
+    },
+    [LISTMENU_DEBUG_MODE] =
+    {
+        sText_Debug_ModeNormal,
+        sText_Debug_ModeGameMaster,
+        gOtherText_Exit,
+    },
+    // El orden debe coincidir con el switch de Debug_Tool_TravelMenu
+    [LISTMENU_DEBUG_TRAVEL] =
+    {
+        sText_Debug_TravelPallet,
+        sText_Debug_TravelViridian,
+        sText_Debug_TravelPewter,
+        sText_Debug_TravelCerulean,
+        sText_Debug_TravelVermilion,
+        sText_Debug_TravelLavender,
+        sText_Debug_TravelCeladon,
+        sText_Debug_TravelSaffron,
+        sText_Debug_TravelFuchsia,
+        sText_Debug_TravelCinnabar,
+        sText_Debug_TravelIndigo,
+        gOtherText_Exit,
+    },
+#endif
 };
 
 static void Task_CreateScriptListMenu(u8 taskId)
@@ -2553,3 +2686,177 @@ static void Task_WingFlapSound(u8 taskId)
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
 }
+
+void FadeWeatherGammaTo(void)
+{
+    // 8004 = Target gamma index (higher is darker)
+    // 8005 = Frame delay between gamma steps
+    WeatherBeginGammaFade(gWeatherPtr->gammaIndex, gSpecialVar_0x8004, gSpecialVar_0x8005);
+}
+
+bool8 IsSpeciesInPlayerParty(void)
+{
+    // 8004 = Species to look for
+    u8 i;
+
+    for (i = 0; i < gPlayerPartyCount; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) == gSpecialVar_0x8004)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// Huida de la cueva tras el evento de Mew. El minuto se mide con el tiempo de juego, que sigue
+// corriendo en los combates y se guarda con la partida. Segundos módulo 65536.
+#define PEWTER_CAVE_TIME_LIMIT 75 // 1 min 15 s
+#define PEWTER_CAVE_QUAKE_DELAY (10 + Random() % 6) // Un temblor cada 10-15 s
+#define PEWTER_CAVE_INTRO_QUAKE_DELAY (5 + Random() % 6) // Antes de Brock, cada 5-10 s
+
+static u16 GetPlayTimeSeconds(void)
+{
+    return gSaveBlock2Ptr->playTimeHours * 3600 + gSaveBlock2Ptr->playTimeMinutes * 60 + gSaveBlock2Ptr->playTimeSeconds;
+}
+
+void StartPewterCaveTimer(void)
+{
+    VarSet(VAR_PEWTER_CAVE_TIMER_START, GetPlayTimeSeconds());
+    VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, PEWTER_CAVE_QUAKE_DELAY);
+}
+
+bool8 IsOnPewterCaveMap(void)
+{
+    return gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA)
+        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA);
+}
+
+static bool8 IsPewterCaveEscapeRunning(void)
+{
+    return VarGet(VAR_PEWTER_CAVE_STATE) == 1 && IsOnPewterCaveMap();
+}
+
+// Si el jugador se queda sin Pokémon dentro de la cueva (antes de salir), reaparece al
+// principio con el evento reiniciado en vez de en el Centro Pokémon (lo llama DoWhiteOut)
+void TrySetPewterCaveWhiteOutRespawn(void)
+{
+    if (VarGet(VAR_PEWTER_CAVE_STATE) == 2 || !IsOnPewterCaveMap())
+        return;
+    VarSet(VAR_PEWTER_CAVE_STATE, 0);
+    VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, 0);
+    SetWarpDestination(MAP_GROUP(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA), MAP_NUM(MAP_GIMNASIO_PLATEADO_PARTE_SECRETA), WARP_ID_NONE, 5, 4);
+}
+
+// El minuto no corre durante los combates salvajes: al volver se retrasa el inicio
+// lo que haya durado el combate (los temblores se cuentan desde ese inicio)
+void PausePewterCaveTimer(void)
+{
+    if (IsPewterCaveEscapeRunning())
+        VarSet(VAR_PEWTER_CAVE_PAUSE_START, GetPlayTimeSeconds());
+}
+
+void ResumePewterCaveTimer(void)
+{
+    u16 paused;
+
+    if (!IsPewterCaveEscapeRunning())
+        return;
+    paused = GetPlayTimeSeconds() - VarGet(VAR_PEWTER_CAVE_PAUSE_START);
+    VarSet(VAR_PEWTER_CAVE_TIMER_START, VarGet(VAR_PEWTER_CAVE_TIMER_START) + paused);
+}
+
+// Se comprueba cada frame en que el jugador está libre (ProcessPlayerFieldInput)
+bool8 TryRunPewterCaveTimeout(void)
+{
+    u16 elapsed;
+
+    // Antes de ver a Brock: un temblor nada más aparecer en la cueva y luego otros al azar.
+    // NEXT_QUAKE a 0 indica que el primero aún no ha salido en este intento; si no, es el
+    // segundo de juego (absoluto) del siguiente
+    if (VarGet(VAR_PEWTER_CAVE_STATE) == 0 && IsOnPewterCaveMap())
+    {
+        u16 now = GetPlayTimeSeconds();
+        u16 next = VarGet(VAR_PEWTER_CAVE_NEXT_QUAKE);
+
+        if (next != 0 && (s16)(now - next) < 0)
+            return FALSE;
+        next = now + PEWTER_CAVE_INTRO_QUAKE_DELAY;
+        VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, next != 0 ? next : 1);
+        ScriptContext_SetupScript(PewterCave_EventScript_Quake);
+        return TRUE;
+    }
+
+    if (!IsPewterCaveEscapeRunning())
+        return FALSE;
+
+    elapsed = GetPlayTimeSeconds() - VarGet(VAR_PEWTER_CAVE_TIMER_START);
+    if (elapsed >= PEWTER_CAVE_TIME_LIMIT)
+    {
+        ScriptContext_SetupScript(PewterCave_EventScript_TimeUp);
+        return TRUE;
+    }
+    // A mitad de tiempo: aviso urgente y se levanta la tormenta de arena (el warp de
+    // reintento la quita). Sin temblor pegado justo después del aviso
+    if (elapsed >= PEWTER_CAVE_TIME_LIMIT / 2 && GetCurrentWeather() != WEATHER_SANDSTORM)
+    {
+        VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, elapsed + PEWTER_CAVE_QUAKE_DELAY);
+        ScriptContext_SetupScript(PewterCave_EventScript_RoofGivingWay);
+        return TRUE;
+    }
+    if (elapsed >= VarGet(VAR_PEWTER_CAVE_NEXT_QUAKE))
+    {
+        VarSet(VAR_PEWTER_CAVE_NEXT_QUAKE, elapsed + PEWTER_CAVE_QUAKE_DELAY);
+        ScriptContext_SetupScript(PewterCave_EventScript_Quake);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// Escombros de los temblores: nubes de polvo (las de aterrizar de un salto) en casillas
+// libres al azar alrededor del jugador
+void SpawnCaveDebrisDust(void)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    u8 i;
+    s16 x, y;
+
+    for (i = 0; i < 6; i++)
+    {
+        x = player->currentCoords.x + (Random() % 9) - 4;
+        y = player->currentCoords.y + (Random() % 7) - 3;
+        if (MapGridGetCollisionAt(x, y))
+            continue;
+        gFieldEffectArguments[0] = x;
+        gFieldEffectArguments[1] = y;
+        gFieldEffectArguments[2] = player->currentElevation;
+        gFieldEffectArguments[3] = gSprites[player->spriteId].oam.priority;
+        FieldEffectStart(FLDEFF_DUST);
+    }
+}
+
+// GEODUDE de Brock: nivel 12 y ya sabe FUERZA. Resultado (MON_GIVEN_TO_*) en VAR_RESULT
+void GiveBrockGeodude(void)
+{
+    u16 nationalDexNum = SpeciesToNationalPokedexNum(SPECIES_GEODUDE);
+    struct Pokemon *mon = AllocZeroed(sizeof(struct Pokemon));
+
+    CreateMon(mon, SPECIES_GEODUDE, 12, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+    if (GiveMoveToMon(mon, MOVE_STRENGTH) == MON_HAS_MAX_MOVES)
+        DeleteFirstMoveAndGiveMoveToMon(mon, MOVE_STRENGTH);
+    gSpecialVar_Result = GiveMonToPlayer(mon);
+    if (gSpecialVar_Result != MON_CANT_GIVE)
+    {
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
+    }
+    Free(mon);
+}
+
+#if DEBUG_SCENARIOS
+// Selector de escenarios (ROM de debug): vacía el equipo para que cada escenario
+// empiece siempre con los mismos Pokémon, venga de donde venga el jugador.
+void DebugResetParty(void)
+{
+    ZeroPlayerPartyMons();
+    CalculatePlayerPartyCount();
+}
+#endif

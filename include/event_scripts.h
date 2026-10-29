@@ -1143,6 +1143,10 @@ extern const u8 EventScript_TryDoRematchBattle[];
 extern const u8 EventScript_DoTrainerBattleFromApproach[];
 extern const u8 EventScript_TestSignpostMsg[];
 
+#if DEBUG_SCENARIOS
+extern const u8 Debug_EventScript_ScenarioMenu[];
+#endif
+
 // new_game
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -1260,5 +1264,10 @@ extern const u8 TradeCenter_EventScript_Chair0[];
 extern const u8 TradeCenter_EventScript_Chair1[];
 extern const u8 TradeCenter_ConfirmLeaveRoom[];
 extern const u8 TradeCenter_TerminateLink[];
+
+// Cueva tras el evento de Mew
+extern const u8 PewterCave_EventScript_TimeUp[];
+extern const u8 PewterCave_EventScript_Quake[];
+extern const u8 PewterCave_EventScript_RoofGivingWay[];
 
 #endif //GUARD_EVENT_SCRIPTS_H

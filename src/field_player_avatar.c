@@ -35,6 +35,7 @@ EWRAM_DATA struct PlayerAvatar gPlayerAvatar = {};
 static u8 ObjectEventCB2_NoMovement2(struct ObjectEvent * object, struct Sprite *sprite);
 static bool8 TryUpdatePlayerSpinDirection(void);
 static bool8 TryInterruptObjectEventSpecialAnim(struct ObjectEvent * playerObjEvent, u8 direction);
+static void Follower_OnPlayerMovement(u8 playerMovementActionId);
 static void npc_clear_strange_bits(struct ObjectEvent * playerObjEvent);
 static bool8 TryDoMetatileBehaviorForcedMovement(void);
 static void MovePlayerAvatarUsingKeypadInput(u8 direction, u16 newKeys, u16 heldKeys);
@@ -814,7 +815,10 @@ static void PlayerSetAnimId(u8 movementActionId, u8 copyableMovement)
     {
         PlayerSetCopyableMovement(copyableMovement);
         if (!ObjectEventSetHeldMovement(&gObjectEvents[gPlayerAvatar.objectEventId], movementActionId))
+        {
             QuestLogRecordPlayerStep(movementActionId);
+            Follower_OnPlayerMovement(movementActionId);
+        }
     }
 }
 
@@ -2166,3 +2170,121 @@ static u8 TeleportAnim_RotatePlayer(struct ObjectEvent *object, s16 *a1)
 #undef tDeltaY
 #undef tRotationTimer
 #undef tState
+
+// Seguidor: un objeto del mapa (VAR_FOLLOWER_LOCAL_ID en el mapa VAR_FOLLOWER_MAP) que va
+// pisando la casilla que deja el jugador en cada paso, a su misma velocidad.
+#define FOLLOWER_MAP_ID(group, num) (((group) << 8) | (num))
+
+struct ObjectEvent *GetFollowerObjectEvent(void)
+{
+    u8 objectEventId;
+    u16 localId = VarGet(VAR_FOLLOWER_LOCAL_ID);
+
+    if (localId == 0)
+        return NULL;
+    if (VarGet(VAR_FOLLOWER_MAP) != FOLLOWER_MAP_ID(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
+        return NULL;
+    if (TryGetObjectEventIdByLocalIdAndMap(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &objectEventId))
+        return NULL;
+    return &gObjectEvents[objectEventId];
+}
+
+// Devuelve el movimiento equivalente del seguidor, o MOVEMENT_ACTION_NONE si el jugador no avanza.
+static u8 GetFollowerMovementAction(u8 playerMovementActionId, u8 direction)
+{
+    if (playerMovementActionId >= MOVEMENT_ACTION_WALK_SLOWER_DOWN && playerMovementActionId <= MOVEMENT_ACTION_WALK_SLOWER_RIGHT)
+        return GetWalkSlowerMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_WALK_SLOW_DOWN && playerMovementActionId <= MOVEMENT_ACTION_WALK_SLOW_RIGHT)
+        return GetWalkSlowMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_WALK_NORMAL_DOWN && playerMovementActionId <= MOVEMENT_ACTION_WALK_NORMAL_RIGHT)
+        return GetWalkNormalMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_WALK_FAST_DOWN && playerMovementActionId <= MOVEMENT_ACTION_WALK_FAST_RIGHT)
+        return GetWalkFastMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_WALK_FASTER_DOWN && playerMovementActionId <= MOVEMENT_ACTION_WALK_FASTER_RIGHT)
+        return GetWalkFasterMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_PLAYER_RUN_DOWN && playerMovementActionId <= MOVEMENT_ACTION_PLAYER_RUN_RIGHT)
+        return GetWalkFastMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_PLAYER_RUN_DOWN_SLOW && playerMovementActionId <= MOVEMENT_ACTION_PLAYER_RUN_RIGHT_SLOW)
+        return GetWalkNormalMovementAction(direction);
+    if (playerMovementActionId >= MOVEMENT_ACTION_JUMP_2_DOWN && playerMovementActionId <= MOVEMENT_ACTION_JUMP_2_RIGHT)
+        return GetWalkFastMovementAction(direction);
+    return MOVEMENT_ACTION_NONE;
+}
+
+static u8 GetDirectionToAdjacentTile(s16 dx, s16 dy)
+{
+    if (dx == 0 && dy == 1)
+        return DIR_SOUTH;
+    if (dx == 0 && dy == -1)
+        return DIR_NORTH;
+    if (dx == -1 && dy == 0)
+        return DIR_WEST;
+    if (dx == 1 && dy == 0)
+        return DIR_EAST;
+    return DIR_NONE;
+}
+
+static void Follower_OnPlayerMovement(u8 playerMovementActionId)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    struct ObjectEvent *follower = GetFollowerObjectEvent();
+    s16 targetX, targetY;
+    u8 direction, movementActionId;
+
+    if (follower == NULL || follower->invisible)
+        return;
+
+    // Aún no se ha aplicado el paso: currentCoords es la casilla que el jugador va a dejar
+    targetX = player->currentCoords.x;
+    targetY = player->currentCoords.y;
+    if (follower->currentCoords.x == targetX && follower->currentCoords.y == targetY)
+        return;
+
+    direction = GetDirectionToAdjacentTile(targetX - follower->currentCoords.x, targetY - follower->currentCoords.y);
+    movementActionId = GetFollowerMovementAction(playerMovementActionId, direction);
+    if (movementActionId == MOVEMENT_ACTION_NONE)
+        return;
+
+    if (direction == DIR_NONE || (follower->heldMovementActive && !follower->heldMovementFinished))
+    {
+        // Se ha quedado atrás (cinemática, salto, recarga del mapa...): aparece detrás del jugador
+        ObjectEventClearHeldMovementIfActive(follower);
+        MoveObjectEventToMapCoords(follower, targetX, targetY);
+        SetObjectEventDirection(follower, player->movementDirection);
+        return;
+    }
+    ObjectEventForceSetHeldMovement(follower, movementActionId);
+}
+
+// Casilla donde colocar al seguidor (coordenadas de plantilla): detrás del jugador si es
+// transitable, si no en la propia casilla del jugador. Resultado en VAR_0x8005 / VAR_0x8006.
+void GetFollowerSpawnCoords(void)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    s16 x = player->currentCoords.x;
+    s16 y = player->currentCoords.y;
+    s16 behindX = x;
+    s16 behindY = y;
+
+    MoveCoords(GetOppositeDirection(player->facingDirection), &behindX, &behindY);
+    if (!MapGridGetCollisionAt(behindX, behindY) && GetObjectEventIdByXY(behindX, behindY) == OBJECT_EVENTS_COUNT)
+    {
+        x = behindX;
+        y = behindY;
+    }
+    gSpecialVar_0x8005 = x - MAP_OFFSET;
+    gSpecialVar_0x8006 = y - MAP_OFFSET;
+}
+
+// VAR_0x8004: localId del objeto del mapa actual que pasa a seguir al jugador
+void StartFollower(void)
+{
+    VarSet(VAR_FOLLOWER_LOCAL_ID, gSpecialVar_0x8004);
+    VarSet(VAR_FOLLOWER_MAP, FOLLOWER_MAP_ID(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum));
+}
+
+void StopFollower(void)
+{
+    VarSet(VAR_FOLLOWER_LOCAL_ID, 0);
+    VarSet(VAR_FOLLOWER_MAP, 0);
+}

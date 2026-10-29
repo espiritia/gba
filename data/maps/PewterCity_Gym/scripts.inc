@@ -12,6 +12,7 @@ PewterCity_Gym_EventScript_BrockNotReady::
 	lock
 	faceplayer
 	msgbox PewterCity_Gym_Text_BrockNotReadyYet
+	setflag FLAG_BROCK_GAVE_MOSS_QUEST
 	release
 	end
 
@@ -260,4 +261,8 @@ PewterCity_Gym_Movement_LiamReturnToPost::
 	walk_left
 	walk_left
 	face_right
+	step_end
+
+Boulder_movement::
+	walk_left
 	step_end

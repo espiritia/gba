@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Generar ROM",
+      "type": "shell",
+      "command": "make -j$(nproc) && cp pokefirered.gba espiritia.gba && echo '' && echo '✅ ROM lista: espiritia.gba (clic derecho -> Download para descargarla)'",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Generar ROM de pruebas (debug)",
+      "type": "shell",
+      "command": "make debug -j$(nproc) && echo '' && echo '✅ ROM de pruebas lista: pokefirered_debug.gba (START > DEBUG para elegir escenario)'",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

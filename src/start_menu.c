@@ -49,6 +49,9 @@ enum StartMenuOption
     STARTMENU_EXIT,
     STARTMENU_RETIRE,
     STARTMENU_PLAYER2,
+#if DEBUG_SCENARIOS
+    STARTMENU_DEBUG,
+#endif
     MAX_STARTMENU_ITEMS
 };
 
@@ -88,6 +91,11 @@ static bool8 StartMenuOptionCallback(void);
 static bool8 StartMenuExitCallback(void);
 static bool8 StartMenuSafariZoneRetireCallback(void);
 static bool8 StartMenuLinkPlayerCallback(void);
+#if DEBUG_SCENARIOS
+static bool8 StartMenuDebugCallback(void);
+static const u8 sText_MenuDebug[] = _("DEBUG");
+static const u8 sStartMenuDesc_Debug[] = _("Selector de escenarios de prueba.");
+#endif
 static bool8 StartCB_Save1(void);
 static bool8 StartCB_Save2(void);
 static void StartMenu_PrepareForSave(void);
@@ -122,7 +130,10 @@ static const struct MenuAction sStartMenuActionTable[] = {
     [STARTMENU_OPTION]  = { gText_MenuOption,  {.u8_void = StartMenuOptionCallback} },
     [STARTMENU_EXIT]    = { gText_MenuExit,    {.u8_void = StartMenuExitCallback} },
     [STARTMENU_RETIRE]  = { gText_MenuRetire,  {.u8_void = StartMenuSafariZoneRetireCallback} },
-    [STARTMENU_PLAYER2] = { gText_MenuPlayer,  {.u8_void = StartMenuLinkPlayerCallback} }
+    [STARTMENU_PLAYER2] = { gText_MenuPlayer,  {.u8_void = StartMenuLinkPlayerCallback} },
+#if DEBUG_SCENARIOS
+    [STARTMENU_DEBUG]   = { sText_MenuDebug,   {.u8_void = StartMenuDebugCallback} },
+#endif
 };
 
 static const struct WindowTemplate sSafariZoneStatsWindowTemplate = {
@@ -144,7 +155,10 @@ static const u8 *const sStartMenuDescPointers[] = {
     gStartMenuDesc_Option,
     gStartMenuDesc_Exit,
     gStartMenuDesc_Retire,
-    gStartMenuDesc_Player
+    gStartMenuDesc_Player,
+#if DEBUG_SCENARIOS
+    sStartMenuDesc_Debug,
+#endif
 };
 
 static const struct BgTemplate sBGTemplates_AfterLinkSaveMessage[] = {
@@ -220,6 +234,9 @@ static void SetUpStartMenu_NormalField(void)
     AppendToStartMenuItems(STARTMENU_PLAYER);
     AppendToStartMenuItems(STARTMENU_SAVE);
     AppendToStartMenuItems(STARTMENU_OPTION);
+#if DEBUG_SCENARIOS
+    AppendToStartMenuItems(STARTMENU_DEBUG);
+#endif
     AppendToStartMenuItems(STARTMENU_EXIT);
 }
 
@@ -448,7 +465,11 @@ static void StartMenu_FadeScreenIfLeavingOverworld(void)
 {
     if (sStartMenuCallback != StartMenuSaveCallback
      && sStartMenuCallback != StartMenuExitCallback
-     && sStartMenuCallback != StartMenuSafariZoneRetireCallback)
+     && sStartMenuCallback != StartMenuSafariZoneRetireCallback
+#if DEBUG_SCENARIOS
+     && sStartMenuCallback != StartMenuDebugCallback
+#endif
+     )
     {
         StopPokemonLeagueLightingEffectTask();
         FadeScreen(FADE_TO_BLACK, 0);
@@ -551,6 +572,17 @@ static bool8 StartMenuSafariZoneRetireCallback(void)
     SafariZoneRetirePrompt();
     return TRUE;
 }
+
+#if DEBUG_SCENARIOS
+// ROM de debug: abre el selector de escenarios (data/scripts/debug_scenarios.inc)
+static bool8 StartMenuDebugCallback(void)
+{
+    DestroyHelpMessageWindow_();
+    CloseStartMenu();
+    ScriptContext_SetupScript(Debug_EventScript_ScenarioMenu);
+    return TRUE;
+}
+#endif
 
 
 static bool8 StartMenuLinkPlayerCallback(void)

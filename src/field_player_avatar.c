@@ -1152,12 +1152,21 @@ static const u8 sHoennLinkPartnerGfxIds[] = {
 
 u8 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
-    return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gender);
+    return sPlayerAvatarGfxIds[state][gender];
 }
 
 u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
+    // Con el traje de empleado del gimnasio solo cambia el sprite a pie (bici, surf... siguen igual)
+    if (state == PLAYER_AVATAR_GFX_NORMAL && gender == MALE && FlagGet(FLAG_PLAYER_GYM_UNIFORM))
+        return OBJ_EVENT_GFX_RED_UNIFORM;
     return sPlayerAvatarGfxIds[state][gender];
+}
+
+// Aplica el aspecto a pie actual (p. ej. tras ponerse o quitarse el traje de empleado)
+void UpdatePlayerAvatarOutfit(void)
+{
+    ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_NORMAL));
 }
 
 u8 GetRSAvatarGraphicsIdByGender(u8 gender)
@@ -1241,11 +1250,12 @@ void SetPlayerAvatarStateMask(u8 flags)
     gPlayerAvatar.flags |= flags;
 }
 
-static const u8 sPlayerAvatarGfxToStateFlag[][3][GENDER_COUNT] = {
+static const u8 sPlayerAvatarGfxToStateFlag[][4][GENDER_COUNT] = {
     [MALE] = {
         {OBJ_EVENT_GFX_RED_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
         {OBJ_EVENT_GFX_RED_BIKE,   PLAYER_AVATAR_FLAG_MACH_BIKE},
         {OBJ_EVENT_GFX_RED_SURF,   PLAYER_AVATAR_FLAG_SURFING},
+        {OBJ_EVENT_GFX_RED_UNIFORM, PLAYER_AVATAR_FLAG_ON_FOOT},
     },
     [FEMALE] = {
         {OBJ_EVENT_GFX_GREEN_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
@@ -1270,6 +1280,10 @@ u8 GetPlayerAvatarGraphicsIdByCurrentState(void)
 {
     u8 i;
     u8 flags = gPlayerAvatar.flags;
+
+    // A pie respeta el traje de empleado
+    if (flags & PLAYER_AVATAR_FLAG_ON_FOOT)
+        return GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_NORMAL);
 
     for (i = 0; i < NELEMS(*sPlayerAvatarGfxToStateFlag); i++)
     {

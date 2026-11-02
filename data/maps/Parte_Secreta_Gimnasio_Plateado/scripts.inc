@@ -18,18 +18,52 @@ SecretGym_EventScript_BrockOffer::
 SecretGym_EventScript_AskDeal::
 	msgbox SecretGym_Text_WhatDoYouSay, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, SecretGym_EventScript_DealAccepted
-	msgbox SecretGym_Text_Insist
-	goto SecretGym_EventScript_AskDeal
+	goto SecretGym_EventScript_DealRejected
 	end
 
-SecretGym_EventScript_DealAccepted::
-	msgbox SecretGym_Text_Accepted
+@ Dice que no: Brock se queda esperando aquí abajo y el ascensor sube a la entrada del gimnasio
+SecretGym_EventScript_DealRejected::
+	msgbox SecretGym_Text_Rejected
 	closemessage
 	setvar VAR_PEWTER_CAVE_STATE, 3
 	fadedefaultbgm
 	releaseall
 	end
 
+@ Dice que sí: Brock lo contrata, le da el traje y le explica el programa del Alto Mando
+SecretGym_EventScript_DealAccepted::
+	msgbox SecretGym_Text_Hired
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	playfanfare MUS_OBTAIN_KEY_ITEM
+	message SecretGym_Text_ReceivedUniform
+	waitmessage
+	waitfanfare
+	closemessage
+	fadescreen FADE_TO_BLACK
+	setflag FLAG_PLAYER_GYM_UNIFORM
+	special UpdatePlayerAvatarOutfit
+	delay 30
+	fadescreen FADE_FROM_BLACK
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox SecretGym_Text_LooksGood
+	msgbox SecretGym_Text_EliteFourProgram
+	msgbox SecretGym_Text_GetPokedex
+	closemessage
+	setvar VAR_PEWTER_CAVE_STATE, 4
+	fadedefaultbgm
+	releaseall
+	end
+
 SecretGym_EventScript_Brock::
-	msgbox SecretGym_Text_Later, MSGBOX_NPC
+	lock
+	faceplayer
+	textcolor NPC_TEXT_COLOR_MALE
+	goto_if_eq VAR_PEWTER_CAVE_STATE, 3, SecretGym_EventScript_BrockAskAgain
+	msgbox SecretGym_Text_GoSeeOak
+	release
+	end
+
+SecretGym_EventScript_BrockAskAgain::
+	msgbox SecretGym_Text_ThoughtAboutIt
+	goto SecretGym_EventScript_AskDeal
 	end

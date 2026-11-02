@@ -198,6 +198,7 @@ Debug_Setup_Reset::
 	clearflag FLAG_HIDE_PEWTER_CAVE_REPEL
 	clearflag FLAG_HIDE_PEWTER_CAVE_BROCK
 	clearflag FLAG_GOT_BROCK_GEODUDE
+	clearflag FLAG_PLAYER_GYM_UNIFORM
 	setrespawn HEAL_LOCATION_PEWTER_CITY
 	return
 
@@ -248,7 +249,8 @@ Debug_Setup_ForestMossDone::
 Debug_Setup_BrockUnlocked::
 	call Debug_Setup_ForestMossDone
 	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
-	setvar VAR_PEWTER_CAVE_STATE, 3
+	setvar VAR_PEWTER_CAVE_STATE, 4
+	setflag FLAG_PLAYER_GYM_UNIFORM
 	setflag FLAG_BROCK_GYM_BATTLE_UNLOCKED
 	return
 

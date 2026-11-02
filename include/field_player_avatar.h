@@ -40,6 +40,7 @@ u8 player_get_pos_including_state_based_drift(s16 *x, s16 *y);
 void StartPlayerAvatarVsSeekerAnim(void);
 u8 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender);
 u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender);
+void UpdatePlayerAvatarOutfit(void);
 u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 direction, u8 metatileBehavior);
 void PlayerWalkSlower(u8 direction);
 void PlayerWalkSlow(u8 direction);

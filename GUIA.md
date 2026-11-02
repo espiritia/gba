@@ -103,7 +103,7 @@ Hay una segunda ROM, **solo para probar**, con un menú que te pone directamente
 | BOSQUE 2: SEÑUELOS | + rastro en el paso 4 | Al sur del brillo con señuelos |
 | BOSQUE 3: MEW Y AGATHA | + rastro completo | Dos pasos al sur de la oscuridad |
 | BOSQUE 4: CUEVA | + evento de Mew terminado | Principio de la cueva (Brock espera; luego 1 min 15 s para salir) |
-| BROCK: COMBATE | + bosque terminado, combate desbloqueado | Delante de Brock |
+| BROCK: COMBATE | + bosque terminado, contratado por Brock (con traje), combate desbloqueado | Delante de Brock |
 | TRAS VENCER A BROCK | + medalla Roca, MT39 | Puerta del gimnasio |
 
 Cada escenario **reinicia la historia** antes de aplicarse, así que puedes saltar de uno a otro sin problemas.

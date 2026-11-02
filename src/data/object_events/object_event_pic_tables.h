@@ -1761,3 +1761,28 @@ static const struct SpriteFrameImage sPicTable_Mom[] = {
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
 };
+
+// Jugador con el traje de empleado del gimnasio (provisional: arte del CAMPER, que no tiene
+// frames de correr ni de negar con la cabeza, así que reutiliza los de andar)
+static const struct SpriteFrameImage sPicTable_RedUniform[] = {
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 0),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 1),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 2),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 3),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 4),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 5),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 6),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 7),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 8),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 0), // Correr al sur
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 3),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 4),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 1), // Correr al norte
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 5),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 6),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 2), // Correr al oeste/este
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 7),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 8),
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 0), // Negar con la cabeza
+    overworld_frame(gObjectEventPic_Camper, 2, 4, 0),
+};

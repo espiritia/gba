@@ -37,17 +37,63 @@ SecretGym_Text_BrockOffer::
 SecretGym_Text_WhatDoYouSay::
     .string "¿Qué me dices?$"
 
-SecretGym_Text_Insist::
-    .string "Entiendo que dudes… pero ahora\n"
-    .string "mismo no tienes muchas más\l"
-    .string "opciones. Piénsalo bien.$"
+SecretGym_Text_Rejected::
+    .string "Entiendo… no es una decisión\n"
+    .string "fácil.\p"
+    .string "Tómate tu tiempo. Yo seguiré aquí\n"
+    .string "abajo esperándote.\p"
+    .string "Ese ascensor te subirá a la\n"
+    .string "entrada del gimnasio.$"
 
-SecretGym_Text_Accepted::
+SecretGym_Text_ThoughtAboutIt::
+    .string "¿Lo has pensado ya, {PLAYER}?$"
+
+SecretGym_Text_Hired::
     .string "¡Sabía que podía contar contigo!\p"
-    .string "Desde hoy trabajas para mí.\p"
-    .string "Descansa un poco, pronto te\n"
-    .string "contaré tu primera misión.$"
+    .string "Desde hoy eres oficialmente\n"
+    .string "empleado del Gimnasio de\l"
+    .string "Ciudad Plateada.\p"
+    .string "Y todo empleado necesita su\n"
+    .string "uniforme. Toma, ponte esto.$"
 
-SecretGym_Text_Later::
-    .string "Descansa un poco. Pronto te\n"
-    .string "contaré tu primera misión.$"
+SecretGym_Text_ReceivedUniform::
+    .string "¡{PLAYER} recibió el TRAJE OFICIAL\n"
+    .string "de empleado del gimnasio!$"
+
+SecretGym_Text_LooksGood::
+    .string "¡Te queda que ni pintado!\n"
+    .string "Nadie te reconocerá con él.$"
+
+SecretGym_Text_EliteFourProgram::
+    .string "Escucha bien, porque esto es\n"
+    .string "importante.\p"
+    .string "El ALTO MANDO ha impulsado un\n"
+    .string "programa para mejorar y capacitar\l"
+    .string "a los empleados de gimnasio.\p"
+    .string "Los empleados compiten en torneos\n"
+    .string "contra empleados de otros\l"
+    .string "gimnasios y contra sus líderes.\p"
+    .string "A los mejores se les da la\n"
+    .string "oportunidad de luchar contra el\l"
+    .string "mismísimo ALTO MANDO.\p"
+    .string "Y quien lo venza será ascendido\n"
+    .string "para trabajar en la mismísima\l"
+    .string "LIGA POKÉMON.\p"
+    .string "Quiero que te inscribas como\n"
+    .string "representante del Gimnasio de\l"
+    .string "Ciudad Plateada.\p"
+    .string "Será la tapadera perfecta para\n"
+    .string "recopilar información de cada\l"
+    .string "gimnasio sin levantar sospechas.$"
+
+SecretGym_Text_GetPokedex::
+    .string "Pero antes necesitarás una\n"
+    .string "POKÉDEX.\p"
+    .string "Ve a ver al PROFESOR OAK a\n"
+    .string "PUEBLO PALETA. Él te dará una.$"
+
+SecretGym_Text_GoSeeOak::
+    .string "Antes de inscribirte necesitas\n"
+    .string "una POKÉDEX.\p"
+    .string "Ve a ver al PROFESOR OAK a\n"
+    .string "PUEBLO PALETA.$"

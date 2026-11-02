@@ -461,6 +461,7 @@ gSpecials::
 	def_special StartPewterCaveTimer
 	def_special GiveBrockGeodude
 	def_special SpawnCaveDebrisDust
+	def_special UpdatePlayerAvatarOutfit
 .if DEBUG_SCENARIOS
 	def_special DebugResetParty
 .endif

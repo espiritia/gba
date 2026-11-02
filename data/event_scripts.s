@@ -1372,3 +1372,9 @@ Text_TestMsg::
 
 	.include "data/maps/CONEXIONPARTESECRETABROCK/scripts.inc"
 	.include "data/maps/CONEXIONPARTESECRETABROCK/text.inc"
+
+	.include "data/maps/MtMoonEXTERIOR_PARTE_FINAL/scripts.inc"
+	.include "data/maps/MtMoonEXTERIOR_PARTE_FINAL/text.inc"
+
+	.include "data/maps/MT_MOON_PARTE_1/scripts.inc"
+	.include "data/maps/MT_MOON_PARTE_1/text.inc"

@@ -4408,14 +4408,38 @@
     {
       "id": "LAYOUT_CONEXIONPARTESECRETABROCK",
       "name": "CONEXIONPARTESECRETABROCK_Layout",
-      "width": 9,
-      "height": 8,
+      "width": 15,
+      "height": 10,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_TrainerTower",
       "border_filepath": "data/layouts/CONEXIONPARTESECRETABROCK/border.bin",
       "blockdata_filepath": "data/layouts/CONEXIONPARTESECRETABROCK/map.bin"
+    },
+    {
+      "id": "LAYOUT_MT_MOON_EXTERIOR_PARTE_FINAL",
+      "name": "MtMoonEXTERIOR_PARTE_FINAL_Layout",
+      "width": 37,
+      "height": 38,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MtMoonEXTERIOR_PARTE_FINAL/border.bin",
+      "blockdata_filepath": "data/layouts/MtMoonEXTERIOR_PARTE_FINAL/map.bin"
+    },
+    {
+      "id": "LAYOUT_MT_MOON_PARTE_1",
+      "name": "MT_MOON_PARTE_1_Layout",
+      "width": 35,
+      "height": 35,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MT_MOON_PARTE_1/border.bin",
+      "blockdata_filepath": "data/layouts/MT_MOON_PARTE_1/map.bin"
     }
   ]
 }

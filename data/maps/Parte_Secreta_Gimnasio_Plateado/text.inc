@@ -86,49 +86,14 @@ SecretGym_Text_EliteFourProgram::
     .string "recopilar información de cada\l"
     .string "gimnasio sin levantar sospechas.$"
 
-SecretGym_Text_RegisterWithScientist::
-    .string "Pero antes debes inscribirte\n"
-    .string "oficialmente.\p"
-    .string "Habla con el PROF. PIZARRA y,\n"
-    .string "cuando acabes, ven conmigo.\p"
-    .string "Estaré esperando arriba. El\n"
-    .string "ascensor te subirá a la entrada\l"
-    .string "del gimnasio.$"
+SecretGym_Text_GetPokedex::
+    .string "Pero antes necesitarás una\n"
+    .string "POKÉDEX.\p"
+    .string "Ve a ver al PROFESOR OAK a\n"
+    .string "PUEBLO PALETA. Él te dará una.$"
 
-SecretGym_Text_ScientistTalkToBrock::
-    .string "BROCK quiere hablar contigo.\n"
-    .string "Yo no le haría esperar…$"
-
-SecretGym_Text_ScientistWelcome::
-    .string "¡Hola! Soy el PROF. PIZARRA, el\n"
-    .string "científico del gimnasio.\p"
-    .string "¡Bienvenido al equipo, {PLAYER}!\p"
-    .string "Quieres inscribirte en el programa\n"
-    .string "de ENTRENADORES DE GIMNASIO de la\l"
-    .string "LIGA POKÉMON, ¿verdad?\p"
-    .string "¡Qué emocionante!\p"
-    .string "Para eso necesitas una POKÉDEX…\n"
-    .string "¿No tienes? No pasa nada, aquí\l"
-    .string "tengo una nueva.\p"
-    .string "Déjame unos minutos para registrar\n"
-    .string "tus datos de forma oficial…$"
-
-SecretGym_Text_Registering::
-    .string "Registrando datos en los\n"
-    .string "servidores de la LIGA POKÉMON…$"
-
-SecretGym_Text_ScientistDone::
-    .string "¡Pues ya estaría todo!\p"
-    .string "Aquí tienes tu POKÉDEX, ya con tus\n"
-    .string "datos oficiales.$"
-
-SecretGym_Text_ReceivedPokedex::
-    .string "¡{PLAYER} recibió la POKÉDEX!$"
-
-SecretGym_Text_ScientistBrockWaits::
-    .string "BROCK te espera arriba.\n"
-    .string "Usa el ascensor.$"
-
-SecretGym_Text_CaveBlocked::
-    .string "No es posible volver.\n"
-    .string "La entrada ha quedado bloqueada.$"
+SecretGym_Text_GoSeeOak::
+    .string "Antes de inscribirte necesitas\n"
+    .string "una POKÉDEX.\p"
+    .string "Ve a ver al PROFESOR OAK a\n"
+    .string "PUEBLO PALETA.$"

@@ -1166,11 +1166,7 @@ u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 // Aplica el aspecto a pie actual (p. ej. tras ponerse o quitarse el traje de empleado)
 void UpdatePlayerAvatarOutfit(void)
 {
-    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
-
-    ObjectEventSetGraphicsId(player, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_NORMAL));
-    // Sin esto se sigue viendo el frame anterior (con la paleta nueva) hasta que el jugador se mueve
-    ObjectEventTurn(player, player->facingDirection);
+    ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_GFX_NORMAL));
 }
 
 u8 GetRSAvatarGraphicsIdByGender(u8 gender)

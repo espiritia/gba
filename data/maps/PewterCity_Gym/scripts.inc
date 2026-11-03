@@ -263,36 +263,6 @@ PewterCity_Gym_Movement_LiamReturnToPost::
 	face_right
 	step_end
 
-@ Pasadizo secreto (9,2) hacia la parte secreta: solo para empleados ya inscritos.
-@ Al salir del pasadizo (mirando al sur) no se comprueba nada
-PewterCity_Gym_EventScript_SecretPassageCheck::
-	lockall
-	specialvar VAR_RESULT, GetPlayerFacingDirection
-	goto_if_ne VAR_RESULT, DIR_NORTH, PewterCity_Gym_EventScript_PassageReleaseEnd
-	goto_if_ge VAR_PEWTER_CAVE_STATE, 5, PewterCity_Gym_EventScript_PassageReleaseEnd
-	textcolor NPC_TEXT_COLOR_NEUTRAL
-	msgbox PewterCity_Gym_Text_RestrictedArea
-	closemessage
-	applymovement LOCALID_PLAYER, PewterCity_Gym_Movement_StepBackFromPassage
-	waitmovement 0
-	releaseall
-	end
-
-PewterCity_Gym_Movement_StepBackFromPassage::
-	walk_down
+Boulder_movement::
+	walk_left
 	step_end
-
-@ Entrada del pasadizo (9,1): baja a la conexión con la parte secreta
-PewterCity_Gym_EventScript_SecretPassageEnter::
-	lockall
-	specialvar VAR_RESULT, GetPlayerFacingDirection
-	goto_if_ne VAR_RESULT, DIR_NORTH, PewterCity_Gym_EventScript_PassageReleaseEnd
-	playse SE_EXIT
-	warp MAP_CONEXIONPARTESECRETABROCK, 7, 8
-	waitstate
-	releaseall
-	end
-
-PewterCity_Gym_EventScript_PassageReleaseEnd::
-	releaseall
-	end

@@ -184,7 +184,3 @@ PewterCity_Gym_Text_SecretaryQuizPassed::
     .string "para la siguiente entrevista.\p"
     .string "¡Mucha suerte!$"
 
-
-PewterCity_Gym_Text_RestrictedArea::
-    .string "Área restringida.\n"
-    .string "Prohibido el paso.$"

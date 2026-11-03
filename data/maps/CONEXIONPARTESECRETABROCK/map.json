@@ -15,25 +15,7 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
   "object_events": [],
-  "warp_events": [
-    {
-      "x": 10,
-      "y": 2,
-      "elevation": 0,
-      "dest_map": "MAP_PARTE_SECRETA_GIMNASIO_PLATEADO",
-      "dest_warp_id": "0"
-    }
-  ],
-  "coord_events": [
-    {
-      "type": "trigger",
-      "x": 7,
-      "y": 9,
-      "elevation": 3,
-      "var": "VAR_TEMP_1",
-      "var_value": "0",
-      "script": "SecretGymLink_EventScript_ToGym"
-    }
-  ],
+  "warp_events": [],
+  "coord_events": [],
   "bg_events": []
 }

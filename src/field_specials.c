@@ -1311,7 +1311,7 @@ static const u8 sText_Debug_ForestMoss[]     = _("BOSQUE 2: MUSGO");
 static const u8 sText_Debug_ForestDecoys[]   = _("BOSQUE 2: SEÑUELOS");
 static const u8 sText_Debug_ForestMew[]      = _("BOSQUE 3: MEW Y AGATHA");
 static const u8 sText_Debug_ForestCave[]     = _("BOSQUE 4: CUEVA");
-static const u8 sText_Debug_BrockBattle[]    = _("BROCK: COMBATE");
+static const u8 sText_Debug_CaveExit[]       = _("CUEVA: SALIDA");
 static const u8 sText_Debug_AfterBrock[]     = _("TRAS VENCER A BROCK");
 static const u8 sText_Debug_Tools[]          = _("HERRAMIENTAS…");
 static const u8 sText_Debug_Heal[]           = _("CURAR EQUIPO");
@@ -1336,7 +1336,7 @@ static const u8 sText_Debug_TravelCinnabar[] = _("ISLA CANELA");
 static const u8 sText_Debug_TravelIndigo[]   = _("MESETA AÑIL");
 #endif
 
-static const u8 *const sListMenuLabels[][13] = {
+static const u8 *const sListMenuLabels[][14] = {
     [LISTMENU_BADGES] = 
     {
         gText_BoulderBadge,
@@ -1421,7 +1421,7 @@ static const u8 *const sListMenuLabels[][13] = {
         sText_Debug_ForestDecoys,
         sText_Debug_ForestMew,
         sText_Debug_ForestCave,
-        sText_Debug_BrockBattle,
+        sText_Debug_CaveExit,
         sText_Debug_AfterBrock,
         gOtherText_Exit,
     },

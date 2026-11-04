@@ -62,15 +62,6 @@ PewterCity_Text_SprayingRepelToKeepWildMonsOut::
     .string "Estoy rociando con repelente\n"
     .string "mi jardín para alejar a los pokémon.$"
 
-PewterCity_Text_BrocksLookingForChallengersFollowMe::
-    .string "You're a TRAINER, right?\p"
-    .string "BROCK's looking for new\n"
-    .string "challengers. Follow me!$"
-
-PewterCity_Text_GoTakeOnBrock::
-    .string "If you have the right stuff,\n"
-    .string "go take on BROCK!$"
-
 PewterCity_Text_TrainerTipsEarningEXP::
     .string "Consejos para entrenadores\p"
     .string "Todos los pokémon a los que\n"
@@ -152,3 +143,14 @@ PewterCity_Text_RunningShoesLetterFromMom::
     .string "you! Don't ever give up!\p"
     .string "From Mom$"
 
+PewterCity_Text_SoldierIncident::
+    .string "Lo siento, ha habido un incidente\n"
+    .string "reciente con un POKÉMON salvaje.\p"
+    .string "No podemos dejar pasar a nadie.$"
+
+PewterCity_Text_SoldierEmployee::
+    .string "¡Oh, vaya! Veo que eres empleado\n"
+    .string "del GIMNASIO de CIUDAD PLATEADA.\p"
+    .string "Los empleados públicos están\n"
+    .string "autorizados a pasar.\p"
+    .string "Puedes pasar.$"

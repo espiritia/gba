@@ -84,9 +84,9 @@
       "flag": "0"
     },
     {
-      "local_id": "LOCALID_PEWTER_GYM_GUIDE",
+      "local_id": "LOCALID_PEWTER_SOLDIER",
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_BOY",
+      "graphics_id": "OBJ_EVENT_GFX_POLICEMAN",
       "x": 42,
       "y": 20,
       "elevation": 3,
@@ -95,8 +95,8 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "PewterCity_EventScript_GymGuide",
-      "flag": "FLAG_HIDE_PEWTER_CITY_GYM_GUIDE"
+      "script": "PewterCity_EventScript_Soldier",
+      "flag": "0"
     },
     {
       "type": "object",
@@ -185,36 +185,27 @@
       "x": 42,
       "y": 21,
       "elevation": 3,
-      "var": "VAR_MAP_SCENE_PEWTER_CITY",
+      "var": "VAR_PEWTER_SOLDIER_STATE",
       "var_value": "0",
-      "script": "PewterCity_EventScript_GymGuideTriggerTop"
+      "script": "PewterCity_EventScript_SoldierTrigger"
     },
     {
       "type": "trigger",
       "x": 42,
       "y": 22,
       "elevation": 3,
-      "var": "VAR_MAP_SCENE_PEWTER_CITY",
+      "var": "VAR_PEWTER_SOLDIER_STATE",
       "var_value": "0",
-      "script": "PewterCity_EventScript_GymGuideTriggerMid"
+      "script": "PewterCity_EventScript_SoldierTrigger"
     },
     {
       "type": "trigger",
       "x": 42,
       "y": 23,
       "elevation": 3,
-      "var": "VAR_MAP_SCENE_PEWTER_CITY",
+      "var": "VAR_PEWTER_SOLDIER_STATE",
       "var_value": "0",
-      "script": "PewterCity_EventScript_GymGuideTriggerBottom"
-    },
-    {
-      "type": "trigger",
-      "x": 43,
-      "y": 23,
-      "elevation": 3,
-      "var": "VAR_MAP_SCENE_PEWTER_CITY",
-      "var_value": "0",
-      "script": "PewterCity_EventScript_GymGuideTriggerRight"
+      "script": "PewterCity_EventScript_SoldierTrigger"
     },
     {
       "type": "trigger",

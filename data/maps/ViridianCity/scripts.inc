@@ -235,3 +235,70 @@ ViridianCity_EventScript_DoTutorialBattle::
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
+
+@ Soldado que corta el paso por un incidente con un POKÉMON salvaje.
+@ Los empleados del gimnasio (inscritos, VAR_PEWTER_CAVE_STATE >= 5) pueden pasar.
+ViridianCity_EventScript_Soldier::
+	lock
+	faceplayer
+	msgbox ViridianCity_Text_SoldierIncident
+	goto_if_lt VAR_PEWTER_CAVE_STATE, 5, ViridianCity_EventScript_SoldierEnd
+	msgbox ViridianCity_Text_SoldierEmployee
+ViridianCity_EventScript_SoldierEnd::
+	release
+	end
+
+ViridianCity_EventScript_SoldierTrigger::
+	lockall
+	textcolor NPC_TEXT_COLOR_MALE
+	applymovement LOCALID_VIRIDIAN_SOLDIER, Common_Movement_FacePlayer
+	waitmovement 0
+	msgbox ViridianCity_Text_SoldierIncident
+	goto_if_ge VAR_PEWTER_CAVE_STATE, 5, ViridianCity_EventScript_SoldierLetPass
+	closemessage
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	call_if_eq VAR_RESULT, DIR_NORTH, ViridianCity_EventScript_SoldierStepBackDown
+	call_if_eq VAR_RESULT, DIR_SOUTH, ViridianCity_EventScript_SoldierStepBackUp
+	call_if_eq VAR_RESULT, DIR_EAST, ViridianCity_EventScript_SoldierStepBackLeft
+	call_if_eq VAR_RESULT, DIR_WEST, ViridianCity_EventScript_SoldierStepBackRight
+	releaseall
+	end
+
+ViridianCity_EventScript_SoldierLetPass::
+	msgbox ViridianCity_Text_SoldierEmployee
+	closemessage
+	setvar VAR_VIRIDIAN_SOLDIER_STATE, 1
+	releaseall
+	end
+
+ViridianCity_EventScript_SoldierStepBackDown::
+	applymovement LOCALID_PLAYER, ViridianCity_Movement_SoldierWalkDown
+	waitmovement 0
+	return
+
+ViridianCity_EventScript_SoldierStepBackUp::
+	applymovement LOCALID_PLAYER, Common_Movement_WalkUp
+	waitmovement 0
+	return
+
+ViridianCity_EventScript_SoldierStepBackLeft::
+	applymovement LOCALID_PLAYER, ViridianCity_Movement_SoldierWalkLeft
+	waitmovement 0
+	return
+
+ViridianCity_EventScript_SoldierStepBackRight::
+	applymovement LOCALID_PLAYER, ViridianCity_Movement_SoldierWalkRight
+	waitmovement 0
+	return
+
+ViridianCity_Movement_SoldierWalkDown::
+	walk_down
+	step_end
+
+ViridianCity_Movement_SoldierWalkLeft::
+	walk_left
+	step_end
+
+ViridianCity_Movement_SoldierWalkRight::
+	walk_right
+	step_end

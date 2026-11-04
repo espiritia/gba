@@ -88,7 +88,7 @@
 #define VAR_VIRIDIAN_FOREST_MOSS_TRAIL     0x4029
 #define VAR_FOLLOWER_LOCAL_ID              0x402A // localId del objeto que sigue al jugador (0 = ninguno)
 #define VAR_FOLLOWER_MAP                   0x402B // (mapGroup << 8) | mapNum del mapa del seguidor
-#define VAR_PEWTER_CAVE_STATE              0x402C // Cueva tras el evento de Mew: 0 = Brock espera, 1 = huida en curso, 2 = superada (Brock propone el trato), 3 = trato rechazado (Brock espera), 4 = contratado (ir a por la Pokédex con Oak)
+#define VAR_PEWTER_CAVE_STATE              0x402C // Cueva tras el evento de Mew: 0 = Brock espera, 1 = huida en curso, 2 = superada (Brock propone el trato), 3 = trato rechazado (Brock espera), 4 = contratado (falta inscribirse con el PROF. PIZARRA), 5 = inscrito (Pokédex recibida)
 #define VAR_PEWTER_CAVE_TIMER_START        0x402D // Segundos de juego (mod 65536) al empezar la huida
 #define VAR_PEWTER_CAVE_NEXT_QUAKE         0x402E // Segundos de huida en los que toca el siguiente temblor
 
@@ -99,7 +99,7 @@
 #define VAR_RESET_RTC_ENABLE               0x4032
 #define VAR_ENIGMA_BERRY_AVAILABLE         0x4033
 
-#define VAR_0x4034                         0x4034
+#define VAR_PEWTER_SOLDIER_STATE           0x4034 // Soldado de Plateada (este, Ruta 3): 0 = bloquea / avisa, 1 = ya te ha dejado pasar como empleado
 #define VAR_RESORT_GOREGEOUS_STEP_COUNTER  0x4035
 #define VAR_RESORT_GORGEOUS_REQUESTED_MON  0x4036
 #define VAR_PC_BOX_TO_SEND_MON             0x4037
@@ -110,7 +110,7 @@
 #define VAR_0x403C                         0x403C // Set to 0x0302, never read
 #define VAR_HERACROSS_SIZE_RECORD          0x403D
 #define VAR_DEOXYS_INTERACTION_NUM         0x403E
-#define VAR_0x403F                         0x403F
+#define VAR_VIRIDIAN_SOLDIER_STATE         0x403F // Soldado de Verde (sur, Ruta 1): 0 = bloquea / avisa, 1 = ya te ha dejado pasar como empleado
 #define VAR_MAGIKARP_SIZE_RECORD           0x4040
 #define VAR_0x4041                         0x4041
 #define VAR_TRAINER_CARD_MON_ICON_TINT_IDX 0x4042

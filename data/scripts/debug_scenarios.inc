@@ -28,7 +28,7 @@ Debug_EventScript_ScenarioMenu::
 	case 7, Debug_Scenario_ForestDecoys
 	case 8, Debug_Scenario_ForestMew
 	case 9, Debug_Scenario_ForestCave
-	case 10, Debug_Scenario_BrockBattle
+	case 10, Debug_Scenario_CaveExit
 	case 11, Debug_Scenario_AfterBrock
 	releaseall
 	end
@@ -119,11 +119,21 @@ Debug_Scenario_ForestCave::
 	releaseall
 	end
 
-@ Evento del bosque terminado y combate con Brock desbloqueado
-Debug_Scenario_BrockBattle::
+@ Huida de la cueva en curso (minuto recién empezado), un paso antes de la salida (26,29)
+Debug_Scenario_CaveExit::
 	call Debug_Setup_Reset
-	call Debug_Setup_BrockUnlocked
-	goto Debug_EventScript_WarpInFrontOfBrock
+	call Debug_Setup_ForestMossDone
+	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
+	special GiveBrockGeodude
+	setflag FLAG_GOT_BROCK_GEODUDE
+	setflag FLAG_HIDE_PEWTER_CAVE_BROCK
+	setvar VAR_PEWTER_CAVE_STATE, 1
+	special StartPewterCaveTimer
+	special HealPlayerParty
+	warp MAP_GIMNASIO_PLATEADO_PARTE_SECRETA, 26, 28
+	waitstate
+	releaseall
+	end
 
 @ Brock vencido, en la puerta del gimnasio (el ayudante de las deportivas espera al este)
 Debug_Scenario_AfterBrock::
@@ -177,7 +187,8 @@ Debug_Setup_Reset::
 	clearflag FLAG_GOT_TM39_FROM_BROCK
 	cleartrainerflag TRAINER_CAMPER_LIAM
 	cleartrainerflag TRAINER_LEADER_BROCK
-	clearflag FLAG_HIDE_PEWTER_CITY_GYM_GUIDE
+	setvar VAR_PEWTER_SOLDIER_STATE, 0
+	setvar VAR_VIRIDIAN_SOLDIER_STATE, 0
 	setflag FLAG_HIDE_PEWTER_CITY_RUNNING_SHOES_GUY
 	setvar VAR_MAP_SCENE_PEWTER_CITY, 0
 	@ Bosque Verde (el resto de flags FLAG_HIDE_* los pone el propio mapa al entrar)
@@ -199,6 +210,8 @@ Debug_Setup_Reset::
 	clearflag FLAG_HIDE_PEWTER_CAVE_BROCK
 	clearflag FLAG_GOT_BROCK_GEODUDE
 	clearflag FLAG_PLAYER_GYM_UNIFORM
+	clearflag FLAG_HIDE_SECRET_GYM_BROCK
+	clearflag FLAG_SYS_POKEDEX_GET
 	setrespawn HEAL_LOCATION_PEWTER_CITY
 	return
 
@@ -243,14 +256,15 @@ Debug_Setup_ForestMossDone::
 	setvar VAR_VIRIDIAN_FOREST_MOSS_TRAIL, 5
 	return
 
-@ Bosque terminado y combate con Brock desbloqueado.
-@ OJO: en el juego real todavía no hay ningún script que active
-@ FLAG_BROCK_GYM_BATTLE_UNLOCKED (el final del bosque es un TODO).
+@ Bosque terminado, contratado e inscrito (Pokédex) y combate desbloqueado.
+@ Solo lo usa Debug_Setup_DefeatedBrock: el combate con Brock será al final del juego.
 Debug_Setup_BrockUnlocked::
 	call Debug_Setup_ForestMossDone
 	setvar VAR_MAP_SCENE_VIRIDIAN_FOREST, 5
-	setvar VAR_PEWTER_CAVE_STATE, 4
+	setvar VAR_PEWTER_CAVE_STATE, 5
 	setflag FLAG_PLAYER_GYM_UNIFORM
+	setflag FLAG_HIDE_SECRET_GYM_BROCK
+	setflag FLAG_SYS_POKEDEX_GET
 	setflag FLAG_BROCK_GYM_BATTLE_UNLOCKED
 	return
 

@@ -103,7 +103,7 @@ Hay una segunda ROM, **solo para probar**, con un menú que te pone directamente
 | BOSQUE 2: SEÑUELOS | + rastro en el paso 4 | Al sur del brillo con señuelos |
 | BOSQUE 3: MEW Y AGATHA | + rastro completo | Dos pasos al sur de la oscuridad |
 | BOSQUE 4: CUEVA | + evento de Mew terminado | Principio de la cueva (Brock espera; luego 1 min 15 s para salir) |
-| BROCK: COMBATE | + bosque terminado, contratado por Brock (con traje), combate desbloqueado | Delante de Brock |
+| CUEVA: SALIDA | + huida en curso (el minuto acaba de empezar) | Un paso antes de la salida de la cueva (baja uno) |
 | TRAS VENCER A BROCK | + medalla Roca, MT39 | Puerta del gimnasio |
 
 Cada escenario **reinicia la historia** antes de aplicarse, así que puedes saltar de uno a otro sin problemas.
@@ -130,7 +130,7 @@ script a `sDebugPassageBlockScripts` en `src/field_control_avatar.c`.
 1. Crea un `Debug_Setup_...` que llame (`call`) al setup anterior y añada sus `setflag` / `setvar`.
 2. Crea un `Debug_Scenario_...` que haga `call Debug_Setup_Reset`, `call` a tu setup y `warp` al sitio.
 3. Añade su `case` en `Debug_EventScript_ScenarioMenu` y su nombre en `src/field_specials.c`
-   (lista `LISTMENU_DEBUG_SCENARIOS`), **en el mismo orden**. Caben 13 entradas por lista (`sListMenuLabels[][13]`).
+   (lista `LISTMENU_DEBUG_SCENARIOS`), **en el mismo orden**. Caben 14 entradas por lista (`sListMenuLabels[][14]`).
 4. **Regla:** si creas un flag o variable nuevo de la historia, añádelo también a `Debug_Setup_Reset`.
 
 ---

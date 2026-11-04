@@ -123,3 +123,14 @@ ViridianCity_Text_GymSign::
 ViridianCity_Text_GymDoorsAreLocked::
     .string "LAS PUERTAS ESTÄN CERRADAS$"
 
+ViridianCity_Text_SoldierIncident::
+    .string "Lo siento, ha habido un incidente\n"
+    .string "reciente con un POKÉMON salvaje.\p"
+    .string "No podemos dejar pasar a nadie.$"
+
+ViridianCity_Text_SoldierEmployee::
+    .string "¡Oh, vaya! Veo que eres empleado\n"
+    .string "del GIMNASIO de CIUDAD PLATEADA.\p"
+    .string "Los empleados públicos están\n"
+    .string "autorizados a pasar.\p"
+    .string "Puedes pasar.$"

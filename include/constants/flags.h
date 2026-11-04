@@ -550,7 +550,7 @@
 #define FLAG_HIDE_PEWTER_CAVE_ANTIDOTE 0x211
 #define FLAG_HIDE_PEWTER_CAVE_REPEL 0x212
 #define FLAG_PLAYER_GYM_UNIFORM 0x213 // El jugador lleva el traje de empleado del gimnasio
-#define FLAG_0x214               0x214
+#define FLAG_HIDE_SECRET_GYM_BROCK 0x214 // Brock se ha ido de la parte secreta por el ascensor
 #define FLAG_0x215               0x215
 #define FLAG_0x216               0x216
 #define FLAG_0x217               0x217

@@ -184,3 +184,24 @@ PewterCity_Gym_Text_SecretaryQuizPassed::
     .string "para la siguiente entrevista.\p"
     .string "¡Mucha suerte!$"
 
+
+PewterCity_Gym_Text_RestrictedArea::
+    .string "Área restringida.\n"
+    .string "Prohibido el paso.$"
+
+PewterCity_Gym_Text_BrockProgramStarted::
+    .string "El programa para empleados de la\n"
+    .string "LIGA POKÉMON ya ha comenzado.\p"
+    .string "Tu misión es acabar en los\n"
+    .string "primeros puestos para poder\l"
+    .string "llegar a la LIGA POKÉMON.\p"
+    .string "Explora e investiga a fondo\n"
+    .string "cada gimnasio. Todo lo que veas\l"
+    .string "u oigas quedará registrado\l"
+    .string "en tu POKÉDEX.\p"
+    .string "El PROF. PIZARRA podrá analizarlo\n"
+    .string "para descubrir qué está pasando\l"
+    .string "realmente entre bambalinas\l"
+    .string "con la LIGA POKÉMON…\p"
+    .string "Algo huele a RATTATA muerto\n"
+    .string "ahí dentro.$"

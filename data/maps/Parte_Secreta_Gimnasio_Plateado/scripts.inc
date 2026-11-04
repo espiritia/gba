@@ -30,7 +30,8 @@ SecretGym_EventScript_DealRejected::
 	releaseall
 	end
 
-@ Dice que sí: Brock lo contrata, le da el traje y le explica el programa del Alto Mando
+@ Dice que sí: Brock lo contrata, le da el traje, le explica el programa del Alto Mando
+@ y se va por el ascensor; el jugador debe inscribirse con el PROF. PIZARRA
 SecretGym_EventScript_DealAccepted::
 	msgbox SecretGym_Text_Hired
 	textcolor NPC_TEXT_COLOR_NEUTRAL
@@ -47,23 +48,111 @@ SecretGym_EventScript_DealAccepted::
 	textcolor NPC_TEXT_COLOR_MALE
 	msgbox SecretGym_Text_LooksGood
 	msgbox SecretGym_Text_EliteFourProgram
-	msgbox SecretGym_Text_GetPokedex
+	msgbox SecretGym_Text_RegisterWithScientist
 	closemessage
+	applymovement LOCALID_SECRET_GYM_BROCK, SecretGym_Movement_BrockToElevator
+	waitmovement 0
+	playse SE_EXIT
+	removeobject LOCALID_SECRET_GYM_BROCK
+	setflag FLAG_HIDE_SECRET_GYM_BROCK
 	setvar VAR_PEWTER_CAVE_STATE, 4
 	fadedefaultbgm
 	releaseall
 	end
 
+@ (5,4) -> (13,3), delante del ascensor
+SecretGym_Movement_BrockToElevator::
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	face_up
+	step_end
+
+@ Solo está en la sala mientras el trato sigue pendiente (estado 3)
 SecretGym_EventScript_Brock::
 	lock
 	faceplayer
 	textcolor NPC_TEXT_COLOR_MALE
-	goto_if_eq VAR_PEWTER_CAVE_STATE, 3, SecretGym_EventScript_BrockAskAgain
-	msgbox SecretGym_Text_GoSeeOak
-	release
-	end
-
-SecretGym_EventScript_BrockAskAgain::
 	msgbox SecretGym_Text_ThoughtAboutIt
 	goto SecretGym_EventScript_AskDeal
 	end
+
+@ PROF. PIZARRA: inscribe al jugador en el programa de la Liga y le da la POKÉDEX
+SecretGym_EventScript_Scientist::
+	lock
+	faceplayer
+	textcolor NPC_TEXT_COLOR_MALE
+	goto_if_eq VAR_PEWTER_CAVE_STATE, 4, SecretGym_EventScript_ScientistRegister
+	goto_if_ge VAR_PEWTER_CAVE_STATE, 5, SecretGym_EventScript_ScientistBrockWaits
+	msgbox SecretGym_Text_ScientistTalkToBrock
+	release
+	end
+
+SecretGym_EventScript_ScientistRegister::
+	msgbox SecretGym_Text_ScientistWelcome
+	closemessage
+	applymovement LOCALID_SECRET_GYM_SCIENTIST, Common_Movement_WalkInPlaceFasterLeft
+	waitmovement 0
+	playse SE_PC_LOGIN
+	waitse
+	delay 30
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	message SecretGym_Text_Registering
+	waitmessage
+	playse SE_PC_ON
+	waitse
+	delay 30
+	playse SE_PC_OFF
+	waitse
+	closemessage
+	faceplayer
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox SecretGym_Text_ScientistDone
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	playfanfare MUS_OBTAIN_KEY_ITEM
+	message SecretGym_Text_ReceivedPokedex
+	waitmessage
+	waitfanfare
+	setflag FLAG_SYS_POKEDEX_GET
+	special SetUnlockedPokedexFlags
+	setvar VAR_MAP_SCENE_POKEMON_CENTER_TEALA, 1
+	setvar VAR_PEWTER_CAVE_STATE, 5
+	textcolor NPC_TEXT_COLOR_MALE
+	goto SecretGym_EventScript_ScientistBrockWaits
+	end
+
+SecretGym_EventScript_ScientistBrockWaits::
+	msgbox SecretGym_Text_ScientistBrockWaits
+	release
+	end
+
+@ La puerta de la cueva (5,2): la entrada se derrumbó en la huida, así que no se puede volver
+SecretGym_EventScript_CaveBlocked::
+	lockall
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox SecretGym_Text_CaveBlocked
+	closemessage
+	applymovement LOCALID_PLAYER, SecretGym_Movement_StepBackFromCave
+	waitmovement 0
+	releaseall
+	end
+
+SecretGym_Movement_StepBackFromCave::
+	walk_down
+	step_end

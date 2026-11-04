@@ -3,9 +3,18 @@ PewterCity_Gym_MapScripts::
 
 PewterCity_Gym_EventScript_Brock::
 	goto_if_set FLAG_DEFEATED_BROCK, PewterCity_Gym_EventScript_BrockBattle
+	goto_if_ge VAR_PEWTER_CAVE_STATE, 5, PewterCity_Gym_EventScript_BrockProgramStarted
 	goto_if_not_defeated TRAINER_CAMPER_LIAM, PewterCity_Gym_EventScript_LiamIntercepts
 	goto_if_unset FLAG_BROCK_GYM_BATTLE_UNLOCKED, PewterCity_Gym_EventScript_BrockNotReady
 	goto PewterCity_Gym_EventScript_BrockBattle
+	end
+
+@ Ya inscrito en el programa (Pokédex recibida): sin combate (será al final del juego)
+PewterCity_Gym_EventScript_BrockProgramStarted::
+	lock
+	faceplayer
+	msgbox PewterCity_Gym_Text_BrockProgramStarted
+	release
 	end
 
 PewterCity_Gym_EventScript_BrockNotReady::
@@ -263,6 +272,57 @@ PewterCity_Gym_Movement_LiamReturnToPost::
 	face_right
 	step_end
 
-Boulder_movement::
+@ Entrada del pasadizo (9,1), al fondo del pasillo de detrás de Brock: baja a la conexión
+@ con la parte secreta, pero solo para empleados ya inscritos (si no, se le hace retroceder)
+PewterCity_Gym_EventScript_SecretPassageEnter::
+	lockall
+	goto_if_lt VAR_PEWTER_CAVE_STATE, 5, PewterCity_Gym_EventScript_RestrictedArea
+	playse SE_EXIT
+	warp MAP_CONEXIONPARTESECRETABROCK, 7, 8
+	waitstate
+	releaseall
+	end
+
+PewterCity_Gym_EventScript_RestrictedArea::
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox PewterCity_Gym_Text_RestrictedArea
+	closemessage
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	call_if_eq VAR_RESULT, DIR_NORTH, PewterCity_Gym_EventScript_StepBackDown
+	call_if_eq VAR_RESULT, DIR_EAST, PewterCity_Gym_EventScript_StepBackLeft
+	call_if_eq VAR_RESULT, DIR_WEST, PewterCity_Gym_EventScript_StepBackRight
+	call_if_eq VAR_RESULT, DIR_SOUTH, PewterCity_Gym_EventScript_StepBackUp
+	releaseall
+	end
+
+PewterCity_Gym_EventScript_StepBackDown::
+	applymovement LOCALID_PLAYER, PewterCity_Gym_Movement_WalkDown
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_StepBackLeft::
+	applymovement LOCALID_PLAYER, PewterCity_Gym_Movement_WalkLeft
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_StepBackRight::
+	applymovement LOCALID_PLAYER, PewterCity_Gym_Movement_WalkRight
+	waitmovement 0
+	return
+
+PewterCity_Gym_EventScript_StepBackUp::
+	applymovement LOCALID_PLAYER, Common_Movement_WalkUp
+	waitmovement 0
+	return
+
+PewterCity_Gym_Movement_WalkDown::
+	walk_down
+	step_end
+
+PewterCity_Gym_Movement_WalkLeft::
 	walk_left
+	step_end
+
+PewterCity_Gym_Movement_WalkRight::
+	walk_right
 	step_end

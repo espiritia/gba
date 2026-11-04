@@ -1032,10 +1032,8 @@ static s8 GetWarpEventAtPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 e
 // MODO) se ignoran. Si se crea un bloqueo nuevo, añadirlo aquí.
 extern const u8 ViridianCity_EventScript_RoadBlocked[];
 extern const u8 ViridianCity_EventScript_GymDoorLocked[];
-extern const u8 PewterCity_EventScript_GymGuideTriggerTop[];
-extern const u8 PewterCity_EventScript_GymGuideTriggerMid[];
-extern const u8 PewterCity_EventScript_GymGuideTriggerBottom[];
-extern const u8 PewterCity_EventScript_GymGuideTriggerRight[];
+extern const u8 PewterCity_EventScript_SoldierTrigger[];
+extern const u8 ViridianCity_EventScript_SoldierTrigger[];
 extern const u8 PewterCity_House2_EventScript_BlockExitNoSandshrew[];
 extern const u8 PewterCity_Museum_1F_EventScript_EntranceTriggerLeft[];
 extern const u8 PewterCity_Museum_1F_EventScript_EntranceTriggerMid[];
@@ -1079,10 +1077,8 @@ extern const u8 CinnabarIsland_EventScript_GymDoorLocked[];
 static const u8 *const sDebugPassageBlockScripts[] = {
     ViridianCity_EventScript_RoadBlocked,
     ViridianCity_EventScript_GymDoorLocked,
-    PewterCity_EventScript_GymGuideTriggerTop,
-    PewterCity_EventScript_GymGuideTriggerMid,
-    PewterCity_EventScript_GymGuideTriggerBottom,
-    PewterCity_EventScript_GymGuideTriggerRight,
+    PewterCity_EventScript_SoldierTrigger,
+    ViridianCity_EventScript_SoldierTrigger,
     PewterCity_House2_EventScript_BlockExitNoSandshrew,
     PewterCity_Museum_1F_EventScript_EntranceTriggerLeft,
     PewterCity_Museum_1F_EventScript_EntranceTriggerMid,

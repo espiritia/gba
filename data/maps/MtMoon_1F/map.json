@@ -210,6 +210,35 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "MtMoon_1F_EventScript_BaldingMan",
       "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_POLICEMAN",
+      "x": 17,
+      "y": 31,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MtMoon_1F_EventScript_Soldier",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_MT_MOON_MINER",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_HIKER",
+      "x": 35,
+      "y": 37,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MtMoon_1F_EventScript_Miner",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -239,6 +268,13 @@
       "y": 37,
       "elevation": 3,
       "dest_map": "MAP_ROUTE4",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 35,
+      "y": 37,
+      "elevation": 3,
+      "dest_map": "MAP_MT_MOON_PARTE_1",
       "dest_warp_id": "0"
     }
   ],

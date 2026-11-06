@@ -1379,8 +1379,6 @@ Text_TestMsg::
 	.include "data/maps/MT_MOON_PARTE_1/scripts.inc"
 	.include "data/maps/MT_MOON_PARTE_1/text.inc"
 
-	.include "data/maps/MT_MOON_PARTE_2/scripts.inc"
-	.include "data/maps/MT_MOON_PARTE_2/text.inc"
 
 	.include "data/maps/MT_MOON_LADERA_PARTE_1/scripts.inc"
 	.include "data/maps/MT_MOON_LADERA_PARTE_1/text.inc"

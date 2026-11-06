@@ -105,6 +105,9 @@ Hay una segunda ROM, **solo para probar**, con un menú que te pone directamente
 | BOSQUE 4: CUEVA | + evento de Mew terminado | Principio de la cueva (Brock espera; luego 1 min 15 s para salir) |
 | CUEVA: SALIDA | + huida en curso (el minuto acaba de empezar) | Un paso antes de la salida de la cueva (baja uno) |
 | TRAS VENCER A BROCK | + medalla Roca, MT39 | Puerta del gimnasio |
+| MT. MOON: MINERO 1 | Empleado del gimnasio (programa iniciado) | Delante del primer hermano minero (cobra 15000¥ o un MEOWTH) |
+| MT. MOON: MINERO 2 | + primer minero pagado | Delante del segundo hermano (combate, 2 POKÉMON aleatorios) |
+| MT. MOON: MINERO 3 | + segundo minero vencido | Delante del tercer hermano (minijuego ROMPEPIEDRAS) |
 
 Cada escenario **reinicia la historia** antes de aplicarse, así que puedes saltar de uno a otro sin problemas.
 

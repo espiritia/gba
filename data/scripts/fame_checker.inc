@@ -39,7 +39,7 @@ Route4_EventScript_Boy::
 	lock
 	faceplayer
 	famechecker FAMECHECKER_BROCK, 3
-	msgbox Route4_Text_PeopleLikeAndRespectBrock
+	msgbox Route4_Text_MinerBrothersShortcut
 	release
 	end
 

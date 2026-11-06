@@ -28,6 +28,7 @@ bool8 UsedPokemonCenterWarp(void);
 void QuestLog_CheckDepartingIndoorsMap(void);
 void QuestLog_TryRecordDepartedLocation(void);
 bool8 TryRunPewterCaveTimeout(void);
+bool8 MinerGame_IsActive(void);
 bool8 IsOnPewterCaveMap(void);
 void TrySetPewterCaveWhiteOutRespawn(void);
 void PausePewterCaveTimer(void);

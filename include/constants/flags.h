@@ -551,8 +551,8 @@
 #define FLAG_HIDE_PEWTER_CAVE_REPEL 0x212
 #define FLAG_PLAYER_GYM_UNIFORM 0x213 // El jugador lleva el traje de empleado del gimnasio
 #define FLAG_HIDE_SECRET_GYM_BROCK 0x214 // Brock se ha ido de la parte secreta por el ascensor
-#define FLAG_0x215               0x215
-#define FLAG_0x216               0x216
+#define FLAG_MT_MOON_MINER_PAID   0x215 // Pagados los 15000 al minero del atajo de MT. MOON 1F
+#define FLAG_MT_MOON_MINER3_BEATEN 0x216
 #define FLAG_0x217               0x217
 #define FLAG_0x218               0x218
 #define FLAG_0x219               0x219

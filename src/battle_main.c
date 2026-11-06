@@ -67,6 +67,7 @@ static void CB2_InitBattleInternal(void);
 static void CB2_PreInitMultiBattle(void);
 static void CB2_HandleStartMultiBattle(void);
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum);
+static u8 CreateMtMoonMinerParty(struct Pokemon *party);
 static void CB2_HandleStartBattle(void);
 static void TryCorrectShedinjaLanguage(struct Pokemon *mon);
 static void BattleMainCB1(void);
@@ -1536,6 +1537,37 @@ static void SpriteCB_UnusedDebugSprite_Step(struct Sprite *sprite)
     }
 }
 
+// Segundo hermano minero (MT_MOON_PARTE_1): de estos 12 saca 2 distintos al azar,
+// de nivel 16 a 20, cada vez que empieza el combate (estilo roguelike)
+static const u16 sMtMoonMinerPool[] = {
+    SPECIES_GEODUDE,
+    SPECIES_ONIX,
+    SPECIES_SANDSHREW,
+    SPECIES_DIGLETT,
+    SPECIES_RHYHORN,
+    SPECIES_MANKEY,
+    SPECIES_MACHOP,
+    SPECIES_PHANPY,
+    SPECIES_MAKUHITA,
+    SPECIES_MEDITITE,
+    SPECIES_LARVITAR,
+    SPECIES_NOSEPASS,
+};
+
+static u8 CreateMtMoonMinerParty(struct Pokemon *party)
+{
+    u8 first = Random() % ARRAY_COUNT(sMtMoonMinerPool);
+    u8 second = Random() % (ARRAY_COUNT(sMtMoonMinerPool) - 1);
+
+    if (second >= first)
+        second++;
+
+    ZeroEnemyPartyMons();
+    CreateMon(&party[0], sMtMoonMinerPool[first], 16 + Random() % 5, USE_RANDOM_IVS, FALSE, 0, OT_ID_RANDOM_NO_SHINY, 0);
+    CreateMon(&party[1], sMtMoonMinerPool[second], 16 + Random() % 5, USE_RANDOM_IVS, FALSE, 0, OT_ID_RANDOM_NO_SHINY, 0);
+    return 2;
+}
+
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 {
     u32 nameHash = 0;
@@ -1545,6 +1577,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
+
+    if (trainerNum == TRAINER_MT_MOON_MINER && (gBattleTypeFlags & BATTLE_TYPE_TRAINER))
+        return CreateMtMoonMinerParty(party);
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER
      && !(gBattleTypeFlags & (BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER_TOWER)))

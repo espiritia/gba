@@ -1,6 +1,9 @@
 Route4_Text_TrippedOverGeodude::
-    .string "Ouch! I tripped over a rocky\n"
-    .string "POKéMON, GEODUDE!$"
+    .string "Los hermanos mineros dicen que\n"
+    .string "los burócratas son unos\l"
+    .string "holgazanes…\p"
+    .string "¡Así que han abierto un atajo\n"
+    .string "ellos mismos!$"
 
 Route4_Text_CrissyIntro::
     .string "I came to MT. MOON in search of\n"
@@ -77,3 +80,9 @@ Route4_Text_PeopleLikeAndRespectBrock::
     .string "People like and respect him.\p"
     .string "I want to become a GYM LEADER\n"
     .string "like him.$"
+
+Route4_Text_MinerBrothersShortcut::
+    .string "Si necesitas ir a CIUDAD CELESTE,\n"
+    .string "habla con los hermanos mineros\l"
+    .string "de MT. MOON.\p"
+    .string "Han abierto un atajo.$"

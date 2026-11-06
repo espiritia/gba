@@ -90,3 +90,70 @@ MtMoon_1F_Text_BrockHelpsExcavateFossils::
     .string "under MT. MOON.\p"
     .string "Sometimes, BROCK of PEWTER GYM\n"
     .string "lends me a hand.$"
+
+MtMoon_1F_Text_SoldierCollapse::
+    .string "No es posible pasar por aquí.\n"
+    .string "El camino ha quedado bloqueado\l"
+    .string "por un derrumbe.\p"
+    .string "Pronto despejaremos el camino\n"
+    .string "de nuevo.\p"
+    .string "Si necesitas viajar a\n"
+    .string "CIUDAD CELESTE, toma una\l"
+    .string "ruta alternativa.\p"
+    .string "Gracias y disculpa las molestias.$"
+
+MtMoon_1F_Text_MinerOffer::
+    .string "El paso a CIUDAD CELESTE está\n"
+    .string "cortado.\p"
+    .string "Si no quieres dar un rodeo largo\n"
+    .string "y usar este atajo, tendrás que\l"
+    .string "pagar para pasar por aquí.$"
+
+MtMoon_1F_Text_MinerAskPay::
+    .string "Son 15000¥. ¿Pagas?$"
+
+MtMoon_1F_Text_MinerDeal::
+    .string "¡Trato hecho!\n"
+    .string "Adelante, el atajo es tuyo.$"
+
+MtMoon_1F_Text_MinerAlreadyPaid::
+    .string "¡Adelante!\n"
+    .string "El atajo es todo tuyo.$"
+
+MtMoon_1F_Text_MinerDeclined::
+    .string "Tú mismo.\n"
+    .string "El rodeo es largo…$"
+
+MtMoon_1F_Text_MinerNoMoney::
+    .string "No tienes suficiente dinero.\n"
+    .string "Vuelve cuando lo tengas.$"
+
+MtMoon_1F_Text_MinerMeowthExcited::
+    .string "¡¡Ohhh!! ¿De verdad tienes\n"
+    .string "un MEOWTH?\p"
+    .string "¡Si me lo regalas podría\n"
+    .string "dejarte pasar…!$"
+
+MtMoon_1F_Text_MinerAskMeowth::
+    .string "¿Le das tu MEOWTH al minero?$"
+
+MtMoon_1F_Text_GaveMeowth::
+    .string "{PLAYER} entregó su MEOWTH\n"
+    .string "al minero.$"
+
+MtMoon_1F_Text_MinerThanksMeowth::
+    .string "¡Gracias, gracias! ¡Lo cuidaré\n"
+    .string "como a un tesoro!\p"
+    .string "Adelante, el atajo es tuyo.$"
+
+MtMoon_1F_Text_MinerMeowthOnlyMon::
+    .string "…Pero no puedo dejarte sin\n"
+    .string "POKÉMON. Tendrás que pagar.$"
+
+MtMoon_1F_Text_MinerMeowthDeclined::
+    .string "Vaya…\n"
+    .string "Entonces tendrás que pagar.$"
+
+MtMoon_1F_Text_MinerMotto::
+    .string "Un minero siempre sabe\n"
+    .string "encontrar oro.$"

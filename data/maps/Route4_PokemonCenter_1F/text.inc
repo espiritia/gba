@@ -1,14 +1,13 @@
 Route4_PokemonCenter_1F_Text_CanHaveSixMonsWithYou::
-    .string "Okay, set six POKé BALLS in my\n"
-    .string "belt…\p"
-    .string "Yeah, that'll do it. At most, you\n"
-    .string "can have six POKéMON with you.$"
+    .string "Dicen que uno de los hermanos\n"
+    .string "mineros es muy tacaño.\p"
+    .string "Su POKÉMON favorito es MEOWTH.$"
 
 Route4_PokemonCenter_1F_Text_TeamRocketAttacksCerulean::
-    .string "TEAM ROCKET attacks CERULEAN\n"
-    .string "citizens…\p"
-    .string "Not a day goes by without TEAM\n"
-    .string "ROCKET being in the news.$"
+    .string "Con el derrumbe, los soldados\n"
+    .string "tardarán semanas en abrir el paso.\p"
+    .string "Esos mineros cobran por pasar,\n"
+    .string "pero al menos no hay que esperar…$"
 
 Route4_PokemonCenter_1F_Text_LaddieBuyMagikarpForJust500::
     .string "MAN: Hello there, laddie!\n"
@@ -44,11 +43,13 @@ Route4_PokemonCenter_1F_Text_IDontGiveRefunds::
     .string "You knew what you were getting!$"
 
 Route4_PokemonCenter_1F_Text_ShouldStoreMonsUsingPC::
-    .string "Sometimes, you'll have too many\n"
-    .string "POKéMON with you to add any more.\p"
-    .string "In that case, you should just\n"
-    .string "store some using any PC.$"
+    .string "Dicen que en total son tres\n"
+    .string "hermanos mineros…\p"
+    .string "Aunque nadie lo sabe con certeza.$"
 
 Route4_PokemonCenter_1F_Text_ItsANewspaper::
-    .string "It's a newspaper.$"
+    .string "¡NOTICIAS!\p"
+    .string "Derrumbe en MT. MOON: el paso a\n"
+    .string "CIUDAD CELESTE queda cortado\l"
+    .string "hasta nuevo aviso.$"
 

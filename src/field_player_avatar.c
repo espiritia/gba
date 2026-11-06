@@ -1,4 +1,5 @@
 #include "global.h"
+#include "field_specials.h"
 #include "gflib.h"
 #include "bike.h"
 #include "event_data.h"
@@ -526,7 +527,8 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     }
     else
     {
-        if (PlayerIsMovingOnRockStairs(direction))
+        // Minijuego ROMPEPIEDRAS: el jugador va más lento
+        if (PlayerIsMovingOnRockStairs(direction) || MinerGame_IsActive())
             PlayerWalkSlow(direction);
         else
             PlayerWalkNormal(direction);

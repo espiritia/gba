@@ -37,6 +37,8 @@
 #include "new_menu_helpers.h"
 #include "event_scripts.h"
 #include "constants/songs.h"
+#include "constants/event_object_movement.h"
+#include "constants/field_effects.h"
 #include "constants/items.h"
 #include "constants/maps.h"
 #include "constants/region_map_sections.h"
@@ -527,6 +529,31 @@ u8 GetLeadMonIndex(void)
 u16 GetPartyMonSpecies(void)
 {
     return GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES_OR_EGG, NULL);
+}
+
+// Minero de MT. MOON: hueco del primer MEOWTH del equipo (no huevo), o PARTY_SIZE si no hay.
+// También lo deja en VAR_0x8004 para GiveAwayPartyMonAt.
+u16 FindPartyMeowth(void)
+{
+    u8 i;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) == SPECIES_MEOWTH)
+        {
+            gSpecialVar_0x8004 = i;
+            return i;
+        }
+    }
+    return PARTY_SIZE;
+}
+
+// Quita del equipo el POKÉMON del hueco VAR_0x8004 (se lo regalas a alguien)
+void GiveAwayPartyMonAt(void)
+{
+    ZeroMonData(&gPlayerParty[gSpecialVar_0x8004]);
+    CompactPartySlots();
+    CalculatePlayerPartyCount();
 }
 
 bool8 IsMonOTNameNotPlayers(void)
@@ -1251,7 +1278,7 @@ void ListMenu(void)
 #if DEBUG_SCENARIOS
     case LISTMENU_DEBUG_SCENARIOS:
         task->data[0] = 7;
-        task->data[1] = 13;
+        task->data[1] = 16;
         task->data[2] = 1;
         task->data[3] = 1;
         task->data[4] = 8;
@@ -1313,6 +1340,9 @@ static const u8 sText_Debug_ForestMew[]      = _("BOSQUE 3: MEW Y AGATHA");
 static const u8 sText_Debug_ForestCave[]     = _("BOSQUE 4: CUEVA");
 static const u8 sText_Debug_CaveExit[]       = _("CUEVA: SALIDA");
 static const u8 sText_Debug_AfterBrock[]     = _("TRAS VENCER A BROCK");
+static const u8 sText_Debug_MinerGold[]      = _("MT. MOON: MINERO 1");
+static const u8 sText_Debug_MinerBattle[]    = _("MT. MOON: MINERO 2");
+static const u8 sText_Debug_MinerRocks[]     = _("MT. MOON: MINERO 3");
 static const u8 sText_Debug_Tools[]          = _("HERRAMIENTAS…");
 static const u8 sText_Debug_Heal[]           = _("CURAR EQUIPO");
 static const u8 sText_Debug_StrongTeam[]     = _("EQUIPO FUERTE NV50");
@@ -1336,7 +1366,7 @@ static const u8 sText_Debug_TravelCinnabar[] = _("ISLA CANELA");
 static const u8 sText_Debug_TravelIndigo[]   = _("MESETA AÑIL");
 #endif
 
-static const u8 *const sListMenuLabels[][14] = {
+static const u8 *const sListMenuLabels[][17] = {
     [LISTMENU_BADGES] = 
     {
         gText_BoulderBadge,
@@ -1423,6 +1453,9 @@ static const u8 *const sListMenuLabels[][14] = {
         sText_Debug_ForestCave,
         sText_Debug_CaveExit,
         sText_Debug_AfterBrock,
+        sText_Debug_MinerGold,
+        sText_Debug_MinerBattle,
+        sText_Debug_MinerRocks,
         gOtherText_Exit,
     },
     [LISTMENU_DEBUG_TOOLS] =
@@ -2860,3 +2893,427 @@ void DebugResetParty(void)
     CalculatePlayerPartyCount();
 }
 #endif
+
+// ---------------------------------------------------------------------------
+// Minijuego ROMPEPIEDRAS (tercer hermano minero, MtMoonEXTERIOR_PARTE_FINAL)
+// El MACHOP del minero lanza piedras a la arena; el jugador las rompe con A. Si hay
+// MG_LOSE_COUNT piedras reales en el suelo a la vez, pierde. Si aguanta
+// MG_DURATION frames, gana. Algunas "piedras" son señuelos: rebotan al caer,
+// no cuentan, desaparecen solas y aturden al jugador si las golpea.
+// No hay HUD: el jugador no sabe ni el tiempo ni cuántas piedras lleva.
+// ---------------------------------------------------------------------------
+#define MG_DURATION        1800 // 30 s
+#define MG_SLOTS           8
+#define MG_LOSE_COUNT      4
+#define MG_FIRST_THROW     30
+#define MG_INTERVAL_START  120  // frames entre lanzamientos al principio
+#define MG_INTERVAL_END    70   // ... y al final
+#define MG_INTERVAL_RUSH   50   // ráfaga final
+#define MG_RUSH_FRAMES     300  // últimos 5 s
+#define MG_JITTER          15
+#define MG_DECOY_CHANCE    30   // %
+#define MG_DECOY_LIFETIME  300
+#define MG_DECOY_BLINK     60
+#define MG_FALL_HEIGHT     80
+#define MG_ARENA_X_MIN     19
+#define MG_ARENA_X_MAX     25
+#define MG_ARENA_Y_MIN     15
+#define MG_ARENA_Y_MAX     21
+#define MG_MINER_X         26
+#define MG_MINER_Y         21
+
+enum {
+    MG_SLOT_FREE,
+    MG_SLOT_FALLING,
+    MG_SLOT_LANDED,
+    MG_SLOT_BREAKING,
+};
+
+struct MinerGameSlot
+{
+    u8 state;
+    bool8 isDecoy;
+    u8 speed;
+    s16 y2;
+    u16 timer;
+    s16 x, y; // casilla de destino (coordenadas del mapa)
+};
+
+extern const u8 MtMoonEXTERIOR_PARTE_FINAL_EventScript_MinerGameLost[];
+extern const u8 MtMoonEXTERIOR_PARTE_FINAL_EventScript_MinerGameWon[];
+extern const u8 MtMoonEXTERIOR_PARTE_FINAL_EventScript_MinerGameLeftArea[];
+
+static EWRAM_DATA struct MinerGameSlot sMinerGameSlots[MG_SLOTS] = {0};
+static EWRAM_DATA bool8 sMinerGameActive = FALSE;
+static EWRAM_DATA u16 sMinerGameFrames = 0;
+static EWRAM_DATA u16 sMinerGameThrowTimer = 0;
+static EWRAM_DATA u8 sMinerGameResult = 0; // 0 = jugando, 1 = perdido, 2 = ganado, 3 = salió de la zona
+
+static const u8 sMinerGameRockLocalIds[MG_SLOTS] = {
+    LOCALID_MINER_GAME_ROCK_1, LOCALID_MINER_GAME_ROCK_2, LOCALID_MINER_GAME_ROCK_3,
+    LOCALID_MINER_GAME_ROCK_4, LOCALID_MINER_GAME_ROCK_5, LOCALID_MINER_GAME_ROCK_6,
+    LOCALID_MINER_GAME_ROCK_7, LOCALID_MINER_GAME_ROCK_8,
+};
+// FLAG_TEMP_17 es el MACHOP, por eso las piedras 7 y 8 usan 18 y 19
+static const u16 sMinerGameRockFlags[MG_SLOTS] = {
+    FLAG_TEMP_11, FLAG_TEMP_12, FLAG_TEMP_13, FLAG_TEMP_14,
+    FLAG_TEMP_15, FLAG_TEMP_16, FLAG_TEMP_18, FLAG_TEMP_19,
+};
+static const u8 sMinerGameFallSpeeds[] = {2, 4, 8}; // lenta, media, rápida
+
+static void Task_MinerGame(u8 taskId);
+
+static bool8 MinerGame_OnMap(void)
+{
+    return gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_MT_MOON_EXTERIOR_PARTE_FINAL)
+        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_MT_MOON_EXTERIOR_PARTE_FINAL);
+}
+
+static struct ObjectEvent *MinerGame_GetObject(u8 localId)
+{
+    u8 objId;
+    if (TryGetObjectEventIdByLocalIdAndMap(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &objId))
+        return NULL;
+    return &gObjectEvents[objId];
+}
+
+static void MinerGame_RemoveSlot(u8 i)
+{
+    struct ObjectEvent *obj = MinerGame_GetObject(sMinerGameRockLocalIds[i]);
+    if (obj != NULL)
+    {
+        obj->invisible = FALSE;
+        RemoveObjectEventByLocalIdAndMap(sMinerGameRockLocalIds[i], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    }
+    FlagSet(sMinerGameRockFlags[i]);
+    sMinerGameSlots[i].state = MG_SLOT_FREE;
+}
+
+static s8 MinerGame_FindSlotByLocalId(u16 localId)
+{
+    u8 i;
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        if (sMinerGameRockLocalIds[i] == localId)
+            return i;
+    }
+    return -1;
+}
+
+bool8 MinerGame_IsActive(void)
+{
+    return sMinerGameActive && MinerGame_OnMap();
+}
+
+void MinerGame_Reset(void)
+{
+    u8 i;
+    u8 taskId = FindTaskIdByFunc(Task_MinerGame);
+    if (taskId != TASK_NONE)
+        DestroyTask(taskId);
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        FlagSet(sMinerGameRockFlags[i]);
+        sMinerGameSlots[i].state = MG_SLOT_FREE;
+    }
+    FlagSet(FLAG_TEMP_17); // MACHOP del minero, oculto hasta que lo saca
+    sMinerGameActive = FALSE;
+    sMinerGameResult = 0;
+}
+
+void MinerGame_ClearAll(void)
+{
+    u8 i;
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        if (sMinerGameSlots[i].state != MG_SLOT_FREE)
+            MinerGame_RemoveSlot(i);
+    }
+}
+
+void MinerGame_Start(void)
+{
+    MinerGame_Reset();
+    sMinerGameActive = TRUE;
+    sMinerGameFrames = 0;
+    sMinerGameThrowTimer = MG_FIRST_THROW;
+    CreateTask(Task_MinerGame, 80);
+}
+
+// VAR_RESULT: 0 = nada (aún cae / fuera de juego), 1 = piedra, 2 = señuelo
+void MinerGame_HitObject(void)
+{
+    s8 i = MinerGame_FindSlotByLocalId(gSpecialVar_LastTalked);
+    gSpecialVar_Result = 0;
+    if (i < 0 || !sMinerGameActive || sMinerGameResult != 0)
+        return;
+    // Se puede golpear también mientras cae (si no, al pulsar A sobre una piedra
+    // que aún no ha tocado el suelo no pasaba nada)
+    if (sMinerGameSlots[i].state != MG_SLOT_LANDED && sMinerGameSlots[i].state != MG_SLOT_FALLING)
+        return;
+    sMinerGameSlots[i].state = MG_SLOT_BREAKING;
+    if (sMinerGameSlots[i].isDecoy)
+    {
+        gSpecialVar_Result = 2;
+    }
+    else
+    {
+        // La rotura la anima y la retira el task: el jugador no se queda
+        // bloqueado esperando a que termine la animación
+        struct ObjectEvent *obj = MinerGame_GetObject(sMinerGameRockLocalIds[i]);
+        if (obj != NULL)
+        {
+            gSprites[obj->spriteId].y2 = 0;
+            ObjectEventClearHeldMovementIfActive(obj);
+            ObjectEventSetHeldMovement(obj, MOVEMENT_ACTION_ROCK_SMASH_BREAK);
+        }
+        PlaySE(SE_M_ROCK_THROW);
+        gSpecialVar_Result = 1;
+    }
+}
+
+void MinerGame_RemoveObject(void)
+{
+    s8 i = MinerGame_FindSlotByLocalId(gSpecialVar_LastTalked);
+    if (i >= 0 && sMinerGameSlots[i].state != MG_SLOT_FREE)
+        MinerGame_RemoveSlot(i);
+}
+
+bool8 MinerGame_IsPlayerAboveMiner(void)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    return player->currentCoords.x == MG_MINER_X + MAP_OFFSET
+        && player->currentCoords.y == MG_MINER_Y - 1 + MAP_OFFSET;
+}
+
+static bool8 MinerGame_IsTileFree(s16 x, s16 y)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    s16 mx = x + MAP_OFFSET;
+    s16 my = y + MAP_OFFSET;
+    u8 i;
+
+    if (MapGridGetCollisionAt(mx, my))
+        return FALSE;
+    // Nunca dos piedras (o señuelos) en la misma casilla, caigan o estén ya en el suelo
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        if (sMinerGameSlots[i].state != MG_SLOT_FREE && sMinerGameSlots[i].x == x && sMinerGameSlots[i].y == y)
+            return FALSE;
+    }
+    if (GetObjectEventIdByXY(mx, my) != OBJECT_EVENTS_COUNT)
+        return FALSE;
+    if (player->previousCoords.x == mx && player->previousCoords.y == my)
+        return FALSE;
+    return TRUE;
+}
+
+static u8 MinerGame_DirectionTo(struct ObjectEvent *from, s16 x, s16 y)
+{
+    s16 dx = x - (from->currentCoords.x - MAP_OFFSET);
+    s16 dy = y - (from->currentCoords.y - MAP_OFFSET);
+    if (abs(dy) > abs(dx))
+        return dy < 0 ? DIR_NORTH : DIR_SOUTH;
+    return dx < 0 ? DIR_WEST : DIR_EAST;
+}
+
+static void MinerGame_Throw(void)
+{
+    u8 i, attempt;
+    s16 x, y;
+    u8 objId;
+    struct ObjectEvent *thrower;
+
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        if (sMinerGameSlots[i].state == MG_SLOT_FREE)
+            break;
+    }
+    if (i == MG_SLOTS)
+        return;
+
+    for (attempt = 0; attempt < 20; attempt++)
+    {
+        x = MG_ARENA_X_MIN + Random() % (MG_ARENA_X_MAX - MG_ARENA_X_MIN + 1);
+        y = MG_ARENA_Y_MIN + Random() % (MG_ARENA_Y_MAX - MG_ARENA_Y_MIN + 1);
+        if (MinerGame_IsTileFree(x, y))
+            break;
+    }
+    if (attempt == 20)
+        return;
+
+    FlagClear(sMinerGameRockFlags[i]);
+    SetObjEventTemplateCoords(sMinerGameRockLocalIds[i], x, y);
+    objId = TrySpawnObjectEvent(sMinerGameRockLocalIds[i], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    if (objId == OBJECT_EVENTS_COUNT)
+    {
+        FlagSet(sMinerGameRockFlags[i]);
+        return;
+    }
+
+    // TrySpawnObjectEvent no compensa el scroll de cámara a mitad de paso: si el
+    // jugador camina, el sprite quedaba desplazado de su casilla real (piedra
+    // "fantasma" atravesable). Se recoloca como hace setobjectxy.
+    MoveObjectEventToMapCoords(&gObjectEvents[objId], x + MAP_OFFSET, y + MAP_OFFSET);
+
+    sMinerGameSlots[i].state = MG_SLOT_FALLING;
+    sMinerGameSlots[i].isDecoy = (Random() % 100) < MG_DECOY_CHANCE;
+    sMinerGameSlots[i].speed = sMinerGameFallSpeeds[Random() % ARRAY_COUNT(sMinerGameFallSpeeds)];
+    sMinerGameSlots[i].y2 = -MG_FALL_HEIGHT;
+    sMinerGameSlots[i].timer = 0;
+    sMinerGameSlots[i].x = x;
+    sMinerGameSlots[i].y = y;
+    gSprites[gObjectEvents[objId].spriteId].y2 = -MG_FALL_HEIGHT;
+
+    // Quien lanza es el MACHOP del minero
+    thrower = MinerGame_GetObject(LOCALID_MINER_GAME_MACHOP);
+    if (thrower != NULL && !thrower->heldMovementActive)
+        ObjectEventTurn(thrower, MinerGame_DirectionTo(thrower, x, y));
+    PlaySE(SE_BALL_THROW);
+}
+
+static void MinerGame_UpdateSlot(u8 i)
+{
+    struct MinerGameSlot *slot = &sMinerGameSlots[i];
+    struct ObjectEvent *obj = MinerGame_GetObject(sMinerGameRockLocalIds[i]);
+    struct Sprite *sprite;
+
+    if (obj == NULL)
+    {
+        // El objeto desapareció (p. ej. fuera de pantalla): se libera el hueco
+        if (slot->state != MG_SLOT_BREAKING)
+        {
+            FlagSet(sMinerGameRockFlags[i]);
+            slot->state = MG_SLOT_FREE;
+        }
+        return;
+    }
+    sprite = &gSprites[obj->spriteId];
+
+    if (slot->state == MG_SLOT_FALLING)
+    {
+        slot->y2 += slot->speed;
+        if (slot->y2 >= 0)
+        {
+            slot->y2 = 0;
+            sprite->y2 = 0;
+            slot->state = MG_SLOT_LANDED;
+            slot->timer = 0;
+            if (slot->isDecoy)
+            {
+                ObjectEventSetHeldMovement(obj, MOVEMENT_ACTION_JUMP_IN_PLACE_DOWN);
+                PlaySE(SE_BALL_BOUNCE_1);
+            }
+            else
+            {
+                gFieldEffectArguments[0] = obj->currentCoords.x;
+                gFieldEffectArguments[1] = obj->currentCoords.y;
+                gFieldEffectArguments[2] = obj->currentElevation;
+                gFieldEffectArguments[3] = sprite->oam.priority;
+                FieldEffectStart(FLDEFF_DUST);
+                PlaySE(SE_WALL_HIT);
+            }
+        }
+        else
+        {
+            sprite->y2 = slot->y2;
+        }
+    }
+    else if (slot->state == MG_SLOT_BREAKING && !slot->isDecoy)
+    {
+        // Piedra golpeada: se retira al acabar la animación de rotura
+        if (ObjectEventCheckHeldMovementStatus(obj) != 0)
+            MinerGame_RemoveSlot(i);
+    }
+    else if (slot->state == MG_SLOT_LANDED && slot->isDecoy)
+    {
+        if (obj->heldMovementActive)
+            ObjectEventClearHeldMovementIfFinished(obj);
+        slot->timer++;
+        if (slot->timer >= MG_DECOY_LIFETIME)
+            MinerGame_RemoveSlot(i);
+        else if (slot->timer >= MG_DECOY_LIFETIME - MG_DECOY_BLINK)
+            obj->invisible = (slot->timer / 4) & 1;
+    }
+}
+
+static void Task_MinerGame(u8 taskId)
+{
+    u8 i, landed;
+    u16 interval;
+
+    if (!MinerGame_OnMap())
+    {
+        sMinerGameActive = FALSE;
+        DestroyTask(taskId);
+        return;
+    }
+
+    if (sMinerGameResult != 0)
+    {
+        // Espera a que no haya ningún script en curso para lanzar el final
+        if (!ArePlayerFieldControlsLocked() && !ScriptContext_IsEnabled())
+        {
+            sMinerGameActive = FALSE;
+            if (sMinerGameResult == 2)
+                ScriptContext_SetupScript(MtMoonEXTERIOR_PARTE_FINAL_EventScript_MinerGameWon);
+            else if (sMinerGameResult == 3)
+                ScriptContext_SetupScript(MtMoonEXTERIOR_PARTE_FINAL_EventScript_MinerGameLeftArea);
+            else
+                ScriptContext_SetupScript(MtMoonEXTERIOR_PARTE_FINAL_EventScript_MinerGameLost);
+            DestroyTask(taskId);
+        }
+        return;
+    }
+
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        if (sMinerGameSlots[i].state != MG_SLOT_FREE)
+            MinerGame_UpdateSlot(i);
+    }
+
+    // Salir de la zona de juego (la arena más una casilla alrededor) es perder
+    {
+        struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+        s16 px = player->currentCoords.x - MAP_OFFSET;
+        s16 py = player->currentCoords.y - MAP_OFFSET;
+        if (px < MG_ARENA_X_MIN - 1 || px > MG_ARENA_X_MAX + 1
+         || py < MG_ARENA_Y_MIN - 1 || py > MG_ARENA_Y_MAX + 1)
+        {
+            sMinerGameResult = 3;
+            return;
+        }
+    }
+
+    landed = 0;
+    for (i = 0; i < MG_SLOTS; i++)
+    {
+        if (sMinerGameSlots[i].state == MG_SLOT_LANDED && !sMinerGameSlots[i].isDecoy)
+            landed++;
+    }
+    if (landed >= MG_LOSE_COUNT)
+    {
+        sMinerGameResult = 1;
+        return;
+    }
+
+    sMinerGameFrames++;
+    if (sMinerGameFrames >= MG_DURATION)
+    {
+        sMinerGameResult = 2;
+        return;
+    }
+
+    if (sMinerGameThrowTimer > 0)
+        sMinerGameThrowTimer--;
+    if (sMinerGameThrowTimer == 0)
+    {
+        MinerGame_Throw();
+        if (MG_DURATION - sMinerGameFrames <= MG_RUSH_FRAMES)
+            interval = MG_INTERVAL_RUSH;
+        else
+            interval = MG_INTERVAL_START - ((MG_INTERVAL_START - MG_INTERVAL_END) * sMinerGameFrames) / MG_DURATION;
+        interval = interval - MG_JITTER + Random() % (2 * MG_JITTER + 1);
+        sMinerGameThrowTimer = interval;
+    }
+}

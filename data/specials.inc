@@ -336,6 +336,15 @@ gSpecials::
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
 	def_special GetPartyMonSpecies
+	def_special FindPartyMeowth
+	def_special MinerGame_Start
+	def_special MinerGame_Reset
+	def_special MinerGame_ClearAll
+	def_special MinerGame_HitObject
+	def_special MinerGame_RemoveObject
+	def_special MinerGame_IsPlayerAboveMiner
+	def_special MinerGame_IsActive
+	def_special GiveAwayPartyMonAt
 	def_special IsSelectedMonEgg
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial

@@ -30,6 +30,9 @@ Debug_EventScript_ScenarioMenu::
 	case 9, Debug_Scenario_ForestCave
 	case 10, Debug_Scenario_CaveExit
 	case 11, Debug_Scenario_AfterBrock
+	case 12, Debug_Scenario_MinerGold
+	case 13, Debug_Scenario_MinerBattle
+	case 14, Debug_Scenario_MinerRocks
 	releaseall
 	end
 
@@ -145,6 +148,36 @@ Debug_Scenario_AfterBrock::
 	releaseall
 	end
 
+@ Empleado del gimnasio; delante del primer hermano minero (cobra 15000 o un MEOWTH)
+Debug_Scenario_MinerGold::
+	call Debug_Setup_Reset
+	call Debug_Setup_BrockUnlocked
+	special HealPlayerParty
+	warp MAP_MT_MOON_1F, 35, 36
+	waitstate
+	releaseall
+	end
+
+@ + primer minero pagado; delante del segundo (combate con equipo aleatorio)
+Debug_Scenario_MinerBattle::
+	call Debug_Setup_Reset
+	call Debug_Setup_MinerPaid
+	special HealPlayerParty
+	warp MAP_MT_MOON_PARTE_1, 24, 21
+	waitstate
+	releaseall
+	end
+
+@ + segundo minero vencido; delante del tercero (minijuego ROMPEPIEDRAS)
+Debug_Scenario_MinerRocks::
+	call Debug_Setup_Reset
+	call Debug_Setup_MinerBeaten
+	special HealPlayerParty
+	warp MAP_MT_MOON_EXTERIOR_PARTE_FINAL, 25, 21
+	waitstate
+	releaseall
+	end
+
 Debug_EventScript_WarpPewterHouse2Door::
 	special HealPlayerParty
 	warp MAP_PEWTER_CITY, 6
@@ -211,6 +244,9 @@ Debug_Setup_Reset::
 	clearflag FLAG_GOT_BROCK_GEODUDE
 	clearflag FLAG_PLAYER_GYM_UNIFORM
 	clearflag FLAG_HIDE_SECRET_GYM_BROCK
+	clearflag FLAG_MT_MOON_MINER_PAID
+	clearflag FLAG_MT_MOON_MINER3_BEATEN
+	cleartrainerflag TRAINER_MT_MOON_MINER
 	clearflag FLAG_SYS_POKEDEX_GET
 	setrespawn HEAL_LOCATION_PEWTER_CITY
 	return
@@ -266,6 +302,18 @@ Debug_Setup_BrockUnlocked::
 	setflag FLAG_HIDE_SECRET_GYM_BROCK
 	setflag FLAG_SYS_POKEDEX_GET
 	setflag FLAG_BROCK_GYM_BATTLE_UNLOCKED
+	return
+
+@ Primer hermano minero pagado (MtMoon_1F)
+Debug_Setup_MinerPaid::
+	call Debug_Setup_BrockUnlocked
+	setflag FLAG_MT_MOON_MINER_PAID
+	return
+
+@ Segundo hermano minero vencido (MT_MOON_PARTE_1)
+Debug_Setup_MinerBeaten::
+	call Debug_Setup_MinerPaid
+	settrainerflag TRAINER_MT_MOON_MINER
 	return
 
 @ Brock vencido (lo mismo que PewterCity_Gym_EventScript_DefeatedBrock + MT39)

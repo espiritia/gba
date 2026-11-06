@@ -245,7 +245,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
             metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
         }
     }
-    if (input->checkStandardWildEncounter && CheckStandardWildEncounter(metatileAttributes) == TRUE)
+    if (input->checkStandardWildEncounter && !MinerGame_IsActive() && CheckStandardWildEncounter(metatileAttributes) == TRUE)
     {
         gFieldInputRecord.checkStandardWildEncounter = TRUE;
         return TRUE;
@@ -285,7 +285,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         }
     }
 
-    if (input->pressedStartButton)
+    if (input->pressedStartButton && !MinerGame_IsActive())
     {
         gFieldInputRecord.pressedStartButton = TRUE;
         FlagSet(FLAG_OPENED_START_MENU);
@@ -293,7 +293,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         ShowStartMenu();
         return TRUE;
     }
-    if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
+    if (input->pressedSelectButton && !MinerGame_IsActive() && UseRegisteredKeyItemOnField() == TRUE)
     {
         gFieldInputRecord.pressedSelectButton = TRUE;
         return TRUE;

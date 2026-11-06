@@ -10860,3 +10860,18 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CueBallPaxton[] = {
         .species = SPECIES_MUK,
     },
 };
+
+// Marcador de posición: solo fija partySize = 2. El equipo real lo genera
+// CreateMtMoonMinerParty (battle_main.c) al azar en cada combate.
+static const struct TrainerMonNoItemDefaultMoves sParty_MtMoonMiner[] = {
+    {
+        .iv = 0,
+        .lvl = 16,
+        .species = SPECIES_GEODUDE,
+    },
+    {
+        .iv = 0,
+        .lvl = 16,
+        .species = SPECIES_GEODUDE,
+    },
+};

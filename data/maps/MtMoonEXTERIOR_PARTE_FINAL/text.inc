@@ -24,7 +24,7 @@ MtMoonEXTERIOR_PARTE_FINAL_Text_ReceivedPickaxe::
 MtMoonEXTERIOR_PARTE_FINAL_Text_MinerRules::
 	.string "Acércate a cada piedra y dale un\n"
 	.string "buen golpe de PICO con A.\p"
-	.string "Si se juntan cuatro en el suelo,\n"
+	.string "Si se juntan cinco en el suelo,\n"
 	.string "pierdes. Aguanta un rato y ganas.\p"
 	.string "Ah, y ojo: no todo lo que lanza\n"
 	.string "es una piedra de verdad. ¡Je, je!$"

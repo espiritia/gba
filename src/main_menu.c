@@ -7,6 +7,7 @@
 #include "menu.h"
 #include "link.h"
 #include "oak_speech.h"
+#include "cinematic.h"
 #include "overworld.h"
 #include "quest_log.h"
 #include "mystery_gift_menu.h"
@@ -496,7 +497,7 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
                 break;
             }
 #endif
-            StartNewGameScene();
+            StartNewGameCinematic();
             break;
         case MAIN_MENU_CONTINUE:
             gPlttBufferUnfaded[0] = RGB_BLACK;

@@ -11,6 +11,7 @@
 #include "save.h"
 #include "new_game.h"
 #include "title_screen.h"
+#include "cinematic.h"
 #include "decompress.h"
 #include "util.h"
 #include "trig.h"
@@ -898,7 +899,7 @@ static void VBlankCB_Copyright(void)
 static void CB2_WaitFadeBeforeSetUpIntro(void)
 {
     if (!UpdatePaletteFade())
-        SetMainCallback2(CB2_SetUpIntro);
+        SetMainCallback2(CB2_StartIntroCinematic); // antes: CB2_SetUpIntro (GAME FREAK + Gengar/Nidorino)
 }
 
 static void LoadCopyrightGraphics(u16 charBase, u16 screenBase, u16 palOffset)

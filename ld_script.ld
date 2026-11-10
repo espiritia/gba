@@ -224,6 +224,7 @@ SECTIONS {
         src/battle_controller_oak_old_man.o(.text);
         src/player_pc.o(.text);
         src/intro.o(.text);
+        src/cinematic.o(.text);
         src/battle_anim_special.o(.text);
         src/hall_of_fame.o(.text);
         src/credits.o(.text);
@@ -520,6 +521,7 @@ SECTIONS {
         src/battle_controller_oak_old_man.o(.rodata);
         src/player_pc.o(.rodata);
         src/intro.o(.rodata);
+        src/cinematic.o(.rodata);
         src/battle_anim_special.o(.rodata);
         src/hall_of_fame.o(.rodata);
         src/credits.o(.rodata);

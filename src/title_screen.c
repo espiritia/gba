@@ -339,7 +339,8 @@ static const u32 *const sUnused_Tilemaps[] = {
     sUnused_Tilemap6,
 };
 
-void CB2_InitTitleScreen(void)
+// Título original de FireRed: ya no se usa, lo sustituye src/cinematic.c
+void CB2_InitTitleScreen_FRLG(void)
 {
     switch (gMain.state)
     {

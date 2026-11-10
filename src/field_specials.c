@@ -2904,11 +2904,11 @@ void DebugResetParty(void)
 // ---------------------------------------------------------------------------
 #define MG_DURATION        1800 // 30 s
 #define MG_SLOTS           8
-#define MG_LOSE_COUNT      4
+#define MG_LOSE_COUNT      5
 #define MG_FIRST_THROW     30
 #define MG_INTERVAL_START  120  // frames entre lanzamientos al principio
-#define MG_INTERVAL_END    70   // ... y al final
-#define MG_INTERVAL_RUSH   50   // ráfaga final
+#define MG_INTERVAL_END    90   // ... y al final
+#define MG_INTERVAL_RUSH   60   // ráfaga final
 #define MG_RUSH_FRAMES     300  // últimos 5 s
 #define MG_JITTER          15
 #define MG_DECOY_CHANCE    30   // %

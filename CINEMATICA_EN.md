@@ -9,36 +9,56 @@ Two parts:
 - **Part 2 — New game** (images + text): replaces the blue help screens (controls and Pikachu). It ends on
   Professor Oak's speech.
 
-## How to prepare each image
+Each scene is a short **5-second pixel-art animation**, built in layers like the original FireRed intro: one
+static background plus a few small animated sprites. Fades, flashes, shakes and colour pulses are done by the
+game engine, so they are **not** drawn into the frames.
 
-1. Generate the image with the AI at **3:2** (for example 1440×960) using *style prefix + scene prompt*.
-2. Downscale to **240×160 pixels** (nearest neighbour if it is already pixel art; otherwise bicubic, then touch
-   up).
-3. Convert to an **8-bit indexed PNG with at most 224 colours** (in GIMP: *Image → Mode → Indexed…*, "Generate
-   optimum palette", max. 224 colours, no dithering or light dithering). Colours 224-255 are reserved for the text
-   and cannot be used.
-4. Save it under the scene's file name in `graphics/cinematic/` (overwriting the placeholder) and build.
+## How to produce each scene
 
-- Title: the **POKéMON ARENA** logo is drawn inside the `p1_12.png` image itself (there is no separate sprite). If
-  it is redone with AI, generate the background without text and paste the logo on top, leaving the "PULSA START"
-  band free (y 128-144, centre).
-- In the **Part 2** images, the bottom band (the last 40 px) is covered by the text box. Keep that area simple,
-  with nothing important in it.
+1. Copy the scene's whole ```` ```text ```` block below and paste it into the Aseprite MCP. Each block is
+   self-contained: scene, sizes, palette, layers, frames, timeline and export.
+2. Check the result against the [Animation spec (GBA)](#animation-spec-gba): canvas size, colour counts, OBJ box
+   sizes and the safe zones.
+3. Save the files listed in the block's **Export** section in `graphics/cinematic/<scene>/`.
+4. Until the engine can play sprite layers, copy `<scene>_bg.png` to `graphics/cinematic/<scene>.png`
+   (overwriting the placeholder) and build. The game will show that background as a still image.
 
-### Style prefix (for every prompt)
+- Title: the **POKéMON ARENA** logo is part of the `p1_12` background (there is no separate sprite). If the
+  background is redrawn, leave the upper-left area empty and paste the logo on top afterwards. Also keep the
+  "PULSA START" band clear (y 128-144, centre).
+- In **Part 2**, the bottom band (y ≥ 120, the last 40 px) is covered by the text box. Keep it dark and simple,
+  with nothing important in it, and no sprites.
 
-> 16-bit pixel art, Game Boy Advance era cinematic still, limited palette, clean readable silhouettes,
-> dramatic lighting, no text, no logos, 3:2 aspect ratio.
+## Animation spec (GBA)
 
-For Part 2, add: *"keep the bottom fifth of the image dark and simple"*.
+| Item | Rule |
+|---|---|
+| Canvas | **240×160 px**, 1× scale, **Indexed** colour mode, no anti-aliasing, no semi-transparency |
+| Length | **5.0 s = 300 GBA frames**. Frame durations are multiples of 1/60 s (16.67 ms); use **50 ms** (3 vblanks) or **100 ms** (6 vblanks) |
+| Layer `BG` | One static cel for the whole timeline, 240×160, **max 224 colours** (palette indices 0-223; 224-255 are reserved for the text) |
+| Palette cycling | Up to **8 consecutive BG indices** can be reserved for colour cycling (water, lights, energy). The block says which indices and how they rotate; the engine does the cycling, so draw them in their first state |
+| Sprite layers `SPR_<name>` | Each frame fits **exactly** one GBA OBJ box: 8×8, 16×16, 32×32, 64×64, 16×8, 32×8, 32×16, 64×32, 8×16, 8×32, 16×32, 32×64 |
+| Sprite palettes | Index 0 = transparent + **max 15 colours** per sprite palette; **max 4 sprite palettes** per scene; **max 8 animated objects** on screen |
+| Big objects | Built from several boxes, or drawn at 64×64 and scaled ×2 by the hardware (marked "affine ×2") |
+| Motion | Each object has a short loop of 2-8 unique frames. Screen movement is given as **keyframes** (top-left of the box, in canvas pixels, with times); the engine moves the sprite in a straight line between keyframes. In the `.aseprite` timeline, place the cels at those positions so the preview plays the whole shot |
+| Engine cues | Fade from black or white, fade to white, white flash, red flash, red pulse, screen shake, beeps. Listed in the timeline, **not drawn** |
+| Safe zones | Part 2: nothing important and no sprites at y ≥ 120. Title: band y 128-144, x 60-180 free |
+| Export | `<scene>.aseprite` (layers kept, one tag per loop); `<scene>_bg.png` (indexed, 240×160); one horizontal strip per sprite layer, `<scene>_<name>.png`, each cell the size of its box, in frame order; `<scene>.json` (Aseprite JSON data: frames, durations, tags) |
 
-### Recurring designs (repeat them in the prompts where they appear)
+### Style (included in every block)
 
-- **POKéMON = biosuits**: *"armored biomechanical version of a real Pokémon (Charizard, Blastoise, Venusaur, Pidgeot, Dragonite, Gyarados…), plated joints, glowing core in the chest"*.
-- **MEW**: *"Mew, the small pale-pink legendary Pokémon with a long thin tail, with a blue glowing core in its chest"*.
-- **The Commander**: *"tall commander in a long navy coat with a golden spiral insignia, silver hair, face never
-  fully shown"*.
-- **The family member**: *"child of about ten in a white jumpsuit, seen from behind or in shadow"*.
+> 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+> lighting, no text, no logos.
+
+### Recurring designs (included in the blocks where they appear)
+
+- **POKéMON = biosuits**: *armored biomechanical version of a real Pokémon (Charizard, Blastoise, Venusaur,
+  Pidgeot, Dragonite, Gyarados…), plated joints, glowing core in the chest*.
+- **MEW**: *Mew, the small pale-pink legendary Pokémon with a long thin tail, with a blue glowing core in its
+  chest*.
+- **The Commander**: *tall commander in a long navy coat with a golden spiral insignia, silver hair, face never
+  fully shown*.
+- **The family member**: *child of about ten in a white jumpsuit, seen from behind or in shadow*.
 - **Factions**: *white-gold* ships (the boarded ship) against *crimson-black* ships (the attackers).
 
 ---
@@ -47,77 +67,414 @@ For Part 2, add: *"keep the bottom fifth of the image dark and simple"*.
 
 Music: `MUS_INTRO_FIGHT`; on the title screen, `MUS_TITLE`. A or START skips straight to the title.
 
-### `p1_01.png` — Deep space
+### `p1_01` — Deep space
 
-**Prompt:** Deep space, vast purple-blue nebula over a cluster of planets, faint distant flashes of battle, sense of scale and silence.
+Silent opening shot of the galaxy, with the war only hinted at in the distance. In-game: slow fade in from black.
 
-**In-game effect:** slow fade in from black.
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
 
-### `p1_02.png` — The war
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
 
-**Prompt:** Orbital space battle, two fleets of angular warships (one white-gold, one crimson-black) exchanging laser fire, armored Pokémon flying between the ships (Charizard, Pidgeot and Dragonite on the white-gold side; Aerodactyl and Golbat on the crimson-black side), their chest cores glowing, explosions.
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A boundless deep-space panorama seen from a slow, silent cinematic drift: a vast purple-blue nebula sweeps
+diagonally across the frame from the upper left, its core burning in soft pink and magenta, threaded with dark lanes
+of cosmic dust. Hundreds of pin-point stars in white, pale blue and warm amber scatter the void, a few flaring into
+small four-point crosses. A huge banded violet gas giant looms in the lower-right corner, lit from the upper left
+with a thin lavender atmospheric rim, while a small teal world hangs low on the left and a tiny rust-orange moon
+floats near the centre. Far away, barely perceptible, faint orange pin-pricks hint at a war being fought among the
+stars. Soft rim lighting, deep shadows, muted limited palette, no text, no logos, 3:2 composition with calm,
+slightly darker pockets of sky in the upper left and upper centre where distant battle flashes will bloom.
 
-**In-game effect:** white flashes.
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_twinkle - 8x8 box, 4 frames x 100 ms, loop. A star grows from a dot to a 4-point cross and shrinks back.
+   6 copies at (20,20), (96,12), (140,64), (200,18), (60,96), (176,100), each starting at a different frame.
+2. SPR_burst - 16x16 box, 6 frames x 50 ms, one-shot. A distant orange-white explosion: a dot, then a bloom,
+   then a ring, then fading sparks. Plays at (50,38) at 1.2 s, at (142,22) at 2.6 s and at (104,66) at 3.8 s.
+3. SPR_ships - 16x8 box, 2 frames x 100 ms (engine flicker), loop. Two tiny warship silhouettes, one white-gold
+   and one crimson. Keyframes: (60,50) at 0.0 s, then (84,44) at 5.0 s.
 
-### `p1_03.png` — Pilot and mental link
+TIMELINE:
+0.0 s - engine: slow fade in from black (about 1.5 s); the stars already twinkle.
+1.2 s - first distant burst.
+2.6 s - second burst; the tiny ships keep drifting.
+3.8 s - third burst.
+5.0 s - end (the engine cuts to p1_03).
 
-**Prompt:** Close-up inside the cockpit of an armored Charizard biosuit, orange plated walls, soldier wearing a sleek helmet with glowing blue neural cables connected to the temples, eyes closed in concentration, HUD reflections.
+EXPORT: p1_01.aseprite, p1_01_bg.png, p1_01_twinkle.png, p1_01_burst.png, p1_01_ships.png, p1_01.json
+```
 
-**In-game effect:** none.
+### `p1_03` — Pilot and mental link
 
-### `p1_04.png` — The boarded ship
+How a biosuit is controlled: the pilot is linked to it with their mind. In-game: no effect.
 
-**Prompt:** Huge damaged white-gold flagship in high orbit, hull breached and burning, crimson-black boarding pods latched onto its side, floating debris.
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
 
-**In-game effect:** screen shake.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
 
-### `p1_05.png` — Corridors on alert
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+An intimate close-up from inside the cockpit of an armored Charizard biosuit: curved orange armor plates and glowing
+seams frame the edges of a cramped, dark interior. In profile on the left, facing right, a soldier in a sleek grey
+flight helmet sits motionless, eyes closed in deep concentration behind a transparent visor that catches streaks of
+cyan reflection. Thick neural cables plug into the temple and arc away toward the edges of the frame, glowing an
+electric blue as if alive with thought. On the right, a cyan holographic HUD floats in the dark: a segmented
+targeting reticle and stacks of abstract data bars. Cold blue light from the HUD carves a rim along the helmet, deep
+shadows, muted limited palette, no text, no logos, 3:2 composition with the pilot's head on the left third and the
+open HUD space on the right.
+PALETTE CYCLING: reserve BG indices 200-205 for the neural cables (six blues, dark to white-blue); the engine
+rotates them so pulses travel from the edges to the temple.
 
-**Prompt:** Inside a starship corridor, red emergency lights, crew in white-gold uniforms running, sparks falling from the ceiling, motion blur.
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_reticle - 64x64 box, 4 frames x 100 ms, loop. A cyan segmented double ring that rotates 1/16 of a turn per
+   frame. At (144,38).
+2. SPR_eye - 16x8 box, 2 frames (frame 1: 1,500 ms closed; frame 2: 100 ms tighter squeeze), loop. The closed
+   eye twitches slightly. At (100,66).
+3. SPR_bars - 32x8 box, 4 frames x 100 ms, loop. Cyan data bars that grow and shrink. Two copies, at (204,16)
+   and (204,28).
+4. SPR_spark - 16x16 box, 4 frames x 50 ms, one-shot. A blue-white spark at the temple port, at (68,58); plays at
+   1.0 s, 2.5 s and 4.0 s.
 
-**In-game effect:** red pulsing.
+TIMELINE:
+0.0 s - HUD active; the cable pulses start (engine palette cycling, 1 step every 4 frames).
+1.0 s - temple spark; the eye twitches.
+2.5 s - spark; the HUD bars react.
+4.0 s - spark; the reticle keeps spinning.
+5.0 s - end.
 
-### `p1_06.png` — Intelligence room
+EXPORT: p1_03.aseprite, p1_03_bg.png, p1_03_reticle.png, p1_03_eye.png, p1_03_bars.png, p1_03_spark.png,
+p1_03.json
+```
 
-**Prompt:** Starship intelligence room, holographic galaxy maps, officers working at consoles, a young officer entering through a sliding door holding a glowing data tablet.
+### `p1_04` — The boarded ship
 
-**In-game effect:** none.
+The white-gold flagship is boarded. In-game: Gengar attacks the ship, as in the original FireRed intro (the same
+Gengar sprite at its original 64×64 size, mirrored to face the ship, and the same claw swipes, drawn by the engine on top of this BG). It enters from the bottom
+right, backs off, lunges at the hull and attacks again. Each hit has a swipe, a white flash, a screen shake and a
+sound. The scene lasts 2.5 s. Keep the bottom-right area free of important detail, since Gengar covers it.
 
-### `p1_07.png` — The report
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
 
-**Prompt:** Tall commander in a long navy coat with a golden spiral insignia, silver hair, seen from behind, reading a glowing tablet, red alarm light on her shoulders, hand reaching toward a large evacuation button.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
 
-**In-game effect:** red flash (the evacuation is triggered).
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A colossal white-and-gold flagship seen from a low cinematic angle in high orbit, its long beveled hull slicing
+diagonally across the frame from the lower left to a sharp bow in the upper right, gold trim running its full length
+and twin command towers rising from its spine. The hull is torn open in several places, gaping breaches glowing with
+orange fire and trailing grey smoke into the void, while crimson-and-black boarding pods cling to its underside like
+parasites, red lights blinking. Shards of plating and debris tumble through the starfield, and the curve of a deep
+blue planet glows beneath. Harsh firelight against cold starlight, dramatic rim lighting, deep shadows, muted
+limited palette, no text, no logos, 3:2 composition with the wounded ship dominating the diagonal and open space in
+the lower right for an incoming pod.
 
-### `p1_08.png` — Home
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_pod - 32x16 box, 4 frames x 100 ms (frames 1-2 thruster flicker loop while flying; frames 3-4 impact:
+   clamps open, red flash). A crimson-black boarding pod. Keyframes: (240,140) at 0.0 s, (150,96) at 2.0 s
+   (impact), stays at (150,96) until 5.0 s.
+2. SPR_fire - 16x16 box, 4 frames x 100 ms, loop. Flickering orange-yellow flames. 3 copies at (52,96),
+   (118,68) and (170,44), each starting at a different frame.
+3. SPR_debris - 8x8 box, 4 frames x 100 ms, loop (tumbling hull fragment). 3 copies. Keyframes: (40,20)→(70,8),
+   (200,90)→(226,112) and (100,140)→(80,150), from 0.0 s to 5.0 s.
 
-**Prompt:** Cozy warm room inside a starship: plants, soft lamps, a small bed, a round window showing the burning battle outside; a child in a white jumpsuit seen from behind hugging Mew, the small pale-pink legendary Pokémon with a long thin tail and a blue glowing core in its chest.
+TIMELINE:
+0.0 s - the pod flies in from the lower right; the fires flicker; the debris drifts.
+2.0 s - the pod hits the hull. Engine: screen shake (about 0.5 s, ±2 px).
+2.5-5.0 s - the pod is latched, its red light blinking (frames 3-4); the fires keep burning.
+5.0 s - end.
 
-**In-game effect:** none.
+EXPORT: p1_04.aseprite, p1_04_bg.png, p1_04_pod.png, p1_04_fire.png, p1_04_debris.png, p1_04.json
+```
 
-### `p1_09.png` — Coordinates
+### `p1_05` — Corridors on alert
 
-**Prompt:** Close-up of the control panel of an escape capsule, holographic screen showing a small blue-green planet with target coordinates locking in, the commander's gloved hand on the panel.
+Inside the flagship: alarms and crew running. In-game: red pulse.
 
-**In-game effect:** beeps.
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
 
-### `p1_10.png` — Launch
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
 
-**Prompt:** Small white escape capsule shooting away from the burning flagship, bright engine trail, the flagship exploding in a huge white flash behind it.
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A starship corridor seen in deep one-point perspective, rushing toward a red-lit sealed door at its far end: pale
+grey-white walls and structural ribs recede in rhythmic frames, a yellow-and-black hazard stripe runs down the
+middle of the floor, and revolving red emergency beacons on every ceiling rib drown the whole space in pulsing
+crimson. Sparks rain from a broken ceiling panel, and the air feels thick with alarm and urgency. Hard red top
+lighting, sharp highlights on the ribs, deep shadows, muted limited palette, no text, no logos, 3:2 composition with
+the vanishing point dead centre and the corridor floor left clear for crew running toward the viewer.
+PALETTE CYCLING: reserve BG indices 210-215 for the emergency lights (dark red to white-red); the engine rotates
+them like a revolving beacon.
 
-**In-game effect:** fade to white.
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_crew_near - 32x64 box, 6 frames x 50 ms, loop (run cycle toward the camera). A crew member in a white-gold
+   uniform with a gold belt, lit red from above. Keyframes: (150,96) at 0.0 s, (176,96) at 5.0 s (running past on
+   the right).
+2. SPR_crew_far - 16x32 box, 6 frames x 50 ms, loop. The same crew member, smaller (deeper in the corridor).
+   2 copies. Keyframes: (112,70)→(84,100) from 0.5 s to 4.5 s, and (124,72)→(136,96) from 1.5 s to 5.0 s.
+3. SPR_sparks - 8x16 box, 4 frames x 50 ms, loop. Yellow-white sparks falling from a broken ceiling panel.
+   2 copies, at (66,14) and (172,24).
 
-### `p1_11.png` — Shooting star
+TIMELINE:
+0.0 s - alarm on. Engine: red pulse (whole screen, 1 cycle per second); beacon palette cycling.
+0.5-5.0 s - the crew run toward and past the camera; sparks fall.
+5.0 s - end.
 
-**Prompt:** Night sky over an ancient untouched forest and mountains on Earth, a single shooting star with a pink-blue glow crossing the sky.
+EXPORT: p1_05.aseprite, p1_05_bg.png, p1_05_crew_near.png, p1_05_crew_far.png, p1_05_sparks.png, p1_05.json
+```
 
-**In-game effect:** fade in from white.
+### `p1_07` — The report
 
-### `p1_12.png` — Title
+The Commander reads the report and triggers the evacuation. In-game: red flash on the button press (≈3.5 s).
 
-**Prompt:** Upper half: deep space with a purple nebula and stars, fading into a soft dawn sky; lower part: green hills of a peaceful Kanto town with small red-roofed houses, round trees and a dirt path; the legendary Pokémon Mew (small, pale pink, long thin tail) floating on the right side with a soft pink glow; empty upper-left area for a logo.
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
 
-**In-game effect:** **POKéMON ARENA** logo (FireRed style) + "PULSA START" (press START).
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A tall commander seen from behind in a dark command room, standing left of centre in a long navy coat with a golden
+spiral insignia emblazoned between the shoulders, long silver hair falling down her back, face never shown. In her
+left hand a data tablet glows cold cyan at her side. Red alarm light pours from above, tracing a burning rim along
+her hair and shoulders. On the right, a heavy console holds a large red dome evacuation button set in a yellow-and-
+black hazard-striped base, waiting. Dramatic red top lighting, cyan accent from the tablet, deep shadows, muted
+limited palette, no text, no logos, 3:2 composition with the commander on the left third, the button on the right
+third and the empty space between them where her arm will reach.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_arm - 64x32 box, 6 frames x 100 ms, one-shot (rests on frame 6). The navy sleeve and black glove reach
+   from the shoulder to the button and press down. At (112,74); plays from 2.9 s.
+2. SPR_button - 32x32 box, 3 frames x 50 ms, one-shot (idle → pressed → lit). The red dome sinks and lights up.
+   At (182,92); plays at 3.5 s.
+3. SPR_tablet - 16x16 box, 2 frames x 100 ms, loop. The tablet glow pulses. At (44,82).
+
+TIMELINE:
+0.0 s - the Commander reads; the tablet glows.
+2.9 s - she reaches for the button.
+3.5 s - the button is pressed. Engine: red flash (8 frames), then the red pulse continues.
+5.0 s - end.
+
+EXPORT: p1_07.aseprite, p1_07_bg.png, p1_07_arm.png, p1_07_button.png, p1_07_tablet.png, p1_07.json
+```
+
+### `p1_08` — Home
+
+The family member and Mew, while the battle burns outside. In-game: no effect.
+
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A cozy, warm cabin inside a starship, glowing with lamplight: honey-brown wooden walls and floorboards, a small bed
+with a blue blanket and a white pillow on the left, a potted green plant and a table lamp casting a soft golden cone
+on the right. High on the left wall, a round brass-framed porthole reveals the war outside, distant warships
+silhouetted against bursts of orange fire. In the centre foreground, seen from behind, a child of about ten in a
+white jumpsuit with short brown hair holds someone close, a fragile island of calm against the chaos beyond the
+glass. Warm golden key light, faint orange glow from the porthole, deep shadows, muted limited palette, no text, no
+logos, 3:2 composition with the child low and centred and open space over the child's right shoulder where Mew will
+peek out.
+PALETTE CYCLING: reserve BG indices 216-219 for the lamp light (warm yellow levels); the engine flickers them.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_mew - 64x64 box, 6 frames x 100 ms, loop. Mew, the small pale-pink legendary Pokémon with a long thin tail
+   and a blue glowing core in its chest, held in the child's arms and looking over the child's shoulder toward
+   the viewer. Animation: blink (frames 2-3) and a tail sway (all frames). At (134,54).
+2. SPR_child_head - 32x32 box, 2 frames x 400 ms, loop. The child's head tilts slightly to nuzzle Mew. At
+   (116,78).
+3. SPR_window_fx - 16x16 box, 6 frames x 50 ms, one-shot. Small orange explosions inside the window. At (44,34)
+   at 1.0 s, (70,58) at 2.6 s and (56,24) at 4.0 s.
+
+TIMELINE:
+0.0 s - quiet moment; the lamp flickers; Mew's tail sways.
+1.0 s - an explosion outside the window.
+2.0 s - Mew blinks; the child nuzzles.
+2.6 s and 4.0 s - more explosions outside.
+5.0 s - end.
+
+EXPORT: p1_08.aseprite, p1_08_bg.png, p1_08_mew.png, p1_08_child_head.png, p1_08_window_fx.png, p1_08.json
+```
+
+### `p1_09` — Coordinates
+
+The Commander sets the escape capsule's course to Earth. In-game: beeps on lock-on.
+
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+An extreme close-up of an escape capsule's control panel in the dark: a sloped console of rows of small glowing
+buttons in red, amber, green and blue fills the lower part of the frame, while above it a holographic screen framed
+by cyan corner brackets floats in the air, flanked by two translucent cyan data panels streaming abstract bars of
+information. The navy sleeve of a commander's coat reaches in from the lower right, a black-gloved hand poised over
+the controls. Cold cyan holographic light, small coloured glows from the buttons, dramatic rim lighting, deep
+shadows, muted limited palette, no text, no logos, 3:2 composition with the holographic screen centred above the
+console and space on the lower right for the gloved hand.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_planet - 64x64 box, 8 frames x 100 ms, loop. A small blue-green Earth-like planet (oceans and green
+   continents) rotating, with a cyan hologram tint and scanlines. At (88,24).
+2. SPR_target - 32x32 box, 6 frames x 50 ms, one-shot (rests on frame 6). Red target brackets close in on a point
+   on the planet and lock, with a ring and crosshair. At (114,32); plays at 2.0 s.
+3. SPR_hand - 64x32 box, 3 frames x 100 ms, one-shot. A black-gloved hand with the index finger pressing a
+   button. At (150,112); plays at 3.2 s.
+4. SPR_data - 32x8 box, 4 frames x 50 ms, loop. Data bars "typing". 2 copies, at (14,24) and (184,24).
+
+TIMELINE:
+0.0 s - the planet rotates; the data streams.
+2.0 s - the target brackets close in. Engine: three quick beeps.
+2.3 s - lock-on. Engine: long beep.
+3.2 s - the gloved finger confirms on the panel.
+5.0 s - end.
+
+EXPORT: p1_09.aseprite, p1_09_bg.png, p1_09_planet.png, p1_09_target.png, p1_09_hand.png, p1_09_data.png,
+p1_09.json
+```
+
+### `p1_10` — Launch
+
+The capsule escapes as the flagship explodes. In-game: fade to white at the end.
+
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A desperate escape in deep space seen from a cinematic wide angle: in the upper right, the burning white-and-gold
+flagship is breaking apart, its hull split by orange fire on the verge of a cataclysmic blast, while the rest of the
+frame is a dark starfield brushed with a faint blue nebula. In the lower left, empty space waits for a tiny white
+escape capsule racing away toward the viewer. Hot orange firelight against cold blue space, dramatic rim lighting,
+deep shadows, muted limited palette, no text, no logos, 3:2 composition with the dying ship in the upper right, a
+clean diagonal path to the lower left, and the area around the ship kept simple for the explosion.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_capsule - 32x32 box, 4 frames x 50 ms, loop (engine flicker). A small white escape capsule with a blue
+   porthole, flying toward the lower left. Keyframes: (150,60) at 0.0 s, (40,108) at 4.0 s.
+2. SPR_trail - 32x16 box, 4 frames x 50 ms, loop. A bright white-blue engine trail behind the capsule, aimed at
+   the flagship. It follows the capsule with an offset of (+24,-12).
+3. SPR_blast - four 64x64 boxes in a 2x2 grid (128x128 in total), 8 frames x 100 ms, one-shot. The flagship
+   explodes: a white core growing into a huge white-orange fireball with a shockwave ring and hull fragments.
+   Grid top-left at (122,-24); plays from 2.8 s.
+
+TIMELINE:
+0.0 s - the capsule leaves the flagship.
+2.8 s - the flagship explodes.
+4.0 s - the explosion fills the upper right. Engine: fade to white (1 s).
+5.0 s - fully white (p1_11 starts by fading in from white).
+
+EXPORT: p1_10.aseprite, p1_10_bg.png, p1_10_capsule.png, p1_10_trail.png, p1_10_blast.png, p1_10.json
+```
+
+### `p1_11` — Shooting star
+
+Thousands of years ago, on Earth: the capsule falls like a shooting star. In-game: fade in from white at the
+start.
+
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A serene night over an ancient, untouched Earth, seen from a quiet distance: a deep blue sky fading to indigo,
+dusted with stars and a soft purple haze, a pale full moon glowing in the upper right with a gentle halo. Below, two
+rolling ranges of blue mountains catch moonlight along their crests, and a dense, dark pine forest fills the
+foreground, with no sign of any human presence. The sky feels expectant, as if something is about to fall from it.
+Cool silver moonlight, soft rim lighting on the ridges, deep shadows, muted limited palette, no text, no logos, 3:2
+composition with a clean diagonal band of sky from the upper left toward the mountains, kept free of bright stars
+for a falling shooting star.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_star_head - 16x16 box, 4 frames x 50 ms, loop. A bright white core with a pink-blue glow. Keyframes:
+   (22,4) at 1.0 s, (140,62) at 3.5 s, then it disappears behind the mountains at (164,74) at 4.0 s.
+2. SPR_star_trail - 32x16 box, 4 frames x 50 ms, loop. A blue-to-pink fading tail, angled from the upper left to
+   the lower right. It follows the head with an offset of (-28,-12).
+3. SPR_twinkle - 8x8 box, 4 frames x 100 ms, loop. 5 copies at (20,30), (90,14), (120,40), (214,60) and
+   (60,56).
+4. SPR_firefly - 8x8 box, 4 frames x 100 ms, loop. A soft green-yellow glow. 3 copies drifting over the forest
+   between y 108 and y 118.
+
+TIMELINE:
+0.0 s - engine: fade in from white (about 1 s); stars twinkle; fireflies drift.
+1.0 s - the shooting star appears at the upper left.
+3.5-4.0 s - it falls behind the mountains (toward the future Kanto).
+5.0 s - end (the engine cuts to the title screen).
+
+EXPORT: p1_11.aseprite, p1_11_bg.png, p1_11_star_head.png, p1_11_star_trail.png, p1_11_twinkle.png,
+p1_11_firefly.png, p1_11.json
+```
+
+### `p1_12` — Title
+
+The title screen: the space of the past above the Kanto of today, with Mew floating. In-game: the **POKéMON
+ARENA** logo (FireRed style) and "PULSA START" (press START). This animation **loops seamlessly** until the player
+presses START.
+
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance title screen.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames), the last frame flowing into the first. Frame durations in multiples of
+1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A dreamlike title vista where two eras meet: the upper half is deep space, a purple-and-magenta nebula strewn with
+stars and a small violet planet, melting smoothly into a soft dawn sky of peach and rose along the horizon. Below
+lie the green rolling hills of a peaceful Kanto town, small houses with red, blue and orange roofs, round trees, and
+a dirt path winding down the middle toward the viewer. On the right, a soft pink glow hangs in the air where the
+legendary Mew will float. Gentle dawn light, soft rim lighting, deep shadows, muted limited palette, no text, no
+logos, 3:2 composition with the upper left left empty for the title logo, a clear band low in the centre for the
+press-start prompt, and the right side open for Mew.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_mew - 64x64 box, 6 frames x 100 ms, loop, drawn at 1x and shown at 2x by the hardware (affine x2, so it
+   looks 128x128 on screen). Mew, the small pale-pink legendary Pokémon with a long thin tail and a blue glowing
+   core in its chest, floating peacefully, facing the viewer. Animation: gentle tail sway (all frames) and a
+   blink (frames 4-5). Draw Mew in the upper 3/4 of the box: nothing below row 46 of the 64x64 cel, so on screen
+   it stays above y 128 and clear of "PULSA START". Float path (centre of the 128x128 on-screen sprite): (184,80)
+   at 0.0 s, (184,77) at 2.5 s, (184,80) at 5.0 s (a slow ±3 px bob, ease in-out).
+2. SPR_glow - 32x32 box, 4 frames x 100 ms, loop. A pink aura pulse behind Mew, at (168,62).
+3. SPR_twinkle - 8x8 box, 4 frames x 100 ms, loop. 5 copies in the space area: (12,92), (150,8), (200,46),
+   (226,70) and (110,96).
+
+TIMELINE:
+0.0-5.0 s - Mew bobs gently, sways its tail and blinks once (around 3.0 s); the stars twinkle. Seamless loop.
+No engine cues (the engine blinks "PULSA START" every 0.5 s).
+
+EXPORT: p1_12.aseprite, p1_12_bg.png, p1_12_mew.png, p1_12_glow.png, p1_12_twinkle.png, p1_12.json
+```
 
 The copyright screen is kept. On the title screen, UP+B+SELECT (clear save) still works, and the game still
 returns to the intro automatically after a while with no input.
@@ -127,13 +484,10 @@ returns to the intro automatically after a while with no input.
 ## PART 2 — New game (with text)
 
 Music: `MUS_NEW_GAME_INTRO`. A advances the text and START skips the whole part. It ends on Professor Oak's
-speech.
+speech. In Part 2 every scene lasts as long as its text, so the 5-second animation **loops**: design it to loop
+seamlessly.
 
-### `p2_01.png` — Peace
-
-**Prompt:** Peaceful countryside at dawn, small town with red roofs, green hills, a calm sea, people walking with small Pokémon such as Pikachu, Eevee and Bulbasaur, warm golden light.
-
-**Text:**
+### `p2_01` — Peace
 
 > Han pasado miles de años desde la gran guerra. Ya no hay naves de guerra, ni soldados de élite con biotrajes
 > POKéMON surcando el cielo.
@@ -141,11 +495,44 @@ speech.
 *EN: Thousands of years have passed since the great war. There are no more warships, no elite soldiers in
 POKéMON biosuits soaring across the sky.*
 
-### `p2_02.png` — Legends
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
 
-**Prompt:** Weathered stone mural in an ancient ruin covered in vines, carved figures of giant armored Pokémon (Charizard, Blastoise and Venusaur) and a small Mew in the center, two children looking at it with a lantern.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
-**Text:**
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A peaceful coastal countryside at dawn, seen from a gentle hillside: the sky fades from soft blue above to warm
+peach at the horizon, scattered with pink clouds, and the rising sun sits on a calm sea to the right, laying a
+shimmering golden path across the water. On the left, a small town of red- and blue-roofed houses nestles among
+green hills and round trees, its streets quiet and safe. Toward the bottom, the grass sinks into deep, dark green
+shadow. Warm golden key light, soft rim lighting, deep shadows, muted limited palette, no text, no logos, 3:2
+composition with the town on the left, the sea and sun on the right, open sky for passing birds, and the bottom
+fifth dark and simple.
+PALETTE CYCLING: reserve BG indices 220-223 for the sea sparkle (gold to white); the engine rotates them.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_pidgey - 16x16 box, 4 frames x 100 ms, loop (wing flap). A small Pidgey in flight. A flock of 3, crossing
+   the sky from left to right in a V. Keyframes: (-16,30) at 0.0 s, (240,18) at 5.0 s, with the other two
+   offset by (-14,+8) and (-14,-8).
+2. SPR_walker - 16x32 box, 4 frames x 100 ms, loop (walk). A villager walking with a Pikachu at their feet.
+   Keyframes: (164,84) at 0.0 s, (210,84) at 5.0 s.
+3. SPR_eevee - 16x16 box, 4 frames x 100 ms, loop (hop). An Eevee playing near a house, hopping in place at
+   (120,98).
+4. SPR_bulbasaur - 16x16 box, 2 frames x 400 ms, loop (idle breathing). A Bulbasaur resting at (40,100).
+
+TIMELINE:
+0.0-5.0 s - the Pidgey cross the sky; the villager and Pikachu stroll along the shore; Eevee hops; Bulbasaur
+breathes; the sea sparkles. Seamless loop. No engine cues.
+
+EXPORT: p2_01.aseprite, p2_01_bg.png, p2_01_pidgey.png, p2_01_walker.png, p2_01_eevee.png, p2_01_bulbasaur.png,
+p2_01.json
+```
+
+### `p2_02` — Legends
 
 > Los POKéMON legendarios solo viven en cuentos y murales. Leyendas que se fraguaron durante siglos y que aún
 > esconden la verdad sobre los biotrajes POKéMON…
@@ -153,11 +540,41 @@ POKéMON biosuits soaring across the sky.*
 *EN: Legendary POKéMON live on only in tales and murals. Legends forged over centuries that still hide the truth
 about the POKéMON biosuits…*
 
-### `p2_03.png` — The ELITE COMMAND (ALTO MANDO)
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
 
-**Prompt:** Dark circular chamber, four silhouetted figures in high-collared cloaks around a table, a cold blue hologram blueprint of an armored Charizard biosuit in the center.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
-**Text:**
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A weathered stone wall deep inside an ancient ruin, lit only by a single lantern: a recessed mural carved in relief
+shows giant armored Pokémon, Charizard on the left, Blastoise on the right and Venusaur half-hidden behind them,
+with a small Mew at the centre beneath a carved sun. Green vines spill down over the carvings from cracks above. In
+the lower left, two children seen from behind as dark silhouettes gaze up at the mural, one holding up the lantern,
+its warm orange light flaring across the stone and fading into blackness at the edges. Warm flickering lantern
+light, dramatic rim lighting on the children, deep shadows, muted limited palette, no text, no logos, 3:2
+composition with the mural filling the upper two thirds and the bottom fifth dark and simple.
+PALETTE CYCLING: reserve BG indices 216-221 for the lantern light on the wall (warm levels); the engine flickers
+them.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_flame - 16x16 box, 4 frames x 100 ms, loop. The lantern flame flickering. At (58,92).
+2. SPR_vine - 16x32 box, 4 frames x 200 ms, loop. A vine swaying in a light draft. 2 copies, at (30,0) and
+   (198,0).
+3. SPR_dust - 8x8 box, 4 frames x 100 ms, loop. Golden dust motes. 4 copies drifting slowly upward in the
+   lantern light (x 50-110, from y 110 to y 60, over 5 s).
+
+TIMELINE:
+0.0-5.0 s - the lantern flickers and the light on the mural breathes; the vines sway; dust floats. Seamless
+loop. No engine cues.
+
+EXPORT: p2_02.aseprite, p2_02_bg.png, p2_02_flame.png, p2_02_vine.png, p2_02_dust.png, p2_02.json
+```
+
+### `p2_03` — The ELITE COMMAND (ALTO MANDO)
 
 > Una poderosa tecnología militar que permite a los soldados obtener capacidades extraordinarias. Antaño, se la
 > conocía como los biotrajes POKéMON.
@@ -165,36 +582,162 @@ about the POKéMON biosuits…*
 *EN: A powerful military technology that grants soldiers extraordinary abilities. Long ago, it was known as the
 POKéMON biosuits.*
 
-### `p2_04.png` — The search
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
 
-**Prompt:** Night, rocky mountain cave entrance, hooded agents with handheld scanners emitting red beams, searching among the rocks, ominous mood.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
-**Text:**
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A dark, circular council chamber seen from a low, ominous angle: tall pillars line a curved back wall, picked out by
+faint blue edge lights, and a round black table sits at the centre, its rim glowing cyan. Four figures in high-
+collared cloaks surround it as pure black silhouettes, two standing behind the table and two looming large in the
+foreground at the left and right edges, cut off by the frame. A faint cone of cold cyan light rises from the table
+into the darkness above it, where a hologram will appear. Cold cyan rim lighting, deep shadows, muted limited
+palette, no text, no logos, 3:2 composition with the figures framing the empty air above the table and the bottom
+fifth dark and simple.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_hologram - 64x64 box, 8 frames x 100 ms, loop. A cold blue wireframe blueprint of an armored Charizard
+   biosuit (outline, grid lines, glowing chest core) turning on a turntable, 45 degrees per frame. At (88,30).
+2. SPR_scan - 64x8 box, 2 frames x 100 ms, loop. A bright cyan scanline. It moves down over the hologram:
+   (88,30) at 0.0 s → (88,92) at 2.5 s, then jumps back and repeats.
+3. SPR_gesture - 32x64 box, 4 frames x 200 ms, one-shot then hold. The figure on the right raises a gloved hand
+   toward the hologram. At (148,46); plays at 1.5 s and lowers again by 4.5 s, so the loop closes.
+
+TIMELINE:
+0.0-5.0 s - the Charizard hologram turns; the scanline sweeps twice; one figure points at it. Seamless loop. No
+engine cues.
+
+EXPORT: p2_03.aseprite, p2_03_bg.png, p2_03_hologram.png, p2_03_scan.png, p2_03_gesture.png, p2_03.json
+```
+
+### `p2_04` — The search
 
 > Desde hace siglos, el ALTO MANDO y sus agentes buscan en secreto estos biotrajes POKéMON.
 
 *EN: For centuries, the ELITE COMMAND and its agents have been secretly searching for these POKéMON biosuits.*
 
-### `p2_05.png` — The ambition
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
 
-**Prompt:** Extreme close-up of a cold eye reflecting a red holographic map of a whole region with spreading red zones.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
-**Text:**
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A cold night in the mountains, seen from a low, ominous vantage: a dark indigo sky pricked with stars and a small
+pale moon in the upper left, a rocky purple-grey slope rising behind, and the black mouth of a cave gaping at its
+centre. Scattered boulders litter the ground. Three hooded agents in long dark coats stand among the rocks as
+silhouettes, faintly rimmed by moonlight, handheld scanners raised toward the stones. Cold moonlight with a sinister
+red accent, dramatic rim lighting, deep shadows, muted limited palette, no text, no logos, 3:2 composition with the
+cave mouth slightly right of centre, the agents spread across the middle ground and the bottom fifth dark and
+simple.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_beam - 64x32 box, 6 frames x 100 ms, loop (sweeps left-right and back). A translucent-looking red scanner
+   cone (solid dithered red, no real transparency) from a handheld scanner onto the rocks, with a bright red dot
+   where it hits. 3 copies, one per agent: (64,84), (110,76) and (150,82) (the last one mirrored, pointing left).
+2. SPR_agent_step - 32x64 box, 4 frames x 200 ms, loop. The middle agent takes a slow step and turns the scanner.
+   At (96,56).
+3. SPR_zubat - 16x16 box, 4 frames x 50 ms, loop (flap). A Zubat flies out of the cave. Keyframes: (144,80) at
+   2.0 s, (176,40) at 3.0 s, (240,10) at 4.0 s; hidden for the rest of the loop.
+
+TIMELINE:
+0.0-5.0 s - the red beams sweep the rocks; the middle agent steps forward; at 2.0 s a Zubat bursts out of the
+cave and flies away. Seamless loop. No engine cues.
+
+EXPORT: p2_04.aseprite, p2_04_bg.png, p2_04_beam.png, p2_04_agent_step.png, p2_04_zubat.png, p2_04.json
+```
+
+### `p2_05` — The ambition
 
 > Si recuperan esa tecnología, nada podrá detenerlos. Su dominio se extenderá por toda la región.
 
 *EN: If they recover that technology, nothing will be able to stop them. Their rule will spread across the whole
 region.*
 
-### `p2_06.png` — The beginning
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
 
-**Prompt:** Small cozy bedroom at night in a quiet town, moonlight through the window, a letter with an official seal on the desk, a faint pink glow in the distant forest outside.
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
-**Text:**
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+An extreme, unsettling close-up of a single cold eye filling the width of the frame: cool grey-violet skin, a heavy
+dark upper lid with sharp lashes and a deep crease above, a pale blue-grey sclera, and a large steel-blue iris with
+fine radial striations around a black pupil. Reflected across the whole surface of the eye is a red holographic map
+of a region, its coastline traced in glowing red lines over a faint red grid, as if the eye were already measuring
+what it wants to own. Cold, clinical light with a menacing red reflection, dramatic rim lighting, deep shadows,
+muted limited palette, no text, no logos, 3:2 composition with the eye centred in the upper four fifths and the skin
+below fading to near black in the bottom fifth.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_pupil - 32x32 box, 4 frames x 100 ms, ping-pong. The pupil contracts from radius 11 to radius 7 and back.
+   At (104,48).
+2. SPR_zone - 32x32 box, 6 frames x 100 ms, loop. A red zone spreading on the reflected map: a dot, then
+   concentric rings, then a filled red area. 3 copies, at (84,40) at 0.0 s, (122,54) at 1.5 s and (100,30) at
+   3.0 s.
+3. SPR_lid - two 64x32 boxes side by side (one 128x32 strip over the upper lid), 3 frames x 50 ms, played
+   forward and back (a slow, menacing half-blink). At (56,30); plays at 4.2 s.
+
+TIMELINE:
+0.0 s - engine: red pulse (slow, 1 cycle every 2 s).
+0.0-4.0 s - the red zones spread across the reflected map one after another; the pupil narrows.
+4.2 s - a slow half-blink.
+5.0 s - seamless loop.
+
+EXPORT: p2_05.aseprite, p2_05_bg.png, p2_05_pupil.png, p2_05_zone.png, p2_05_lid.png, p2_05.json
+```
+
+### `p2_06` — The beginning
 
 > Mientras tanto, en un pueblo tranquilo de KANTO…
 
 *EN: Meanwhile, in a quiet town in KANTO…*
+
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A small, cozy bedroom at night in a quiet town, steeped in deep blue: on the right, a cross-framed window looks out
+on a starry sky, a bright full moon and the dark outline of a distant pine forest on the horizon. A shaft of pale
+moonlight slants from the window across the room. On the left, a wooden desk holds an unlit lamp and an envelope
+sealed with red wax, gleaming in the moonlight, and beneath the window a bed with a blue blanket waits empty. Deep
+in the forest beyond the glass, something faintly glows. Soft silver moonlight, gentle rim lighting, deep shadows,
+muted limited palette, no text, no logos, 3:2 composition with the window on the right, the sealed letter on the
+left, and the bottom fifth dark and simple.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_curtain - 32x64 box, 4 frames x 200 ms, loop. A light curtain swaying at the left edge of the window. At
+   (126,14).
+2. SPR_pinkglow - 16x16 box, 4 frames x 200 ms, ping-pong. A faint pink glow pulsing deep in the forest, seen
+   through the window (the hint of Mew). At (156,66).
+3. SPR_glint - 8x8 box, 3 frames x 50 ms, one-shot. A small glint on the wax seal. At (70,93); plays at 2.0 s.
+4. SPR_mote - 8x8 box, 4 frames x 100 ms, loop. Dust motes in the moonlight. 3 copies drifting slowly downward
+   (x 80-140, from y 40 to y 110, over 5 s).
+
+TIMELINE:
+0.0-5.0 s - the curtain sways; the pink glow pulses in the forest; at 2.0 s the seal glints; the motes drift.
+Seamless loop. No engine cues.
+
+EXPORT: p2_06.aseprite, p2_06_bg.png, p2_06_curtain.png, p2_06_pinkglow.png, p2_06_glint.png, p2_06_mote.png,
+p2_06.json
+```
 
 ---
 
@@ -202,9 +745,12 @@ region.*
 
 - **Scenes**: order, duration, effects and text in `src/cinematic.c`, in the `sIntroScenes` and `sNewGameScenes`
   tables.
-- **Images**: in `graphics/cinematic/`.
+- **Images**: in `graphics/cinematic/`. For now the engine only shows **one still image per scene**
+  (`graphics/cinematic/<scene>.png`, which is the `<scene>_bg.png` of the animation). Playing the sprite layers,
+  keyframes, palette cycling and the extra engine cues (shake, beeps, red flash timing) needs engine work later.
 - **Placeholder art**: all 18 images are drawn by code (procedural pixel art; `p1_08` and `p1_12` reuse the game's
   Mew sprite, and `p1_12` reuses the POKéMON word from the FireRed logo) with
   `python3 tools/cinematic/gen_placeholder_art.py [folder] [scenes…]`. With no scenes it regenerates all of them;
   for example `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` redoes only `p1_02`.
-  **Careful**: the script overwrites the PNGs; once the final images are in, don't run it over them.
+  `p1_02` to `p1_09` are already final (made from `p1-02.png` … `p1-09.png` in the repo root), and the script skips them unless they are named
+  explicitly. **Careful**: the script overwrites the PNGs; once the final images are in, don't run it over them.

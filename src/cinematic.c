@@ -14,6 +14,7 @@
 #include "oak_speech.h"
 #include "clear_save_data_screen.h"
 #include "random.h"
+#include "trig.h"
 #include "sound.h"
 #include "cinematic.h"
 #include "constants/songs.h"
@@ -39,6 +40,7 @@ enum {
     FX_RED_PULSE,   // parpadeo rojo periódico
     FX_RED_FLASH,   // un flash rojo fuerte a mitad de escena
     FX_BEEPS,       // pitidos
+    FX_GENGAR_ATTACK, // Gengar (sprite de la intro original) ataca la nave
 };
 
 struct CinematicScene
@@ -56,16 +58,12 @@ struct CinematicScene
 
 static const u32 sGfx_p1_01[] = INCBIN_U32("graphics/cinematic/p1_01.8bpp.lz");
 static const u16 sPal_p1_01[] = INCBIN_U16("graphics/cinematic/p1_01.gbapal");
-static const u32 sGfx_p1_02[] = INCBIN_U32("graphics/cinematic/p1_02.8bpp.lz");
-static const u16 sPal_p1_02[] = INCBIN_U16("graphics/cinematic/p1_02.gbapal");
 static const u32 sGfx_p1_03[] = INCBIN_U32("graphics/cinematic/p1_03.8bpp.lz");
 static const u16 sPal_p1_03[] = INCBIN_U16("graphics/cinematic/p1_03.gbapal");
 static const u32 sGfx_p1_04[] = INCBIN_U32("graphics/cinematic/p1_04.8bpp.lz");
 static const u16 sPal_p1_04[] = INCBIN_U16("graphics/cinematic/p1_04.gbapal");
 static const u32 sGfx_p1_05[] = INCBIN_U32("graphics/cinematic/p1_05.8bpp.lz");
 static const u16 sPal_p1_05[] = INCBIN_U16("graphics/cinematic/p1_05.gbapal");
-static const u32 sGfx_p1_06[] = INCBIN_U32("graphics/cinematic/p1_06.8bpp.lz");
-static const u16 sPal_p1_06[] = INCBIN_U16("graphics/cinematic/p1_06.gbapal");
 static const u32 sGfx_p1_07[] = INCBIN_U32("graphics/cinematic/p1_07.8bpp.lz");
 static const u16 sPal_p1_07[] = INCBIN_U16("graphics/cinematic/p1_07.gbapal");
 static const u32 sGfx_p1_08[] = INCBIN_U32("graphics/cinematic/p1_08.8bpp.lz");
@@ -91,6 +89,89 @@ static const u16 sPal_p2_05[] = INCBIN_U16("graphics/cinematic/p2_05.gbapal");
 static const u32 sGfx_p2_06[] = INCBIN_U32("graphics/cinematic/p2_06.8bpp.lz");
 static const u16 sPal_p2_06[] = INCBIN_U16("graphics/cinematic/p2_06.gbapal");
 
+// ---------------------------------------------------------------------------
+// Gengar atacando (gráficos de la intro original de FireRed, ver intro.c)
+// ---------------------------------------------------------------------------
+enum { TAG_GENGAR = 0x2100, TAG_SWIPE };
+
+static const u32 sGengar_Gfx[] = INCBIN_U32("graphics/intro/scene_2/gengar.4bpp.lz");
+static const u16 sGengar_Pal[] = INCBIN_U16("graphics/intro/gengar.gbapal");
+static const u32 sSwipe_Gfx[]  = INCBIN_U32("graphics/intro/scene_3/swipe.4bpp.lz");
+static const u16 sSwipe_Pal[]  = INCBIN_U16("graphics/intro/scene_3/swipe.gbapal");
+
+static const struct CompressedSpriteSheet sGengarSheets[] = {
+    { sGengar_Gfx, 0x800, TAG_GENGAR },
+    { sSwipe_Gfx,  0xA00, TAG_SWIPE },
+};
+static const struct SpritePalette sGengarPals[] = {
+    { sGengar_Pal, TAG_GENGAR },
+    { sSwipe_Pal,  TAG_SWIPE },
+};
+
+static const struct OamData sOam_Gengar = {
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .shape = SPRITE_SHAPE(64x64),
+    .size = SPRITE_SIZE(64x64),
+    .priority = 1,
+};
+
+// Tamaño original, volteado en horizontal para que mire hacia la nave (a la izquierda)
+static const union AffineAnimCmd sAffineAnim_Gengar[] = {
+    AFFINEANIMCMD_FRAME(-0x100, 0x100, 0, 0),
+    AFFINEANIMCMD_END
+};
+static const union AffineAnimCmd *const sAffineAnims_Gengar[] = { sAffineAnim_Gengar };
+
+static const struct SpriteTemplate sSpriteTemplate_Gengar = {
+    .tileTag = TAG_GENGAR,
+    .paletteTag = TAG_GENGAR,
+    .oam = &sOam_Gengar,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = sAffineAnims_Gengar,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct OamData sOam_Swipe = {
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .shape = SPRITE_SHAPE(32x64),
+    .size = SPRITE_SIZE(32x64),
+    .priority = 1,
+};
+
+enum { ANIM_SWIPE_TOP, ANIM_SWIPE_BOTTOM };
+
+static const union AnimCmd sAnim_Swipe_Top[] = {
+    ANIMCMD_FRAME(0, 8),
+    ANIMCMD_FRAME(32, 4),
+    ANIMCMD_END
+};
+static const union AnimCmd sAnim_Swipe_Bottom[] = {
+    ANIMCMD_FRAME(64, 8),
+    ANIMCMD_FRAME(72, 4),
+    ANIMCMD_END
+};
+static const union AnimCmd *const sAnims_Swipe[] = {
+    [ANIM_SWIPE_TOP]    = sAnim_Swipe_Top,
+    [ANIM_SWIPE_BOTTOM] = sAnim_Swipe_Bottom
+};
+
+static void SpriteCB_Swipe(struct Sprite *sprite)
+{
+    sprite->invisible ^= 1;
+    if (sprite->animEnded)
+        DestroySprite(sprite);
+}
+
+static const struct SpriteTemplate sSpriteTemplate_Swipe = {
+    .tileTag = TAG_SWIPE,
+    .paletteTag = TAG_SWIPE,
+    .oam = &sOam_Swipe,
+    .anims = sAnims_Swipe,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Swipe
+};
 
 #define IMG(name) .gfx = sGfx_##name, .pal = sPal_##name, .palSize = sizeof(sPal_##name)
 
@@ -99,17 +180,15 @@ static const u16 sPal_p2_06[] = INCBIN_U16("graphics/cinematic/p2_06.gbapal");
 // ---------------------------------------------------------------------------
 static const struct CinematicScene sIntroScenes[] =
 {
-    { IMG(p1_01), .duration = 240, .fadeDelay = 4 },
-    { IMG(p1_02), .duration = 220, .effect = FX_FLASHES, .fadeDelay = 1 },
-    { IMG(p1_03), .duration = 200, .fadeDelay = 1 },
-    { IMG(p1_04), .duration = 220, .effect = FX_SHAKE, .fadeDelay = 1 },
-    { IMG(p1_05), .duration = 200, .effect = FX_RED_PULSE, .fadeDelay = 1 },
-    { IMG(p1_06), .duration = 200, .fadeDelay = 1 },
-    { IMG(p1_07), .duration = 220, .effect = FX_RED_FLASH, .fadeDelay = 1 },
-    { IMG(p1_08), .duration = 240, .fadeDelay = 2 },
-    { IMG(p1_09), .duration = 200, .effect = FX_BEEPS, .fadeDelay = 1 },
-    { IMG(p1_10), .duration = 180, .fadeOutWhite = TRUE, .fadeDelay = 3 },
-    { IMG(p1_11), .duration = 240, .fadeInWhite = TRUE, .fadeDelay = 3 },
+    { IMG(p1_01), .duration = 70, .fadeDelay = 1 },
+    { IMG(p1_03), .duration = 70 },
+    { IMG(p1_04), .duration = 150, .effect = FX_GENGAR_ATTACK },
+    { IMG(p1_05), .duration = 70, .effect = FX_RED_PULSE },
+    { IMG(p1_07), .duration = 70, .effect = FX_RED_FLASH },
+    { IMG(p1_08), .duration = 85 },
+    { IMG(p1_09), .duration = 70, .effect = FX_BEEPS },
+    { IMG(p1_10), .duration = 70, .fadeOutWhite = TRUE, .fadeDelay = 1 },
+    { IMG(p1_11), .duration = 90, .fadeInWhite = TRUE, .fadeDelay = 1 },
 };
 
 // ---------------------------------------------------------------------------
@@ -316,6 +395,7 @@ static void Cinematic_PrintSubtitle(const u8 *text, u8 speed)
 #define tPart       data[5]
 #define tFxTimer    data[6]
 #define tSkipped    data[7]
+#define tGengarId   data[8]  // spriteId + 1 (0 = sin Gengar)
 
 enum {
     PLAYER_LOAD,
@@ -339,24 +419,161 @@ static const struct CinematicScene *Cinematic_GetScene(s16 *data)
     return &sNewGameScenes[tScene];
 }
 
+// --- Gengar ataca la nave (escena p1_04) -----------------------------------
+// Reposo abajo a la derecha, junto a la nave; los zarpazos caen sobre el casco.
+#define GENGAR_REST_X   200
+#define GENGAR_REST_Y   104
+#define GENGAR_ENTER    30  // frames que tarda en entrar
+#define GENGAR_ATTACK_1 30  // inicio de cada ataque (dura 48 frames)
+#define GENGAR_ATTACK_2 80
+#define GENGAR_HIT      36  // frame del ataque en el que golpea
+#define GENGAR_SHAKE    14  // frames de temblor tras cada golpe
+
+static void Cinematic_GengarSwipe(s16 x, s16 y)
+{
+    u8 spriteId;
+
+    CreateSprite(&sSpriteTemplate_Swipe, x, y, 6);
+    spriteId = CreateSprite(&sSpriteTemplate_Swipe, x, y + 40, 6);
+    if (spriteId != MAX_SPRITES)
+    {
+        gSprites[spriteId].oam.shape = SPRITE_SHAPE(32x16);
+        gSprites[spriteId].oam.size = SPRITE_SIZE(32x16);
+        CalcCenterToCornerVec(&gSprites[spriteId], SPRITE_SHAPE(32x16), SPRITE_SIZE(32x16), ST_OAM_AFFINE_OFF);
+        StartSpriteAnim(&gSprites[spriteId], ANIM_SWIPE_BOTTOM);
+    }
+    PlaySE(SE_M_SCRATCH);
+    if (!gPaletteFade.active)
+        BeginNormalPaletteFade(PALETTES_BG & ~(1 << TEXT_PAL_ID), 0, 10, 0, RGB_WHITE);
+}
+
+// Desplazamiento respecto al reposo durante un ataque, como en la intro original:
+// retrocede en arco, espera, se lanza contra la nave y vuelve.
+static void Cinematic_GengarAttackOffset(s16 p, s16 *dx, s16 *dy)
+{
+    if (p < 16)       // retrocede
+    {
+        *dx = 12 * p / 16;
+        *dy = -((gSineTable[p * 4] * 8) >> 8);
+    }
+    else if (p < 32)  // pausa
+    {
+        *dx = 12;
+        *dy = -8;
+    }
+    else if (p < 40)  // se lanza
+    {
+        *dx = 12 - 52 * (p - 31) / 8;
+        *dy = -8 - 6 * (p - 31) / 8;
+    }
+    else if (p < 48)  // vuelve
+    {
+        *dx = -40 + 40 * (p - 39) / 8;
+        *dy = -14 + 14 * (p - 39) / 8;
+    }
+}
+
+static void Cinematic_UpdateGengar(s16 *data)
+{
+    s16 t = tFxTimer;
+    s16 x, y, dx = 0, dy = 0, p, hit;
+    u8 spriteId;
+
+    if (t == 1)
+    {
+        LoadCompressedSpriteSheet(&sGengarSheets[0]);
+        LoadCompressedSpriteSheet(&sGengarSheets[1]);
+        LoadSpritePalette(&sGengarPals[0]);
+        LoadSpritePalette(&sGengarPals[1]);
+        spriteId = CreateSprite(&sSpriteTemplate_Gengar, 300, 140, 12);
+        tGengarId = (spriteId != MAX_SPRITES) ? spriteId + 1 : 0;
+    }
+    if (tGengarId == 0)
+        return;
+
+    // Entrada con frenada desde abajo a la derecha
+    x = GENGAR_REST_X;
+    y = GENGAR_REST_Y;
+    if (t < GENGAR_ENTER)
+    {
+        p = GENGAR_ENTER - t;
+        x += 100 * p * p / (GENGAR_ENTER * GENGAR_ENTER);
+        y += 40 * p * p / (GENGAR_ENTER * GENGAR_ENTER);
+    }
+
+    // Flota
+    y += (gSineTable[(t * 4) & 0xFF] * 2) >> 8;
+
+    // Ataques
+    hit = 0;
+    if (t >= GENGAR_ATTACK_1 && t < GENGAR_ATTACK_1 + 48)
+    {
+        p = t - GENGAR_ATTACK_1;
+        Cinematic_GengarAttackOffset(p, &dx, &dy);
+        if (p == GENGAR_HIT)
+            Cinematic_GengarSwipe(124, 60);
+    }
+    else if (t >= GENGAR_ATTACK_2 && t < GENGAR_ATTACK_2 + 48)
+    {
+        p = t - GENGAR_ATTACK_2;
+        Cinematic_GengarAttackOffset(p, &dx, &dy);
+        if (p == GENGAR_HIT)
+            Cinematic_GengarSwipe(138, 50);
+    }
+    gSprites[tGengarId - 1].x = x + dx;
+    gSprites[tGengarId - 1].y = y + dy;
+
+    // La nave tiembla tras cada golpe
+    if ((t > GENGAR_ATTACK_1 + GENGAR_HIT && t <= GENGAR_ATTACK_1 + GENGAR_HIT + GENGAR_SHAKE)
+     || (t > GENGAR_ATTACK_2 + GENGAR_HIT && t <= GENGAR_ATTACK_2 + GENGAR_HIT + GENGAR_SHAKE))
+    {
+        hit = TRUE;
+        if (t % 2)
+            Cinematic_SetImageOffset((Random() % 5) - 2, (Random() % 5) - 2);
+        if (t == GENGAR_ATTACK_1 + GENGAR_HIT + 4 || t == GENGAR_ATTACK_2 + GENGAR_HIT + 4)
+            PlaySE(SE_M_STRENGTH);
+    }
+    if (!hit)
+        Cinematic_SetImageOffset(0, 0);
+}
+
+// Quita los sprites de la escena (Gengar y zarpazos)
+static void Cinematic_FreeOverlay(s16 *data)
+{
+    u32 i;
+
+    if (tGengarId != 0)
+    {
+        DestroySpriteAndFreeResources(&gSprites[tGengarId - 1]);
+        tGengarId = 0;
+        for (i = 0; i < MAX_SPRITES; i++)
+        {
+            if (gSprites[i].inUse && gSprites[i].template == &sSpriteTemplate_Swipe)
+                DestroySprite(&gSprites[i]);
+        }
+        FreeSpriteTilesByTag(TAG_SWIPE);
+        FreeSpritePaletteByTag(TAG_SWIPE);
+    }
+}
+
 static void Cinematic_UpdateEffect(s16 *data, const struct CinematicScene *scene)
 {
     tFxTimer++;
     switch (scene->effect)
     {
     case FX_FLASHES:
-        if ((tFxTimer % 45) == 20 && !gPaletteFade.active)
+        if ((tFxTimer % 35) == 10 && !gPaletteFade.active)
         {
             BeginNormalPaletteFade(PALETTES_BG & ~(1 << TEXT_PAL_ID), 0, 10, 0, RGB_WHITE);
             PlaySE(SE_M_EXPLOSION);
         }
         break;
     case FX_SHAKE:
-        if (tFxTimer > 20 && tFxTimer < 160)
+        if (tFxTimer > 8 && tFxTimer < 70)
         {
             if (tFxTimer % 2)
                 Cinematic_SetImageOffset((Random() % 5) - 2, (Random() % 5) - 2);
-            if ((tFxTimer % 40) == 21)
+            if ((tFxTimer % 25) == 9)
                 PlaySE(SE_M_STRENGTH);
         }
         else
@@ -365,20 +582,23 @@ static void Cinematic_UpdateEffect(s16 *data, const struct CinematicScene *scene
         }
         break;
     case FX_RED_PULSE:
-        if ((tFxTimer % 50) == 10 && !gPaletteFade.active)
+        if ((tFxTimer % 40) == 10 && !gPaletteFade.active)
             BeginNormalPaletteFade(PALETTES_BG & ~(1 << TEXT_PAL_ID), 1, 7, 0, RGB_RED);
         break;
     case FX_RED_FLASH:
-        if (tFxTimer == 130 && !gPaletteFade.active)
+        if (tFxTimer == 40 && !gPaletteFade.active)
         {
             BeginNormalPaletteFade(PALETTES_BG & ~(1 << TEXT_PAL_ID), 1, 14, 0, RGB_RED);
             PlaySE(SE_PIN);
         }
         break;
+    case FX_GENGAR_ATTACK:
+        Cinematic_UpdateGengar(data);
+        break;
     case FX_BEEPS:
-        if (tFxTimer == 50 || tFxTimer == 70 || tFxTimer == 90)
+        if (tFxTimer == 10 || tFxTimer == 20 || tFxTimer == 30)
             PlaySE(SE_SELECT);
-        else if (tFxTimer == 130)
+        else if (tFxTimer == 48)
             PlaySE(SE_SUCCESS);
         break;
     }
@@ -422,6 +642,11 @@ static void Task_CinematicPlayer(u8 taskId)
             FadeOutBGM(4);
         }
     }
+
+    // En la parte 1 la música dura menos que las escenas: se vuelve a empezar
+    // cuando termina para que suene durante toda la cinemática
+    if (tPart == PART_INTRO && !tSkipped && tState != PLAYER_FINISH && IsBGMStopped())
+        PlayBGM(MUS_INTRO_FIGHT);
 
     switch (tState)
     {
@@ -479,6 +704,7 @@ static void Task_CinematicPlayer(u8 taskId)
             break;
         if (scene->texts != NULL)
             Cinematic_ClearSubtitle();
+        Cinematic_FreeOverlay(data);
         if (tScene + 1 >= tNumScenes || tSkipped)
         {
             tState = PLAYER_FINISH;
@@ -536,6 +762,7 @@ void StartNewGameCinematic(void)
 #undef tPart
 #undef tFxTimer
 #undef tSkipped
+#undef tGengarId
 
 // ---------------------------------------------------------------------------
 // Pantalla de título (escena P1-12)

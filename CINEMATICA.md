@@ -43,19 +43,14 @@ Para la Parte 2, añadir: *"keep the bottom fifth of the image dark and simple"*
 
 ## PARTE 1 — Arranque (sin texto)
 
-Música: `MUS_INTRO_FIGHT`; en el título, `MUS_TITLE`. A o START salta directamente al título.
+Música: `MUS_INTRO_FIGHT`, en bucle durante toda la parte (algo más de 1 s por escena); en el título, `MUS_TITLE`. A o START
+salta directamente al título.
 
 ### `p1_01.png` — Espacio profundo
 
 **Prompt:** Deep space, vast purple-blue nebula over a cluster of planets, faint distant flashes of battle, sense of scale and silence.
 
 **Efecto en el juego:** fundido lento desde negro.
-
-### `p1_02.png` — La guerra
-
-**Prompt:** Orbital space battle, two fleets of angular warships (one white-gold, one crimson-black) exchanging laser fire, armored Pokémon flying between the ships (Charizard, Pidgeot and Dragonite on the white-gold side; Aerodactyl and Golbat on the crimson-black side), their chest cores glowing, explosions.
-
-**Efecto en el juego:** destellos blancos.
 
 ### `p1_03.png` — Piloto y enlace mental
 
@@ -67,19 +62,15 @@ Música: `MUS_INTRO_FIGHT`; en el título, `MUS_TITLE`. A o START salta directam
 
 **Prompt:** Huge damaged white-gold flagship in high orbit, hull breached and burning, crimson-black boarding pods latched onto its side, floating debris.
 
-**Efecto en el juego:** temblor de pantalla.
+**Efecto en el juego:** Gengar ataca la nave, como en la intro original de FireRed (usa el mismo sprite de Gengar
+a su tamaño original (64×64), volteado para que mire a la nave, y los mismos zarpazos). Entra por abajo a la derecha, retrocede, se lanza contra el casco y repite el
+ataque. Cada golpe lleva zarpazo, destello blanco, temblor y sonido. La escena dura 2,5 s.
 
 ### `p1_05.png` — Pasillos en alarma
 
 **Prompt:** Inside a starship corridor, red emergency lights, crew in white-gold uniforms running, sparks falling from the ceiling, motion blur.
 
 **Efecto en el juego:** parpadeo rojo.
-
-### `p1_06.png` — Sala de inteligencia
-
-**Prompt:** Starship intelligence room, holographic galaxy maps, officers working at consoles, a young officer entering through a sliding door holding a glowing data tablet.
-
-**Efecto en el juego:** ninguno.
 
 ### `p1_07.png` — El informe
 
@@ -191,5 +182,5 @@ Oak.
 - **Ilustraciones provisionales**: las 18 imágenes están dibujadas por código (pixel art procedural; `p1_08` y
   `p1_12` reutilizan el sprite de Mew del juego y `p1_12` la palabra POKéMON del logo de FireRed) con
   `python3 tools/cinematic/gen_placeholder_art.py [carpeta] [escenas…]`. Sin escenas regenera todas; por ejemplo
-  `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` rehace solo `p1_02`. **Ojo**: el
-  script sobrescribe los PNG; cuando haya imágenes definitivas, no ejecutarlo sobre ellas.
+  `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` rehace solo `p1_02`. De `p1_02` a `p1_09` ya son definitivas (salen de `p1-02.png` … `p1-09.png`, en la raíz) y el script
+  no las regenera salvo que se nombren a mano. **Ojo**: el script sobrescribe los PNG; cuando haya imágenes definitivas, no ejecutarlo sobre ellas.

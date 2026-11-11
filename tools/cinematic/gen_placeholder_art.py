@@ -1112,6 +1112,9 @@ def p2_06():  # el comienzo
 SCENES = {f.__name__: f for f in (p1_01, p1_02, p1_03, p1_04, p1_05, p1_06, p1_07, p1_08, p1_09, p1_10,
                                   p1_11, p1_12, p2_01, p2_02, p2_03, p2_04, p2_05, p2_06)}
 
+# Escenas que ya tienen su imagen definitiva: no se regeneran salvo que se pidan por nombre.
+FINAL = {"p1_02", "p1_03", "p1_04", "p1_05", "p1_06", "p1_07", "p1_08", "p1_09"}
+
 if __name__ == "__main__":
-    for name in (sys.argv[2:] or SCENES):
+    for name in (sys.argv[2:] or [n for n in SCENES if n not in FINAL]):
         SCENES[name]()

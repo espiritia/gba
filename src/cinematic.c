@@ -28,6 +28,7 @@
 // con hasta 224 colores (paletas 0-13). BG0 (4bpp, paleta 15) se usa para texto.
 
 #define IMAGE_MAX_COLORS  224
+#define INTRO_MUSIC_TEMPO 0xB3 // velocidad de MUS_INTRO_FIGHT en la parte 1 (0x100 = normal; 0xB3 = 70%)
 #define TEXT_PAL_ID       15
 
 #define BG_TEXT   0
@@ -35,7 +36,7 @@
 
 enum {
     FX_NONE,
-    FX_FLASHES,     // destellos blancos aleatorios
+    FX_FLASHES,     // un destello blanco (explosión)
     FX_SHAKE,       // temblor de pantalla
     FX_RED_PULSE,   // parpadeo rojo periódico
     FX_RED_FLASH,   // un flash rojo fuerte a mitad de escena
@@ -49,6 +50,7 @@ struct CinematicScene
     const u16 *pal;
     u16 palSize;
     u16 duration;           // frames (escenas sin texto)
+    u16 untilTick;          // parte 1: tick de la música en el que empieza el fundido de salida (0 = usar duration)
     u8 effect;
     bool8 fadeInWhite;
     bool8 fadeOutWhite;
@@ -66,8 +68,9 @@ static const u32 sGfx_p1_04[] = INCBIN_U32("graphics/cinematic/p1_04.8bpp.lz");
 static const u16 sPal_p1_04[] = INCBIN_U16("graphics/cinematic/p1_04.gbapal");
 static const u32 sGfx_p1_05[] = INCBIN_U32("graphics/cinematic/p1_05.8bpp.lz");
 static const u16 sPal_p1_05[] = INCBIN_U16("graphics/cinematic/p1_05.gbapal");
-static const u32 sGfx_p1_07[] = INCBIN_U32("graphics/cinematic/p1_07.8bpp.lz");
-static const u16 sPal_p1_07[] = INCBIN_U16("graphics/cinematic/p1_07.gbapal");
+// p1_07 desactivada por ahora (ver sIntroScenes)
+// static const u32 sGfx_p1_07[] = INCBIN_U32("graphics/cinematic/p1_07.8bpp.lz");
+// static const u16 sPal_p1_07[] = INCBIN_U16("graphics/cinematic/p1_07.gbapal");
 static const u32 sGfx_p1_08[] = INCBIN_U32("graphics/cinematic/p1_08.8bpp.lz");
 static const u16 sPal_p1_08[] = INCBIN_U16("graphics/cinematic/p1_08.gbapal");
 static const u32 sGfx_p1_09[] = INCBIN_U32("graphics/cinematic/p1_09.8bpp.lz");
@@ -117,9 +120,10 @@ static const struct OamData sOam_Gengar = {
     .priority = 1,
 };
 
-// Tamaño original, volteado en horizontal para que mire hacia la nave (a la izquierda)
+// Al 60% del tamaño original y volteado en horizontal para que mire hacia la nave (a la izquierda)
+#define GENGAR_SCALE 0x9A // 0x100 = tamaño original
 static const union AffineAnimCmd sAffineAnim_Gengar[] = {
-    AFFINEANIMCMD_FRAME(-0x100, 0x100, 0, 0),
+    AFFINEANIMCMD_FRAME(-GENGAR_SCALE, GENGAR_SCALE, 0, 0),
     AFFINEANIMCMD_END
 };
 static const union AffineAnimCmd *const sAffineAnims_Gengar[] = { sAffineAnim_Gengar };
@@ -134,8 +138,15 @@ static const struct SpriteTemplate sSpriteTemplate_Gengar = {
     .callback = SpriteCallbackDummy
 };
 
+// Los zarpazos se reducen igual que Gengar
+static const union AffineAnimCmd sAffineAnim_Swipe[] = {
+    AFFINEANIMCMD_FRAME(GENGAR_SCALE, GENGAR_SCALE, 0, 0),
+    AFFINEANIMCMD_END
+};
+static const union AffineAnimCmd *const sAffineAnims_Swipe[] = { sAffineAnim_Swipe };
+
 static const struct OamData sOam_Swipe = {
-    .affineMode = ST_OAM_AFFINE_OFF,
+    .affineMode = ST_OAM_AFFINE_NORMAL,
     .shape = SPRITE_SHAPE(32x64),
     .size = SPRITE_SIZE(32x64),
     .priority = 1,
@@ -162,7 +173,10 @@ static void SpriteCB_Swipe(struct Sprite *sprite)
 {
     sprite->invisible ^= 1;
     if (sprite->animEnded)
+    {
+        FreeSpriteOamMatrix(sprite);
         DestroySprite(sprite);
+    }
 }
 
 static const struct SpriteTemplate sSpriteTemplate_Swipe = {
@@ -171,7 +185,7 @@ static const struct SpriteTemplate sSpriteTemplate_Swipe = {
     .oam = &sOam_Swipe,
     .anims = sAnims_Swipe,
     .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
+    .affineAnims = sAffineAnims_Swipe,
     .callback = SpriteCB_Swipe
 };
 
@@ -182,16 +196,22 @@ static const struct SpriteTemplate sSpriteTemplate_Swipe = {
 // ---------------------------------------------------------------------------
 static const struct CinematicScene sIntroScenes[] =
 {
-    { IMG(p1_01), .duration = 70, .fadeDelay = 1 },
-    { IMG(p1_03), .duration = 70 },
-    { IMG(p1_02), .duration = 80, .effect = FX_FLASHES },
-    { IMG(p1_04), .duration = 150, .effect = FX_GENGAR_ATTACK },
-    { IMG(p1_05), .duration = 70, .effect = FX_RED_PULSE },
-    { IMG(p1_07), .duration = 70, .effect = FX_RED_FLASH },
-    { IMG(p1_08), .duration = 85 },
-    { IMG(p1_09), .duration = 70, .effect = FX_BEEPS },
-    { IMG(p1_10), .duration = 70, .fadeOutWhite = TRUE, .fadeDelay = 1 },
-    { IMG(p1_11), .duration = 90, .fadeInWhite = TRUE, .fadeDelay = 1 },
+    // Sincronizadas con MUS_INTRO_FIGHT (912 ticks; al 70% de velocidad ~17,3 s; suena una sola vez): cada escena
+    // empieza su fundido de salida en el tick untilTick. El golpe final de la música (tick 816)
+    // cae al terminar el fogonazo blanco de p1_10, y el compás de silencio que cierra la pista
+    // acompaña a p1_11 hasta el título. Al 70% van ~0,88 ticks por frame, así que cada fundido
+    // (16 frames) son ~14 ticks. "duration" (frames) solo se usa si no suena música.
+    { IMG(p1_01), .untilTick =  88, .duration = 85 },
+    { IMG(p1_03), .untilTick = 193, .duration = 84 },
+    { IMG(p1_02), .untilTick = 276, .duration = 60, .effect = FX_FLASHES },
+    { IMG(p1_04), .untilTick = 398, .duration = 100, .effect = FX_GENGAR_ATTACK },
+    { IMG(p1_05), .untilTick = 500, .duration = 80, .effect = FX_RED_PULSE },
+    // Desactivada por ahora: descomentar esta línea y sus INCBIN para volver a mostrarla
+    // { IMG(p1_07), .duration = 70, .effect = FX_RED_FLASH },
+    { IMG(p1_08), .untilTick = 608, .duration = 85 },
+    { IMG(p1_09), .untilTick = 714, .duration = 84, .effect = FX_BEEPS },
+    { IMG(p1_10), .untilTick = 796, .duration = 60, .fadeOutWhite = TRUE },
+    { IMG(p1_11), .untilTick = 891, .duration = 75, .fadeInWhite = TRUE },
 };
 
 // ---------------------------------------------------------------------------
@@ -399,6 +419,7 @@ static void Cinematic_PrintSubtitle(const u8 *text, u8 speed)
 #define tFxTimer    data[6]
 #define tSkipped    data[7]
 #define tGengarId   data[8]  // spriteId + 1 (0 = sin Gengar)
+#define tFadeY      data[9]  // parte 1: nivel del fundido propio (0 = imagen visible, 16 = color sólido)
 
 enum {
     PLAYER_LOAD,
@@ -424,25 +445,25 @@ static const struct CinematicScene *Cinematic_GetScene(s16 *data)
 
 // --- Gengar ataca la nave (escena p1_04) -----------------------------------
 // Reposo abajo a la derecha, junto a la nave; los zarpazos caen sobre el casco.
-#define GENGAR_REST_X   200
-#define GENGAR_REST_Y   104
-#define GENGAR_ENTER    30  // frames que tarda en entrar
-#define GENGAR_ATTACK_1 30  // inicio de cada ataque (dura 48 frames)
-#define GENGAR_ATTACK_2 80
-#define GENGAR_HIT      36  // frame del ataque en el que golpea
-#define GENGAR_SHAKE    14  // frames de temblor tras cada golpe
+#define GENGAR_REST_X   196
+#define GENGAR_REST_Y   100
+#define GENGAR_ENTER    16  // frames que tarda en entrar
+#define GENGAR_ATTACK_LEN 38 // duración del ataque
+#define GENGAR_ATTACK   16  // inicio del ataque (uno solo)
+#define GENGAR_HIT      26  // frame del ataque en el que golpea
+#define GENGAR_SHAKE    14  // frames de temblor tras el golpe
 
 static void Cinematic_GengarSwipe(s16 x, s16 y)
 {
     u8 spriteId;
 
     CreateSprite(&sSpriteTemplate_Swipe, x, y, 6);
-    spriteId = CreateSprite(&sSpriteTemplate_Swipe, x, y + 40, 6);
+    spriteId = CreateSprite(&sSpriteTemplate_Swipe, x, y + 26, 6);
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].oam.shape = SPRITE_SHAPE(32x16);
         gSprites[spriteId].oam.size = SPRITE_SIZE(32x16);
-        CalcCenterToCornerVec(&gSprites[spriteId], SPRITE_SHAPE(32x16), SPRITE_SIZE(32x16), ST_OAM_AFFINE_OFF);
+        CalcCenterToCornerVec(&gSprites[spriteId], SPRITE_SHAPE(32x16), SPRITE_SIZE(32x16), ST_OAM_AFFINE_NORMAL);
         StartSpriteAnim(&gSprites[spriteId], ANIM_SWIPE_BOTTOM);
     }
     PlaySE(SE_M_SCRATCH);
@@ -454,25 +475,25 @@ static void Cinematic_GengarSwipe(s16 x, s16 y)
 // retrocede en arco, espera, se lanza contra la nave y vuelve.
 static void Cinematic_GengarAttackOffset(s16 p, s16 *dx, s16 *dy)
 {
-    if (p < 16)       // retrocede
+    if (p < 12)       // retrocede
     {
-        *dx = 12 * p / 16;
-        *dy = -((gSineTable[p * 4] * 8) >> 8);
+        *dx = 12 * p / 12;
+        *dy = -((gSineTable[p * 5] * 8) >> 8);
     }
-    else if (p < 32)  // pausa
+    else if (p < 22)  // pausa
     {
         *dx = 12;
         *dy = -8;
     }
-    else if (p < 40)  // se lanza
+    else if (p < 30)  // se lanza
     {
-        *dx = 12 - 52 * (p - 31) / 8;
-        *dy = -8 - 6 * (p - 31) / 8;
+        *dx = 12 - 52 * (p - 21) / 8;
+        *dy = -8 - 6 * (p - 21) / 8;
     }
-    else if (p < 48)  // vuelve
+    else if (p < GENGAR_ATTACK_LEN)  // vuelve
     {
-        *dx = -40 + 40 * (p - 39) / 8;
-        *dy = -14 + 14 * (p - 39) / 8;
+        *dx = -40 + 40 * (p - 29) / 8;
+        *dy = -14 + 14 * (p - 29) / 8;
     }
 }
 
@@ -507,33 +528,25 @@ static void Cinematic_UpdateGengar(s16 *data)
     // Flota
     y += (gSineTable[(t * 4) & 0xFF] * 2) >> 8;
 
-    // Ataques
+    // Ataque
     hit = 0;
-    if (t >= GENGAR_ATTACK_1 && t < GENGAR_ATTACK_1 + 48)
+    if (t >= GENGAR_ATTACK && t < GENGAR_ATTACK + GENGAR_ATTACK_LEN)
     {
-        p = t - GENGAR_ATTACK_1;
+        p = t - GENGAR_ATTACK;
         Cinematic_GengarAttackOffset(p, &dx, &dy);
         if (p == GENGAR_HIT)
-            Cinematic_GengarSwipe(124, 60);
-    }
-    else if (t >= GENGAR_ATTACK_2 && t < GENGAR_ATTACK_2 + 48)
-    {
-        p = t - GENGAR_ATTACK_2;
-        Cinematic_GengarAttackOffset(p, &dx, &dy);
-        if (p == GENGAR_HIT)
-            Cinematic_GengarSwipe(138, 50);
+            Cinematic_GengarSwipe(138, 62);
     }
     gSprites[tGengarId - 1].x = x + dx;
     gSprites[tGengarId - 1].y = y + dy;
 
-    // La nave tiembla tras cada golpe
-    if ((t > GENGAR_ATTACK_1 + GENGAR_HIT && t <= GENGAR_ATTACK_1 + GENGAR_HIT + GENGAR_SHAKE)
-     || (t > GENGAR_ATTACK_2 + GENGAR_HIT && t <= GENGAR_ATTACK_2 + GENGAR_HIT + GENGAR_SHAKE))
+    // La nave tiembla tras el golpe
+    if (t > GENGAR_ATTACK + GENGAR_HIT && t <= GENGAR_ATTACK + GENGAR_HIT + GENGAR_SHAKE)
     {
         hit = TRUE;
         if (t % 2)
             Cinematic_SetImageOffset((Random() % 5) - 2, (Random() % 5) - 2);
-        if (t == GENGAR_ATTACK_1 + GENGAR_HIT + 4 || t == GENGAR_ATTACK_2 + GENGAR_HIT + 4)
+        if (t == GENGAR_ATTACK + GENGAR_HIT + 4)
             PlaySE(SE_M_STRENGTH);
     }
     if (!hit)
@@ -552,7 +565,10 @@ static void Cinematic_FreeOverlay(s16 *data)
         for (i = 0; i < MAX_SPRITES; i++)
         {
             if (gSprites[i].inUse && gSprites[i].template == &sSpriteTemplate_Swipe)
+            {
+                FreeSpriteOamMatrix(&gSprites[i]);
                 DestroySprite(&gSprites[i]);
+            }
         }
         FreeSpriteTilesByTag(TAG_SWIPE);
         FreeSpritePaletteByTag(TAG_SWIPE);
@@ -565,7 +581,7 @@ static void Cinematic_UpdateEffect(s16 *data, const struct CinematicScene *scene
     switch (scene->effect)
     {
     case FX_FLASHES:
-        if ((tFxTimer % 35) == 10 && !gPaletteFade.active)
+        if (tFxTimer == 8 && !gPaletteFade.active)
         {
             BeginNormalPaletteFade(PALETTES_BG & ~(1 << TEXT_PAL_ID), 0, 10, 0, RGB_WHITE);
             PlaySE(SE_M_EXPLOSION);
@@ -585,7 +601,7 @@ static void Cinematic_UpdateEffect(s16 *data, const struct CinematicScene *scene
         }
         break;
     case FX_RED_PULSE:
-        if ((tFxTimer % 40) == 10 && !gPaletteFade.active)
+        if ((tFxTimer % 25) == 6 && !gPaletteFade.active)
             BeginNormalPaletteFade(PALETTES_BG & ~(1 << TEXT_PAL_ID), 1, 7, 0, RGB_RED);
         break;
     case FX_RED_FLASH:
@@ -599,12 +615,34 @@ static void Cinematic_UpdateEffect(s16 *data, const struct CinematicScene *scene
         Cinematic_UpdateGengar(data);
         break;
     case FX_BEEPS:
-        if (tFxTimer == 10 || tFxTimer == 20 || tFxTimer == 30)
+        if (tFxTimer == 6 || tFxTimer == 13 || tFxTimer == 20)
             PlaySE(SE_SELECT);
-        else if (tFxTimer == 48)
+        else if (tFxTimer == 30)
             PlaySE(SE_SUCCESS);
         break;
     }
+}
+
+// Parte 1: fundido propio, un nivel por frame (16 frames y 16 niveles: suave y de duración
+// exacta). El fundido normal del juego alterna fondos y sprites, y cada paso le cuesta 2 frames.
+// Devuelve TRUE al llegar al nivel objetivo.
+static bool8 Cinematic_StepFade(s16 *data, u32 palettes, u8 targetY, u16 color)
+{
+    if (tFadeY == targetY)
+        return TRUE;
+    tFadeY += (tFadeY < targetY) ? 1 : -1;
+    BlendPalettes(palettes, tFadeY, color);
+    return FALSE;
+}
+
+// ¿Ha terminado la escena? En la parte 1 se sigue el reloj de la música para que las escenas
+// vayan sincronizadas con ella; sin música (o ya terminada) se usa la duración en frames.
+static bool8 Cinematic_SceneDone(s16 *data, const struct CinematicScene *scene)
+{
+    ++tTimer;
+    if (tPart == PART_INTRO && scene->untilTick != 0 && !IsBGMStopped())
+        return gMPlayInfo_BGM.clock >= scene->untilTick;
+    return tTimer >= scene->duration;
 }
 
 static void Cinematic_Finish(u8 taskId)
@@ -646,30 +684,35 @@ static void Task_CinematicPlayer(u8 taskId)
         }
     }
 
-    // En la parte 1 la música dura menos que las escenas: se vuelve a empezar
-    // cuando termina para que suene durante toda la cinemática
-    if (tPart == PART_INTRO && !tSkipped && tState != PLAYER_FINISH && IsBGMStopped())
-        PlayBGM(MUS_INTRO_FIGHT);
-
     switch (tState)
     {
     case PLAYER_LOAD:
         color = scene->fadeInWhite ? RGB_WHITE : RGB_BLACK;
         Cinematic_LoadImage(scene);
         BlendPalettes(PALETTES_BG, 16, color);
-        BeginNormalPaletteFade(PALETTES_BG, scene->fadeDelay, 16, 0, color);
+        if (tPart == PART_INTRO)
+            tFadeY = 16;
+        else
+            BeginNormalPaletteFade(PALETTES_BG, scene->fadeDelay, 16, 0, color);
         tTimer = 0;
         tFxTimer = 0;
         tTextIdx = 0;
         tState = PLAYER_FADE_IN;
         break;
     case PLAYER_FADE_IN:
-        if (!gPaletteFade.active)
+        if (tPart == PART_INTRO)
+        {
+            if (Cinematic_StepFade(data, PALETTES_BG, 0, scene->fadeInWhite ? RGB_WHITE : RGB_BLACK))
+                tState = PLAYER_SHOW;
+        }
+        else if (!gPaletteFade.active)
+        {
             tState = (scene->texts != NULL) ? PLAYER_TEXT_PRINT : PLAYER_SHOW;
+        }
         break;
     case PLAYER_SHOW:
         Cinematic_UpdateEffect(data, scene);
-        if (++tTimer >= scene->duration)
+        if (Cinematic_SceneDone(data, scene))
             tState = PLAYER_FADE_OUT;
         break;
     case PLAYER_TEXT_PRINT:
@@ -699,12 +742,20 @@ static void Task_CinematicPlayer(u8 taskId)
             break;
         Cinematic_SetImageOffset(0, 0);
         color = scene->fadeOutWhite ? RGB_WHITE : RGB_BLACK;
-        BeginNormalPaletteFade(PALETTES_ALL, scene->fadeDelay, 0, 16, color);
+        if (tPart != PART_INTRO)
+            BeginNormalPaletteFade(PALETTES_ALL, scene->fadeDelay, 0, 16, color);
         tState = PLAYER_WAIT_FADE_OUT;
         break;
     case PLAYER_WAIT_FADE_OUT:
-        if (gPaletteFade.active)
+        if (tPart == PART_INTRO)
+        {
+            if (!Cinematic_StepFade(data, PALETTES_ALL, 16, scene->fadeOutWhite ? RGB_WHITE : RGB_BLACK))
+                break;
+        }
+        else if (gPaletteFade.active)
+        {
             break;
+        }
         if (scene->texts != NULL)
             Cinematic_ClearSubtitle();
         Cinematic_FreeOverlay(data);
@@ -740,6 +791,9 @@ void CB2_StartIntroCinematic(void)
 {
     Cinematic_StartPlayer(PART_INTRO);
     PlayBGM(MUS_INTRO_FIGHT);
+    // Música al 70% de su velocidad (mismo tono): la parte 1 dura ~17,3 s. Como las escenas
+    // siguen el reloj de la música (untilTick), se alargan con ella.
+    m4aMPlayTempoControl(&gMPlayInfo_BGM, INTRO_MUSIC_TEMPO);
 }
 
 static void CB2_StartNewGameCinematic(void)
@@ -766,6 +820,7 @@ void StartNewGameCinematic(void)
 #undef tFxTimer
 #undef tSkipped
 #undef tGengarId
+#undef tFadeY
 
 // ---------------------------------------------------------------------------
 // Pantalla de título (escena P1-12)

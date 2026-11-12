@@ -43,7 +43,12 @@ Para la Parte 2, añadir: *"keep the bottom fifth of the image dark and simple"*
 
 ## PARTE 1 — Arranque (sin texto)
 
-Música: `MUS_INTRO_FIGHT`, en bucle durante toda la parte (algo más de 1 s por escena); en el título, `MUS_TITLE`. A o START
+Música: `MUS_INTRO_FIGHT` al 70% de su velocidad (`INTRO_MUSIC_TEMPO`), que suena una sola vez: la parte dura lo
+mismo que la pista (~17 s). Su golpe final
+cae en el fogonazo blanco de la explosión (`p1_10`) y el compás de silencio que cierra la pista acompaña a la estrella
+fugaz (`p1_11`) hasta el título, donde empieza `MUS_TITLE`. Entre escenas hay un fundido suave a negro (16 frames). Las
+escenas van sincronizadas con el reloj de la música: en `src/cinematic.c` cada una tiene un `untilTick` (el tick de la
+pista en el que empieza a fundirse). Para dar más o menos tiempo a una escena se mueven esos ticks. A o START
 salta directamente al título.
 
 ### `p1_01.png` — Espacio profundo
@@ -62,15 +67,15 @@ salta directamente al título.
 
 **Prompt:** Orbital space battle, two fleets of angular warships (one white-gold, one crimson-black) exchanging laser fire, armored Pokémon flying between the ships (Charizard, Pidgeot and Dragonite on the white-gold side; Aerodactyl and Golbat on the crimson-black side), their chest cores glowing, explosions.
 
-**Efecto en el juego:** destellos blancos.
+**Efecto en el juego:** un destello blanco (una explosión).
 
 ### `p1_04.png` — La nave abordada
 
 **Prompt:** Huge damaged white-gold flagship in high orbit, hull breached and burning, crimson-black boarding pods latched onto its side, floating debris.
 
 **Efecto en el juego:** Gengar ataca la nave, como en la intro original de FireRed (usa el mismo sprite de Gengar
-a su tamaño original (64×64), volteado para que mire a la nave, y los mismos zarpazos). Entra por abajo a la derecha, retrocede, se lanza contra el casco y repite el
-ataque. Cada golpe lleva zarpazo, destello blanco, temblor y sonido. La escena dura 2,5 s.
+reducido al 60% (unos 38×38 px), volteado para que mire a la nave, y los mismos zarpazos, reducidos igual). Entra por abajo a la derecha, retrocede, se lanza contra el casco
+y da un solo zarpazo, con destello blanco, temblor y sonido. La escena dura ~1,6 s.
 
 ### `p1_05.png` — Pasillos en alarma
 
@@ -83,6 +88,9 @@ ataque. Cada golpe lleva zarpazo, destello blanco, temblor y sonido. La escena d
 **Prompt:** Tall commander in a long navy coat with a golden spiral insignia, silver hair, seen from behind, reading a glowing tablet, red alarm light on her shoulders, hand reaching toward a large evacuation button.
 
 **Efecto en el juego:** flash rojo (se activa la evacuación).
+
+**Desactivada por ahora:** no sale en la cinemática. Está comentada en `src/cinematic.c` y se recupera descomentando
+su línea en `sIntroScenes` y sus dos `INCBIN`.
 
 ### `p1_08.png` — El hogar
 

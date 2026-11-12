@@ -154,8 +154,8 @@ p1_03.json
 
 ### `p1_02` — The war
 
-The galactic war: two fleets and the Pokémon biosuits fighting between them. In-game: white flashes on the
-explosions.
+The galactic war: two fleets and the Pokémon biosuits fighting between them. In-game: one white flash (an
+explosion).
 
 ```text
 Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
@@ -205,9 +205,9 @@ p1_02_explosion.png, p1_02.json
 ### `p1_04` — The boarded ship
 
 The white-gold flagship is boarded. In-game: Gengar attacks the ship, as in the original FireRed intro (the same
-Gengar sprite at its original 64×64 size, mirrored to face the ship, and the same claw swipes, drawn by the engine on top of this BG). It enters from the bottom
-right, backs off, lunges at the hull and attacks again. Each hit has a swipe, a white flash, a screen shake and a
-sound. The scene lasts 2.5 s. Keep the bottom-right area free of important detail, since Gengar covers it.
+Gengar sprite scaled to 60% (about 38×38 px) and mirrored to face the ship, and the same claw swipes scaled the same way, drawn by the engine on top of this BG). It enters from the bottom
+right, backs off, lunges at the hull and strikes once: a swipe, a white flash, a screen shake and a sound.
+The scene lasts about 1.6 s. Keep the bottom-right area free of important detail, since Gengar covers it.
 
 ```text
 Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
@@ -287,6 +287,8 @@ EXPORT: p1_05.aseprite, p1_05_bg.png, p1_05_crew_near.png, p1_05_crew_far.png, p
 ### `p1_07` — The report
 
 The Commander reads the report and triggers the evacuation. In-game: red flash on the button press (≈3.5 s).
+**Currently disabled:** this scene is commented out in `src/cinematic.c` (its line in `sIntroScenes` and its two
+`INCBIN`s); uncomment them to show it again.
 
 ```text
 Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.

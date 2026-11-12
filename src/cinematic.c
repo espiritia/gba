@@ -58,6 +58,8 @@ struct CinematicScene
 
 static const u32 sGfx_p1_01[] = INCBIN_U32("graphics/cinematic/p1_01.8bpp.lz");
 static const u16 sPal_p1_01[] = INCBIN_U16("graphics/cinematic/p1_01.gbapal");
+static const u32 sGfx_p1_02[] = INCBIN_U32("graphics/cinematic/p1_02.8bpp.lz");
+static const u16 sPal_p1_02[] = INCBIN_U16("graphics/cinematic/p1_02.gbapal");
 static const u32 sGfx_p1_03[] = INCBIN_U32("graphics/cinematic/p1_03.8bpp.lz");
 static const u16 sPal_p1_03[] = INCBIN_U16("graphics/cinematic/p1_03.gbapal");
 static const u32 sGfx_p1_04[] = INCBIN_U32("graphics/cinematic/p1_04.8bpp.lz");
@@ -182,6 +184,7 @@ static const struct CinematicScene sIntroScenes[] =
 {
     { IMG(p1_01), .duration = 70, .fadeDelay = 1 },
     { IMG(p1_03), .duration = 70 },
+    { IMG(p1_02), .duration = 80, .effect = FX_FLASHES },
     { IMG(p1_04), .duration = 150, .effect = FX_GENGAR_ATTACK },
     { IMG(p1_05), .duration = 70, .effect = FX_RED_PULSE },
     { IMG(p1_07), .duration = 70, .effect = FX_RED_FLASH },

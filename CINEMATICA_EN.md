@@ -152,6 +152,56 @@ EXPORT: p1_03.aseprite, p1_03_bg.png, p1_03_reticle.png, p1_03_eye.png, p1_03_ba
 p1_03.json
 ```
 
+### `p1_02` — The war
+
+The galactic war: two fleets and the Pokémon biosuits fighting between them. In-game: white flashes on the
+explosions.
+
+```text
+Create a 5-second layered pixel-art animation in Aseprite for a Game Boy Advance intro.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s total (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+A vast orbital battle seen from a cinematic wide vantage: on the left a wedge of angular white-and-gold warships
+with clean beveled hulls, on the right a mirroring wedge of crimson-and-black vessels bristling with dark armor
+plating, both fleets trading crisscrossing beams of laser fire across the dark starfield between them. Armored
+Charizard, Pidgeot and Dragonite with plated hide and faint glowing mechanical seams fly in formation down the left
+channel, wings spread, while Aerodactyl and Golbat wheel through the smoke on the right; each creature's chest core
+glows a hot bright point. Fireballs and venting atmosphere bloom in the background, dramatic rim lighting, deep
+shadows, muted limited palette, no text, no logos, 3:2 composition with the two fleets framing the open space lane
+down the middle.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_charizard - 64x64 box, 4 frames x 100 ms, loop (wing-flap cycle). A Charizard biosuit: armored
+   biomechanical Charizard, white-gold plated armour, orange wing membranes, plated joints, glowing blue core in
+   the chest, flame-thruster tail. Flying to the right. Keyframes: (-64,40) at 0.0 s, (88,52) at 2.5 s,
+   (240,30) at 5.0 s.
+2. SPR_aerodactyl - 64x32 box, 4 frames x 100 ms, loop. An Aerodactyl biosuit: armored biomechanical Aerodactyl,
+   crimson-black plates, red glowing chest core. Flying to the left. Keyframes: (240,96) at 0.5 s, (120,84) at
+   2.8 s, (-64,70) at 5.0 s.
+3. SPR_laser - 32x8 box, 2 frames x 50 ms, loop. A bright bolt with a 1 px white core and a coloured glow; gold
+   for the white-gold side, red for the crimson side (2 palette variants). Bolts shoot across the corridor at
+   0.8 s, 1.6 s, 2.4 s, 3.2 s and 4.0 s, each one crossing in 0.4 s.
+4. SPR_explosion - 32x32 box, 8 frames x 50 ms, one-shot. A white core, an orange fireball, then a smoky ring and
+   debris. Plays at (136,56) at 1.5 s, at (76,30) at 3.0 s and at (170,108) at 4.2 s.
+
+TIMELINE:
+0.0 s - the fleets hold position; the Charizard biosuit enters from the left.
+0.5 s - the Aerodactyl biosuit enters from the right.
+1.5 s - explosion 1. Engine: white flash (4 frames).
+2.5 s - the two biosuits cross in the middle.
+3.0 s - explosion 2. Engine: white flash.
+4.2 s - explosion 3. Engine: white flash.
+5.0 s - end.
+
+EXPORT: p1_02.aseprite, p1_02_bg.png, p1_02_charizard.png, p1_02_aerodactyl.png, p1_02_laser.png,
+p1_02_explosion.png, p1_02.json
+```
+
 ### `p1_04` — The boarded ship
 
 The white-gold flagship is boarded. In-game: Gengar attacks the ship, as in the original FireRed intro (the same

@@ -58,6 +58,12 @@ salta directamente al título.
 
 **Efecto en el juego:** ninguno.
 
+### `p1_02.png` — La guerra
+
+**Prompt:** Orbital space battle, two fleets of angular warships (one white-gold, one crimson-black) exchanging laser fire, armored Pokémon flying between the ships (Charizard, Pidgeot and Dragonite on the white-gold side; Aerodactyl and Golbat on the crimson-black side), their chest cores glowing, explosions.
+
+**Efecto en el juego:** destellos blancos.
+
 ### `p1_04.png` — La nave abordada
 
 **Prompt:** Huge damaged white-gold flagship in high orbit, hull breached and burning, crimson-black boarding pods latched onto its side, floating debris.

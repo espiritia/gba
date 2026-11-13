@@ -17,7 +17,7 @@ Dos partes:
    Los colores 224-255 están reservados para el texto y no se pueden usar.
 4. Guardar con el nombre de la escena en `graphics/cinematic/` (sobrescribiendo el provisional) y compilar.
 
-- Título: el logo **POKéMON ARENA** va dibujado dentro de la propia imagen `p1_12.png` (no hay sprite aparte). Si
+- Título: el logo **POKéMON TERRA** va dibujado dentro de la propia imagen `p1_12.png` (no hay sprite aparte). Si
   se rehace con IA, generar el fondo sin texto y pegar encima el logo, dejando libre la franja de "PULSA START"
   (y 128-144, centro).
 - En las imágenes de la **Parte 2**, la franja inferior (los últimos 40 px) queda tapada por el texto. Esa zona
@@ -120,7 +120,7 @@ su línea en `sIntroScenes` y sus dos `INCBIN`.
 
 **Prompt:** Upper half: deep space with a purple nebula and stars, fading into a soft dawn sky; lower part: green hills of a peaceful Kanto town with small red-roofed houses, round trees and a dirt path; the legendary Pokémon Mew (small, pale pink, long thin tail) floating on the right side with a soft pink glow; empty upper-left area for a logo.
 
-**Efecto en el juego:** logo **POKéMON ARENA** (estilo FireRed) + "PULSA START".
+**Efecto en el juego:** logo **POKéMON TERRA** (estilo FireRed) + "PULSA START".
 
 La pantalla de copyright se mantiene. En el título siguen funcionando ARRIBA+B+SELECT (borrar partida) y la
 vuelta automática a la intro tras un rato sin pulsar nada.
@@ -152,23 +152,29 @@ Oak.
 >
 > La verdad sobre los POKéMONs… una antigua y poderosa tecnología militar
 
-### `p2_03.png` — El mundo POKéMON de hoy
+### `p2_03.png` — La excavación
 
-**Prompt:** Sunny day in a small town square in front of a Pokémon Center (white building, red roof, Poké Ball sign), two young trainers facing each other at the edges of the frame while their Pokémon (Pikachu and Squirtle) clash attacks in the middle, green trees and houses around, cheerful mood.
+**Prompt:** Archaeological dig site on a sunny day in dry hills, a rectangular excavation pit marked with a grid of ropes and wooden stakes, several scientists who look like Pokémon professors (white lab coats) carefully unearthing an ancient red Pokédex that still glows faintly and a few old Poké Balls half-buried in the soil, one kneeling with a brush, another holding a lamp, another taking notes on a clipboard, a canvas tent in the background, sense of discovery.
 
 **Texto:**
 
 > Los descendientes directos de algunos soldados que sobrevivieron a la guerra
 >
 > recuperaron vestigios de aquella antigua tecnología militar…
->
+
+### `p2_04.png` — El mundo POKéMON de hoy
+
+**Prompt:** Sunny day in a small town square in front of a Pokémon Center (white building, red roof, Poké Ball sign), two young trainers facing each other at the edges of the frame while their Pokémon battle in the middle: a Pikachu on the left firing a yellow lightning bolt and a Squirtle on the right spraying a jet of water, the two attacks clashing in a bright burst between them, green trees and houses around, cheerful mood.
+
+**Texto:**
+
 > y con ella reconstruyeron un nuevo y feliz mundo POKéMON…
 >
 > aunque tal vez aquella gran guerra nunca terminó del todo…
 
-### `p2_04.png` — El comienzo
+### `p2_05.png` — El comienzo
 
-**Prompt:** Quiet small town in KANTO on a sunny morning, surrounded by a lush green pine forest and green hills, a few houses with red roofs and white fences, a larger white laboratory building, dirt paths, flowers and a small pond, peaceful and welcoming.
+**Prompt:** Cosy interior of a small family house in a quiet KANTO town, warm morning light through the window, wooden floor and furniture decorated with Pokémon items (a framed picture of Cubone on the wall, Poké Ball cushions, a Pokémon plush on a shelf), a young man in a green Pewter City Gym staff uniform (Brock's gym employee) standing in the living room next to his smiling mother, who is carrying a tray of freshly baked cupcakes, homely and peaceful mood.
 
 **Texto:**
 
@@ -184,5 +190,5 @@ Oak.
 - **Ilustraciones provisionales**: las imágenes están dibujadas por código (pixel art procedural; `p1_08` y
   `p1_12` reutilizan el sprite de Mew del juego y `p1_12` la palabra POKéMON del logo de FireRed) con
   `python3 tools/cinematic/gen_placeholder_art.py [carpeta] [escenas…]`. Sin escenas regenera todas; por ejemplo
-  `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` rehace solo `p1_02`. De `p1_02` a `p1_09` y `p2_01` ya son definitivas (salen de `p1-02.png` … `p1-09.png` y `p2-01.png`, en la raíz) y el script
+  `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` rehace solo `p1_02`. De `p1_02` a `p1_09`, `p2_01` y `p2_04` ya son definitivas (salen de `p1-02.png` … `p1-09.png`, `p2-01.png` y `p2-04.png`, en la raíz) y el script
   no las regenera salvo que se nombren a mano. **Ojo**: el script sobrescribe los PNG; cuando haya imágenes definitivas, no ejecutarlo sobre ellas.

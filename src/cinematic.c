@@ -89,7 +89,9 @@ static const u32 sGfx_p2_03[] = INCBIN_U32("graphics/cinematic/p2_03.8bpp.lz");
 static const u16 sPal_p2_03[] = INCBIN_U16("graphics/cinematic/p2_03.gbapal");
 static const u32 sGfx_p2_04[] = INCBIN_U32("graphics/cinematic/p2_04.8bpp.lz");
 static const u16 sPal_p2_04[] = INCBIN_U16("graphics/cinematic/p2_04.gbapal");
-// p2_05 y p2_06 ya no se usan (la parte 2 tiene 4 escenas); sus PNG siguen en graphics/cinematic/
+static const u32 sGfx_p2_05[] = INCBIN_U32("graphics/cinematic/p2_05.8bpp.lz");
+static const u16 sPal_p2_05[] = INCBIN_U16("graphics/cinematic/p2_05.gbapal");
+// p2_06 ya no se usa (la parte 2 tiene 5 escenas); su PNG sigue en graphics/cinematic/
 
 // ---------------------------------------------------------------------------
 // Gengar atacando (gráficos de la intro original de FireRed, ver intro.c)
@@ -220,21 +222,23 @@ static const u8 sText_P2_02a[] = _("Los POKéMON legendarios son leyendas\nque a
 static const u8 sText_P2_02b[] = _("La verdad sobre los POKéMONs…\nuna antigua y poderosa tecnología militar");
 static const u8 sText_P2_03a[] = _("Los descendientes directos de algunos\nsoldados que sobrevivieron a la guerra");
 static const u8 sText_P2_03b[] = _("recuperaron vestigios de aquella\nantigua tecnología militar…");
-static const u8 sText_P2_03c[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
-static const u8 sText_P2_03d[] = _("aunque tal vez aquella gran guerra\nnunca terminó del todo…");
-static const u8 sText_P2_04a[] = _("Mientras tanto, en un pueblo\ntranquilo de KANTO…");
+static const u8 sText_P2_04a[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
+static const u8 sText_P2_04b[] = _("aunque tal vez aquella gran guerra\nnunca terminó del todo…");
+static const u8 sText_P2_05a[] = _("Mientras tanto, en un pueblo\ntranquilo de KANTO…");
 
 static const u8 *const sTexts_P2_01[] = { sText_P2_01a, sText_P2_01b, NULL };
 static const u8 *const sTexts_P2_02[] = { sText_P2_02a, sText_P2_02b, NULL };
-static const u8 *const sTexts_P2_03[] = { sText_P2_03a, sText_P2_03b, sText_P2_03c, sText_P2_03d, NULL };
-static const u8 *const sTexts_P2_04[] = { sText_P2_04a, NULL };
+static const u8 *const sTexts_P2_03[] = { sText_P2_03a, sText_P2_03b, NULL };
+static const u8 *const sTexts_P2_04[] = { sText_P2_04a, sText_P2_04b, NULL };
+static const u8 *const sTexts_P2_05[] = { sText_P2_05a, NULL };
 
 static const struct CinematicScene sNewGameScenes[] =
 {
     { IMG(p2_01), .texts = sTexts_P2_01, .fadeDelay = 3 },
     { IMG(p2_02), .texts = sTexts_P2_02, .fadeDelay = 2 },
     { IMG(p2_03), .texts = sTexts_P2_03, .fadeDelay = 2 },
-    { IMG(p2_04), .texts = sTexts_P2_04, .fadeDelay = 4 },
+    { IMG(p2_04), .texts = sTexts_P2_04, .fadeDelay = 2 },
+    { IMG(p2_05), .texts = sTexts_P2_05, .fadeDelay = 4 },
 };
 
 static const u8 sText_PressStart[] = _("PULSA START");
@@ -923,7 +927,7 @@ static void CB2_InitTitleScreen_Cinematic(void)
     StartTimer1(); // semilla del RNG / ID de entrenador
     Cinematic_LoadImage(&sTitleScene);
 
-    // El logo "POKéMON ARENA" va dibujado dentro de la propia imagen P1-12
+    // El logo "POKéMON TERRA" va dibujado dentro de la propia imagen P1-12
 
     FillWindowPixelBuffer(WIN_PRESS_START, PIXEL_FILL(0));
     AddTextPrinterParameterized4(WIN_PRESS_START, FONT_NORMAL,

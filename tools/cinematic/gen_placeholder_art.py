@@ -218,7 +218,7 @@ def p1_11():
 
 
 # --------------------------------------------------------------------------
-# P1-12: título "POKéMON ARENA" + Mew + espacio arriba / pueblo de Kanto abajo
+# P1-12: título "POKéMON TERRA" + Mew + espacio arriba / pueblo de Kanto abajo
 # --------------------------------------------------------------------------
 LOGO_KEY = (0, 255, 41)  # color transparente del logo de FireRed
 
@@ -387,14 +387,14 @@ def p1_12():
     # Mew por encima del paisaje
     paste(img, mrgb, mmask, mx, my)
 
-    # --- logo "POKéMON" (FireRed) + "ARENA" con el mismo estilo ---
+    # --- logo "POKéMON" (FireRed) + "TERRA" con el mismo estilo ---
     word, wmask = firered_pokemon_wordmark()
     logo_cx = 96
     wx = logo_cx - wmask.shape[1] // 2
     paste(img, word, wmask, wx, 3)
-    arena, amask = styled_word("ARENA", 22, (255, 255, 40), (230, 200, 40),
+    terra, amask = styled_word("TERRA", 22, (255, 255, 40), (230, 200, 40),
                                (32, 0, 255), (0, 0, 0), (41, 41, 98))
-    paste(img, arena, amask, logo_cx - amask.shape[1] // 2, 60)
+    paste(img, terra, amask, logo_cx - amask.shape[1] // 2, 60)
     save(img, "p1_12")
 
 
@@ -969,7 +969,60 @@ def pokeball(img, cx, cy, r):
     fill(img, ell(cx, cy, max(1, r * 0.35), max(1, r * 0.35)), (250, 250, 250))
 
 
-def p2_03():  # el mundo POKéMON actual: centro POKéMON y combate
+def p2_03():  # la excavación: científicos desenterrando una Pokédex y Poké Balls
+    rng = np.random.default_rng(223)
+    img = lerp(col(150, 190, 230), col(240, 220, 180), np.clip(YY / 70.0, 0, 1))
+    cl = noise(rng, 5, 3)
+    fill(img, (cl > 0.65) & (YY < 40), (255, 250, 240), 0.6)
+    far = YY >= mountains(rng, 50, 14, 3, 2)[XX]
+    fill_grad(img, far, (170, 150, 110), (140, 120, 90), 2)
+    ground = YY >= 62
+    fill_grad(img, ground, (196, 164, 116), (150, 116, 80), 3)
+    fill(img, ground & (noise(rng, 5, 8) > 0.62), (170, 140, 100), 0.6)
+    # tienda de campaña al fondo
+    fill(img, poly([(184, 70), (230, 70), (207, 44)]), (230, 230, 210))
+    fill(img, poly([(207, 44), (230, 70), (218, 70)]), (190, 190, 170))
+    fill(img, poly([(202, 70), (212, 70), (207, 58)]), (60, 50, 40))
+    # hoyo de excavación con cuadrícula
+    pit = poly([(52, 80), (176, 80), (190, 112), (40, 112)])
+    fill_grad(img, pit, (130, 96, 64), (90, 64, 44), 3)
+    fill(img, pit & ~np.roll(pit, 2, 0), (70, 50, 34))
+    for x in range(56, 180, 24):
+        fill(img, lines([(x, 80), (x - 4 + (x - 115) * 0.12, 112)]), (230, 220, 190), 0.8)
+    fill(img, lines([(46, 96), (184, 96)]), (230, 220, 190), 0.8)
+    for x in (52, 176, 40, 190):
+        fill(img, box(x - 1, 74 if x in (52, 176) else 106, x + 1, 82 if x in (52, 176) else 114), (120, 84, 50))
+    # Pokédex roja medio enterrada y brillando
+    glow(img, 112, 92, 16, (160, 240, 255), 0.7)
+    dex = poly([(100, 86), (122, 84), (124, 98), (102, 100)])
+    fill(img, dex, (210, 40, 40))
+    fill(img, poly([(104, 88), (116, 87), (117, 93), (105, 94)]), (140, 230, 255))
+    fill(img, ell(119, 88, 1.5, 1.5), (120, 200, 255))
+    fill(img, box(98, 96, 128, 102) & pit, (110, 80, 54))
+    # Poké Balls antiguas asomando
+    for (bx, by, r) in ((72, 104, 4), (150, 100, 4), (136, 108, 3), (84, 90, 3)):
+        pokeball(img, bx, by, r)
+        fill(img, ell(bx, by + r * 0.7, r + 1, r * 0.5), (100, 72, 50))
+    # científicos con bata blanca
+    for (px, base, h, lean) in ((34, 110, 40, 0.0), (196, 112, 42, -0.04)):
+        pm = person(px, base, h, lean=lean, coat=True)
+        fill(img, pm, (236, 236, 230))
+        fill(img, rim(pm, 1, 0, 1), (170, 170, 170), 0.8)
+        hy = base - h + h * 0.085
+        fill(img, ell(px, hy, h * 0.085, h * 0.1), (230, 190, 150))
+        fill(img, ell(px, hy - h * 0.06, h * 0.1, h * 0.05), (90, 70, 60))
+    fill(img, box(204, 82, 212, 92), (120, 84, 50))  # carpeta
+    glow(img, 30, 86, 6, (255, 230, 150), 0.7)        # lámpara
+    # científico arrodillado con pincel junto a la Pokédex
+    kn = person(132, 96, 26, lean=-0.25, coat=True)
+    fill(img, kn, (236, 236, 230))
+    fill(img, rim(kn, 1, 0, 1), (170, 170, 170), 0.8)
+    fill(img, lines([(126, 86), (121, 91)], 1), (120, 84, 50))
+    text_band(img)
+    save(img, "p2_03")
+
+
+def p2_04():  # el mundo POKéMON actual: centro POKéMON y combate
     rng = np.random.default_rng(213)
     img = lerp(col(100, 170, 240), col(200, 230, 250), np.clip(YY / 80.0, 0, 1))
     cl = noise(rng, 5, 3)
@@ -1019,87 +1072,54 @@ def p2_03():  # el mundo POKéMON actual: centro POKéMON y combate
     beam(img, [(rx - 14, ry - 6), (122, 96)], (170, 230, 255), 2, (80, 180, 255), 0.6)
     explosion(img, 121, 96, 6)
     text_band(img)
-    save(img, "p2_03")
-
-
-def p2_04():  # un pueblo tranquilo de KANTO
-    rng = np.random.default_rng(214)
-    img = lerp(col(120, 180, 240), col(210, 235, 245), np.clip(YY / 60.0, 0, 1))
-    cl = noise(rng, 5, 3)
-    fill(img, (cl > 0.64) & (YY < 40), (255, 255, 255), 0.7)
-    far = YY >= mountains(rng, 46, 16, 3, 2)[XX]
-    fill_grad(img, far, (110, 170, 120), (80, 140, 100), 2)
-    forest = pine_forest(rng, lambda x: 66, 40, 12, 26)
-    fill_grad(img, forest & (YY < 80), (50, 120, 60), (24, 76, 40), 3)
-    fill(img, rim(forest, 0, -1, 1) & (YY < 80), (110, 180, 90), 0.6)
-    ground = YY >= 68
-    fill_grad(img, ground, (140, 210, 110), (90, 170, 80), 4)
-    grass = (noise(rng, 5, 8) > 0.6) & ground
-    fill(img, grass, (110, 180, 90), 0.6)
-    # caminos
-    fill(img, box(0, 96, W, 104) | poly([(110, 104), (130, 104), (150, 160), (90, 160)]), (220, 200, 150))
-    fill(img, box(0, 96, W, 97), (190, 170, 120))
-    # casas
-    kanto_house(img, 30, 90, 30, 16)
-    kanto_house(img, 150, 90, 30, 16, (200, 56, 48))
-    kanto_house(img, 92, 86, 40, 20, (240, 240, 240))  # laboratorio
-    fill(img, box(92, 64, 132, 66), (150, 150, 160))
-    # vallas
-    for x0 in (20, 140):
-        fill(img, box(x0, 92, x0 + 50, 93), (240, 240, 230))
-        for x in range(x0, x0 + 51, 5):
-            fill(img, box(x, 90, x + 1, 95), (240, 240, 230))
-    # flores y árboles
-    for i in range(40):
-        x, y = rng.integers(0, W), rng.integers(106, 124)
-        fill(img, box(x, y, x + 1, y + 1), ((240, 90, 90), (250, 230, 90), (250, 250, 250))[i % 3])
-    for (tx, tb, r) in ((12, 92, 8), (78, 88, 6), (196, 90, 8), (226, 94, 9), (66, 120, 7), (186, 122, 7)):
-        round_tree(img, tx, tb, r, rng)
-    # lago pequeño
-    fill(img, ell(210, 112, 22, 6), (90, 160, 220))
-    fill(img, ell(206, 111, 10, 1.5), (200, 230, 250), 0.7)
-    text_band(img)
     save(img, "p2_04")
 
 
-def p2_05():  # la ambición
-    rng = np.random.default_rng(205)
-    cx, cy, ew, eh = 120, 64, 100, 34
-    skin = noise(rng, 4, 4)
-    img = lerp(col(70, 62, 78), col(100, 90, 104), skin)
-    img *= np.clip(1.2 - np.abs(YY - cy) / 110.0, 0.3, 1)[..., None]
-    eye = np.abs(YY - cy) < eh * np.clip(1 - ((XX - cx) / ew) ** 2, 0, 1)
-    sc = lerp(col(200, 205, 214), col(120, 124, 140), np.clip(np.abs(XX - cx) / ew + np.abs(YY - cy) / eh * 0.5, 0, 1))
-    img[eye] = sc[eye]
-    d = np.hypot(XX - cx, YY - cy)
-    ang = np.arctan2(YY - cy, XX - cx)
-    iris = (d <= 30) & eye
-    stri = 0.5 + 0.5 * np.sin(ang * 23 + noise(rng, 3, 4) * 6)
-    ic = lerp(col(40, 70, 100), col(140, 170, 190), np.floor(stri * (d / 30) * 4) / 4)
-    img[iris] = ic[iris]
-    fill(img, (np.abs(d - 29.5) < 1.6) & eye, (20, 30, 44))
-    fill(img, (d <= 11) & eye, (4, 4, 8))
-    region = (noise(rng, 4, 2) > 0.5) & ell(cx + 4, cy - 2, 40, 26)
-    from scipy.ndimage import binary_erosion
-    coast = region & ~binary_erosion(region)
-    fill(img, eye & ((XX % 8 == 0) | (YY % 8 == 0)), (255, 40, 40), 0.18)
-    fill(img, eye & region, (255, 40, 40), 0.18)
-    fill(img, eye & coast, (255, 80, 70), 0.9)
-    for (zx, zy, zr) in ((108, 56, 9), (138, 70, 7), (126, 50, 5)):
-        z = ell(zx, zy, zr, zr * 0.8) & region & eye
-        fill(img, z, (255, 30, 30), 0.55)
-        for k in (1.4, 1.9):
-            fill(img, (np.abs(np.hypot(XX - zx, (YY - zy) / 0.8) - zr * k) < 0.7) & eye, (255, 90, 80), 0.6)
-    fill(img, ell(132, 54, 4, 3) & eye, (255, 255, 255))
-    lid = eye & ~np.roll(eye, 3, 0)
-    fill(img, lid, (20, 14, 22))
-    fill(img, eye & ~np.roll(eye, -2, 0), (40, 30, 40))
-    for x in range(cx - 80, cx + 84, 6):
-        y = cy - eh * (1 - ((x - cx) / ew) ** 2)
-        fill(img, lines([(x, y), (x + (x - cx) * 0.08, y - 6)]), (20, 14, 22))
-    crease = [(x, cy - eh * (1 - ((x - cx) / (ew + 10)) ** 2) - 12) for x in range(cx - 90, cx + 91, 4)]
-    fill(img, lines(crease, 1), (50, 42, 56))
-    halo(img, eye & region, (255, 40, 40), 4, 0.2)
+def p2_05():  # interior de la casa: el joven del gimnasio y su madre con pastelitos
+    rng = np.random.default_rng(225)
+    img = lerp(col(240, 220, 180), col(220, 196, 150), YY / H)
+    fill(img, (XX % 20 == 0) & (YY < 84), (210, 186, 140), 0.6)
+    floor_ = YY >= 84
+    fill_grad(img, floor_, (176, 120, 70), (120, 80, 46), 3)
+    fill(img, floor_ & (YY % 6 == 0), (100, 66, 40), 0.6)
+    fill(img, box(0, 82, W, 85), (140, 96, 60))
+    # ventana con luz
+    win = box(176, 16, 228, 60)
+    fill(img, win, (170, 220, 250))
+    fill(img, box(172, 12, 232, 64) & ~win, (250, 250, 250))
+    fill(img, box(200, 16, 203, 60) | box(176, 36, 228, 39), (250, 250, 250))
+    fill(img, poly([(176, 60), (228, 60), (200, 130), (140, 130)]), (255, 250, 220), 0.18)
+    # cuadro de Cubone
+    fill(img, box(26, 14, 70, 52), (120, 84, 50))
+    fill(img, box(29, 17, 67, 49), (250, 240, 210))
+    fill(img, ell(48, 40, 9, 8), (170, 120, 70))
+    fill(img, ell(48, 28, 9, 8), (240, 240, 230))
+    fill(img, ell(45, 29, 2, 2) | ell(51, 29, 2, 2), (30, 30, 30))
+    fill(img, poly([(40, 24), (35, 18), (42, 22)]) | poly([(56, 24), (61, 18), (54, 22)]), (240, 240, 230))
+    # sofá con cojines Poké Ball y estantería con peluche
+    fill_grad(img, box(8, 70, 80, 96), (200, 80, 70), (150, 50, 46), 2)
+    fill(img, box(8, 64, 80, 72), (170, 60, 56))
+    for bx in (22, 64):
+        pokeball(img, bx, 76, 6)
+    fill(img, box(100, 30, 150, 33), (120, 84, 50))
+    fill(img, ell(112, 24, 6, 6), (250, 220, 70))
+    fill(img, ell(132, 25, 5, 5), (120, 180, 240))
+    # el joven con uniforme verde y su madre con la bandeja
+    pm = person(110, 116, 54)
+    fill(img, pm, (60, 140, 70))
+    fill(img, rim(pm, 1, 0, 1), (120, 200, 110), 0.7)
+    fill(img, ell(110, 116 - 54 + 5, 4.6, 5.3), (230, 190, 150))
+    fill(img, ell(110, 116 - 54 + 2, 5, 3), (60, 40, 30))
+    mm = person(150, 116, 48, coat=True)
+    fill(img, mm, (220, 120, 150))
+    fill(img, rim(mm, 1, 0, 1), (250, 180, 200), 0.7)
+    fill(img, ell(150, 116 - 48 + 4, 4.1, 4.7), (230, 190, 150))
+    fill(img, ell(150, 116 - 48 + 1, 5.5, 4), (120, 70, 40))
+    fill(img, box(128, 88, 160, 91), (200, 200, 210))
+    for cx in range(132, 158, 6):
+        fill(img, box(cx, 84, cx + 4, 88), (230, 150, 90))
+        fill(img, ell(cx + 2, 84, 2.5, 1.6), (250, 220, 230))
+    glow(img, 144, 80, 8, (255, 250, 240), 0.3)
     text_band(img)
     save(img, "p2_05")
 
@@ -1143,7 +1163,7 @@ SCENES = {f.__name__: f for f in (p1_01, p1_02, p1_03, p1_04, p1_05, p1_06, p1_0
                                   p1_11, p1_12, p2_01, p2_02, p2_03, p2_04, p2_05, p2_06)}
 
 # Escenas que ya tienen su imagen definitiva: no se regeneran salvo que se pidan por nombre.
-FINAL = {"p1_02", "p1_03", "p1_04", "p1_05", "p1_06", "p1_07", "p1_08", "p1_09", "p2_01"}
+FINAL = {"p1_02", "p1_03", "p1_04", "p1_05", "p1_06", "p1_07", "p1_08", "p1_09", "p2_01", "p2_04"}
 
 if __name__ == "__main__":
     for name in (sys.argv[2:] or [n for n in SCENES if n not in FINAL]):

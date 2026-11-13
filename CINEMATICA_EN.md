@@ -23,7 +23,7 @@ game engine, so they are **not** drawn into the frames.
 4. Until the engine can play sprite layers, copy `<scene>_bg.png` to `graphics/cinematic/<scene>.png`
    (overwriting the placeholder) and build. The game will show that background as a still image.
 
-- Title: the **POKéMON ARENA** logo is part of the `p1_12` background (there is no separate sprite). If the
+- Title: the **POKéMON TERRA** logo is part of the `p1_12` background (there is no separate sprite). If the
   background is redrawn, leave the upper-left area empty and paste the logo on top afterwards. Also keep the
   "PULSA START" band clear (y 128-144, centre).
 - In **Part 2**, the bottom band (y ≥ 120, the last 40 px) is covered by the text box. Keep it dark and simple,
@@ -489,7 +489,7 @@ p1_11_firefly.png, p1_11.json
 ### `p1_12` — Title
 
 The title screen: the space of the past above the Kanto of today, with Mew floating. In-game: the **POKéMON
-ARENA** logo (FireRed style) and "PULSA START" (press START). This animation **loops seamlessly** until the player
+TERRA** logo (FireRed style) and "PULSA START" (press START). This animation **loops seamlessly** until the player
 presses START.
 
 ```text
@@ -625,15 +625,58 @@ loop. No engine cues.
 EXPORT: p2_02.aseprite, p2_02_bg.png, p2_02_flame.png, p2_02_vine.png, p2_02_dust.png, p2_02.json
 ```
 
-### `p2_03` — Today's POKéMON world
+### `p2_03` — The excavation
 
 > Los descendientes directos de algunos soldados que sobrevivieron a la guerra recuperaron vestigios de aquella
-> antigua tecnología militar… y con ella reconstruyeron un nuevo y feliz mundo POKéMON… aunque tal vez aquella gran
-> guerra nunca terminó del todo…
+> antigua tecnología militar…
 
 *EN: The direct descendants of some soldiers who survived the war recovered remnants of that ancient military
-technology… and with it they rebuilt a new and happy POKéMON world… although perhaps that great war never truly
-ended…*
+technology…*
+
+```text
+Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
+
+STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
+lighting, no text, no logos.
+CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
+TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
+SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
+
+SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
+An archaeological dig site on a sunny day among dry, ochre hills under a pale blue sky. In the middle ground lies a
+wide rectangular excavation pit, marked out with a grid of white ropes tied to wooden stakes, its walls showing
+layers of earth. Half-buried in the soil at the centre of the pit is an ancient red Pokédex, its screen still
+glowing faintly cyan, and around it several old, weathered Poké Balls peek out of the dirt. Several scientists who
+look like Pokémon professors, in white lab coats, work around the pit: one kneels beside the Pokédex brushing the
+earth away, another on the left holds up a lamp, and another on the right takes notes on a clipboard. A canvas tent
+stands in the background on the right. Warm, clear daylight with a cool cyan accent from the Pokédex, soft rim
+lighting, muted limited palette, no text, no logos, 3:2 composition with the glowing Pokédex at the centre, the
+scientists framing it and the bottom fifth dark and simple.
+PALETTE CYCLING: reserve BG indices 220-223 for the Pokédex screen glow (cyan levels); the engine pulses them.
+
+ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
+1. SPR_brush - 32x32 box, 4 frames x 100 ms, loop. The kneeling scientist's arm sweeping a brush over the
+   Pokédex. At (116,62).
+2. SPR_dust - 8x8 box, 4 frames x 100 ms, loop. Small puffs of dust kicked up by the brush. 2 copies, at
+   (104,80) and (124,82).
+3. SPR_glint - 8x8 box, 4 frames x 100 ms, plays once every 1.5 s. A sparkle on a Poké Ball. 3 copies, staggered:
+   (70,98) at 0.0 s, (148,94) at 0.5 s, (134,104) at 1.0 s.
+4. SPR_notes - 16x32 box, 2 frames x 300 ms, loop. The right-hand scientist writing on the clipboard. At (196,72).
+
+TIMELINE:
+0.0-5.0 s - the brush sweeps the earth off the Pokédex; dust puffs rise; the Poké Balls glint in turn; the
+scientist takes notes; the Pokédex screen pulses softly. Seamless loop. No engine cues.
+
+EXPORT: p2_03.aseprite, p2_03_bg.png, p2_03_brush.png, p2_03_dust.png, p2_03_glint.png, p2_03_notes.png,
+p2_03.json
+```
+
+### `p2_04` — Today's POKéMON world
+
+> y con ella reconstruyeron un nuevo y feliz mundo POKéMON… aunque tal vez aquella gran guerra nunca terminó del
+> todo…
+
+*EN: and with it they rebuilt a new and happy POKéMON world… although perhaps that great war never truly ended…*
 
 ```text
 Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
@@ -648,10 +691,11 @@ SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
 A sunny day in a small town square. At the centre of the background stands a Pokémon Center: a white building
 with a red roof, wide glass doors and a Poké Ball emblem above the entrance, flanked by small houses, round trees
 and a green pine forest under a bright blue sky with white clouds. A dirt path runs from its doors toward the
-viewer. Two young trainers face each other at the left and right edges of the frame, ready to battle, leaving the
-middle of the square open for their Pokémon. Bright, cheerful daylight, soft rim lighting, muted limited palette,
-no text, no logos, 3:2 composition with the Pokémon Center centred, the trainers framing the open space and the
-bottom fifth dark and simple.
+viewer. Two young trainers face each other at the left and right edges of the frame, mid-battle: in the middle of
+the square a Pikachu (left, facing right) and a Squirtle (right, facing left) square off, their attacks meeting
+between them. The Pikachu and Squirtle are animated sprites (see below); leave their spots on the BG as plain
+ground. Bright, cheerful daylight, soft rim lighting, muted limited palette, no text, no logos, 3:2 composition
+with the Pokémon Center centred, the trainers framing the battle and the bottom fifth dark and simple.
 
 ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
 1. SPR_pikachu - 32x32 box, 4 frames x 100 ms, loop. A Pikachu crouching and firing a small lightning bolt to the
@@ -666,11 +710,11 @@ TIMELINE:
 0.0-5.0 s - Pikachu and Squirtle trade attacks that collide in the middle; the left trainer cheers them on.
 Seamless loop. No engine cues.
 
-EXPORT: p2_03.aseprite, p2_03_bg.png, p2_03_pikachu.png, p2_03_squirtle.png, p2_03_clash.png,
-p2_03_trainer.png, p2_03.json
+EXPORT: p2_04.aseprite, p2_04_bg.png, p2_04_pikachu.png, p2_04_squirtle.png, p2_04_clash.png,
+p2_04_trainer.png, p2_04.json
 ```
 
-### `p2_04` — The beginning
+### `p2_05` — The beginning
 
 > Mientras tanto, en un pueblo tranquilo de KANTO…
 
@@ -686,23 +730,27 @@ TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 
 SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
 SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
-A quiet little town in KANTO on a sunny morning, seen from a low hillside: a lush green pine forest and soft green
-hills close the horizon under a light blue sky with white clouds. A handful of cosy houses with red roofs and white
-picket fences sit along a dirt road, with a larger white laboratory building in the middle. Round trees, flower
-patches and a small blue pond on the right. Warm, gentle daylight, soft rim lighting, muted limited palette, no
-text, no logos, 3:2 composition with the town across the middle, the green forest behind it and the bottom fifth
-dark and simple.
+The cosy living room of a small family house in a quiet KANTO town, on a sunny morning: warm light pours through a
+window on the right, over a wooden floor, a rug, a small table and a sofa. The room is decorated with Pokémon
+items: a framed picture of a Cubone hangs on the back wall, there are Poké Ball cushions on the sofa and a Pokémon
+plush on a shelf. In the middle of the room stands a young man wearing the green staff uniform of the Pewter City
+Gym (Brock's gym), and beside him his smiling mother holds a tray of freshly baked cupcakes. Warm, homely key
+light, soft rim lighting, muted limited palette, no text, no logos, 3:2 composition with the two characters in the
+centre, the Cubone picture visible above them and the bottom fifth dark and simple.
 
 ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
-1. SPR_pidgey - 16x16 box, 4 frames x 100 ms, loop (wing flap). Two Pidgey crossing the sky from right to left.
-   Keyframes: (240,20) at 0.0 s, (-16,30) at 5.0 s.
-2. SPR_smoke - 8x16 box, 4 frames x 200 ms, loop. Smoke rising from a chimney. At (44,44).
-3. SPR_ripple - 16x8 box, 4 frames x 200 ms, loop. Ripples on the pond. At (200,108).
+1. SPR_steam - 16x16 box, 4 frames x 200 ms, loop. Wisps of steam rising from the warm cupcakes on the tray. At
+   the tray, above the mother's hands (about (126,62)).
+2. SPR_mother - 32x64 box, 2 frames x 400 ms, loop. The mother's idle breathing and a slight tilt of the tray
+   toward her son. At her position (about (114,40)).
+3. SPR_dust - 8x8 box, 4 frames x 200 ms, loop. Dust motes floating in the window light. 3 copies drifting slowly
+   (x 170-230, y 20-80).
 
 TIMELINE:
-0.0-5.0 s - birds cross the sky; smoke rises; the pond ripples. Seamless loop. No engine cues.
+0.0-5.0 s - steam rises from the cupcakes; the mother breathes and offers the tray; dust floats in the sunbeam.
+Seamless loop. No engine cues.
 
-EXPORT: p2_04.aseprite, p2_04_bg.png, p2_04_pidgey.png, p2_04_smoke.png, p2_04_ripple.png, p2_04.json
+EXPORT: p2_05.aseprite, p2_05_bg.png, p2_05_steam.png, p2_05_mother.png, p2_05_dust.png, p2_05.json
 ```
 
 ---
@@ -718,5 +766,5 @@ EXPORT: p2_04.aseprite, p2_04_bg.png, p2_04_pidgey.png, p2_04_smoke.png, p2_04_r
   Mew sprite, and `p1_12` reuses the POKéMON word from the FireRed logo) with
   `python3 tools/cinematic/gen_placeholder_art.py [folder] [scenes…]`. With no scenes it regenerates all of them;
   for example `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` redoes only `p1_02`.
-  `p1_02` to `p1_09` and `p2_01` are already final (made from `p1-02.png` … `p1-09.png` and `p2-01.png` in the repo root), and the script skips them unless they are named
+  `p1_02` to `p1_09`, `p2_01` and `p2_04` are already final (made from `p1-02.png` … `p1-09.png`, `p2-01.png` and `p2-04.png` in the repo root), and the script skips them unless they are named
   explicitly. **Careful**: the script overwrites the PNGs; once the final images are in, don't run it over them.

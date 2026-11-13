@@ -138,9 +138,9 @@ Oak.
 
 **Texto:**
 
-> Han pasado miles de años desde la gran guerra.
+> Han pasado miles de años desde la gran guerra…
 >
-> Ya no hay naves de guerra, ni soldados de élite con biotrajes POKéMON surcando el cielo.
+> Ya no hay naves de guerra, ni soldados con biotrajes POKéMON…
 
 ### `p2_02.png` — Leyendas
 
@@ -148,39 +148,27 @@ Oak.
 
 **Texto:**
 
-> Los POKéMON legendarios solo viven en cuentos y murales.
+> Los POKéMON legendarios son leyendas que aún esconden la verdad…
 >
-> Leyendas que se fraguaron durante siglos y que aún esconden la verdad sobre los biotrajes POKéMON ...
+> La verdad sobre los POKéMONs… una antigua y poderosa tecnología militar
 
-### `p2_03.png` — El ALTO MANDO
+### `p2_03.png` — El mundo POKéMON de hoy
 
-**Prompt:** Dark circular chamber, four silhouetted figures in high-collared cloaks around a table, a cold blue hologram blueprint of an armored Charizard biosuit in the center.
-
-**Texto:**
-
-> Una poderosa tecnología militar que permite a los soldados obtener capacidades extraordinarias, conocido antaño como biotrajes POKÉMONS
-
-### `p2_04.png` — La búsqueda
-
-**Prompt:** Night, rocky mountain cave entrance, hooded agents with handheld scanners emitting red beams, searching among the rocks, ominous mood.
+**Prompt:** Sunny day in a small town square in front of a Pokémon Center (white building, red roof, Poké Ball sign), two young trainers facing each other at the edges of the frame while their Pokémon (Pikachu and Squirtle) clash attacks in the middle, green trees and houses around, cheerful mood.
 
 **Texto:**
 
-> Desde hace siglos, el Alto mando y sus agentes, buscan en secreto estos biotrajes POKéMONS.
-
-### `p2_05.png` — La ambición
-
-**Prompt:** Extreme close-up of a cold eye reflecting a red holographic map of a whole region with spreading red zones.
-
-**Texto:**
-
-> Si recuperan esa tecnología, nada podrá detenerlos.
+> Los descendientes directos de algunos soldados que sobrevivieron a la guerra
 >
-> Su dominio se extenderá por toda la región.
+> recuperaron vestigios de aquella antigua tecnología militar…
+>
+> y con ella reconstruyeron un nuevo y feliz mundo POKéMON…
+>
+> aunque tal vez aquella gran guerra nunca terminó del todo…
 
-### `p2_06.png` — El comienzo
+### `p2_04.png` — El comienzo
 
-**Prompt:** Small cozy bedroom at night in a quiet town, moonlight through the window, a letter with an official seal on the desk, a faint pink glow in the distant forest outside.
+**Prompt:** Quiet small town in KANTO on a sunny morning, surrounded by a lush green pine forest and green hills, a few houses with red roofs and white fences, a larger white laboratory building, dirt paths, flowers and a small pond, peaceful and welcoming.
 
 **Texto:**
 
@@ -193,8 +181,8 @@ Oak.
 - **Escenas**: orden, duración, efectos y texto en `src/cinematic.c`, en las tablas `sIntroScenes` y
   `sNewGameScenes`.
 - **Imágenes**: en `graphics/cinematic/`.
-- **Ilustraciones provisionales**: las 18 imágenes están dibujadas por código (pixel art procedural; `p1_08` y
+- **Ilustraciones provisionales**: las imágenes están dibujadas por código (pixel art procedural; `p1_08` y
   `p1_12` reutilizan el sprite de Mew del juego y `p1_12` la palabra POKéMON del logo de FireRed) con
   `python3 tools/cinematic/gen_placeholder_art.py [carpeta] [escenas…]`. Sin escenas regenera todas; por ejemplo
-  `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` rehace solo `p1_02`. De `p1_02` a `p1_09` ya son definitivas (salen de `p1-02.png` … `p1-09.png`, en la raíz) y el script
+  `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` rehace solo `p1_02`. De `p1_02` a `p1_09` y `p2_01` ya son definitivas (salen de `p1-02.png` … `p1-09.png` y `p2-01.png`, en la raíz) y el script
   no las regenera salvo que se nombren a mano. **Ojo**: el script sobrescribe los PNG; cuando haya imágenes definitivas, no ejecutarlo sobre ellas.

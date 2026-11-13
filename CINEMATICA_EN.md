@@ -541,11 +541,10 @@ seamlessly.
 
 ### `p2_01` — Peace
 
-> Han pasado miles de años desde la gran guerra. Ya no hay naves de guerra, ni soldados de élite con biotrajes
-> POKéMON surcando el cielo.
+> Han pasado miles de años desde la gran guerra… Ya no hay naves de guerra, ni soldados con biotrajes POKéMON…
 
-*EN: Thousands of years have passed since the great war. There are no more warships, no elite soldiers in
-POKéMON biosuits soaring across the sky.*
+*EN: Thousands of years have passed since the great war… There are no more warships, no soldiers in POKéMON
+biosuits…*
 
 ```text
 Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
@@ -586,11 +585,11 @@ p2_01.json
 
 ### `p2_02` — Legends
 
-> Los POKéMON legendarios solo viven en cuentos y murales. Leyendas que se fraguaron durante siglos y que aún
-> esconden la verdad sobre los biotrajes POKéMON…
+> Los POKéMON legendarios son leyendas que aún esconden la verdad… La verdad sobre los POKéMONs… una antigua y
+> poderosa tecnología militar.
 
-*EN: Legendary POKéMON live on only in tales and murals. Legends forged over centuries that still hide the truth
-about the POKéMON biosuits…*
+*EN: The legendary POKéMON are legends that still hide the truth… The truth about POKéMON… an ancient and powerful
+military technology.*
 
 ```text
 Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
@@ -626,52 +625,15 @@ loop. No engine cues.
 EXPORT: p2_02.aseprite, p2_02_bg.png, p2_02_flame.png, p2_02_vine.png, p2_02_dust.png, p2_02.json
 ```
 
-### `p2_03` — The ELITE COMMAND (ALTO MANDO)
+### `p2_03` — Today's POKéMON world
 
-> Una poderosa tecnología militar que permite a los soldados obtener capacidades extraordinarias. Antaño, se la
-> conocía como los biotrajes POKéMON.
+> Los descendientes directos de algunos soldados que sobrevivieron a la guerra recuperaron vestigios de aquella
+> antigua tecnología militar… y con ella reconstruyeron un nuevo y feliz mundo POKéMON… aunque tal vez aquella gran
+> guerra nunca terminó del todo…
 
-*EN: A powerful military technology that grants soldiers extraordinary abilities. Long ago, it was known as the
-POKéMON biosuits.*
-
-```text
-Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
-
-STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
-lighting, no text, no logos.
-CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
-TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
-SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
-
-SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
-A dark, circular council chamber seen from a low, ominous angle: tall pillars line a curved back wall, picked out by
-faint blue edge lights, and a round black table sits at the centre, its rim glowing cyan. Four figures in high-
-collared cloaks surround it as pure black silhouettes, two standing behind the table and two looming large in the
-foreground at the left and right edges, cut off by the frame. A faint cone of cold cyan light rises from the table
-into the darkness above it, where a hologram will appear. Cold cyan rim lighting, deep shadows, muted limited
-palette, no text, no logos, 3:2 composition with the figures framing the empty air above the table and the bottom
-fifth dark and simple.
-
-ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
-1. SPR_hologram - 64x64 box, 8 frames x 100 ms, loop. A cold blue wireframe blueprint of an armored Charizard
-   biosuit (outline, grid lines, glowing chest core) turning on a turntable, 45 degrees per frame. At (88,30).
-2. SPR_scan - 64x8 box, 2 frames x 100 ms, loop. A bright cyan scanline. It moves down over the hologram:
-   (88,30) at 0.0 s → (88,92) at 2.5 s, then jumps back and repeats.
-3. SPR_gesture - 32x64 box, 4 frames x 200 ms, one-shot then hold. The figure on the right raises a gloved hand
-   toward the hologram. At (148,46); plays at 1.5 s and lowers again by 4.5 s, so the loop closes.
-
-TIMELINE:
-0.0-5.0 s - the Charizard hologram turns; the scanline sweeps twice; one figure points at it. Seamless loop. No
-engine cues.
-
-EXPORT: p2_03.aseprite, p2_03_bg.png, p2_03_hologram.png, p2_03_scan.png, p2_03_gesture.png, p2_03.json
-```
-
-### `p2_04` — The search
-
-> Desde hace siglos, el ALTO MANDO y sus agentes buscan en secreto estos biotrajes POKéMON.
-
-*EN: For centuries, the ELITE COMMAND and its agents have been secretly searching for these POKéMON biosuits.*
+*EN: The direct descendants of some soldiers who survived the war recovered remnants of that ancient military
+technology… and with it they rebuilt a new and happy POKéMON world… although perhaps that great war never truly
+ended…*
 
 ```text
 Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
@@ -683,74 +645,32 @@ TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 
 SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
 SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
-A cold night in the mountains, seen from a low, ominous vantage: a dark indigo sky pricked with stars and a small
-pale moon in the upper left, a rocky purple-grey slope rising behind, and the black mouth of a cave gaping at its
-centre. Scattered boulders litter the ground. Three hooded agents in long dark coats stand among the rocks as
-silhouettes, faintly rimmed by moonlight, handheld scanners raised toward the stones. Cold moonlight with a sinister
-red accent, dramatic rim lighting, deep shadows, muted limited palette, no text, no logos, 3:2 composition with the
-cave mouth slightly right of centre, the agents spread across the middle ground and the bottom fifth dark and
-simple.
+A sunny day in a small town square. At the centre of the background stands a Pokémon Center: a white building
+with a red roof, wide glass doors and a Poké Ball emblem above the entrance, flanked by small houses, round trees
+and a green pine forest under a bright blue sky with white clouds. A dirt path runs from its doors toward the
+viewer. Two young trainers face each other at the left and right edges of the frame, ready to battle, leaving the
+middle of the square open for their Pokémon. Bright, cheerful daylight, soft rim lighting, muted limited palette,
+no text, no logos, 3:2 composition with the Pokémon Center centred, the trainers framing the open space and the
+bottom fifth dark and simple.
 
 ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
-1. SPR_beam - 64x32 box, 6 frames x 100 ms, loop (sweeps left-right and back). A translucent-looking red scanner
-   cone (solid dithered red, no real transparency) from a handheld scanner onto the rocks, with a bright red dot
-   where it hits. 3 copies, one per agent: (64,84), (110,76) and (150,82) (the last one mirrored, pointing left).
-2. SPR_agent_step - 32x64 box, 4 frames x 200 ms, loop. The middle agent takes a slow step and turns the scanner.
-   At (96,56).
-3. SPR_zubat - 16x16 box, 4 frames x 50 ms, loop (flap). A Zubat flies out of the cave. Keyframes: (144,80) at
-   2.0 s, (176,40) at 3.0 s, (240,10) at 4.0 s; hidden for the rest of the loop.
+1. SPR_pikachu - 32x32 box, 4 frames x 100 ms, loop. A Pikachu crouching and firing a small lightning bolt to the
+   right. At (60,74).
+2. SPR_squirtle - 32x32 box, 4 frames x 100 ms, loop. A Squirtle spraying a jet of water to the left. At (148,72),
+   mirrored.
+3. SPR_clash - 32x32 box, 6 frames x 50 ms, loop. The spark where the two attacks meet (yellow and cyan burst).
+   At (104,72).
+4. SPR_trainer - 16x32 box, 2 frames x 200 ms, loop. The left trainer pointing forward. At (26,80).
 
 TIMELINE:
-0.0-5.0 s - the red beams sweep the rocks; the middle agent steps forward; at 2.0 s a Zubat bursts out of the
-cave and flies away. Seamless loop. No engine cues.
+0.0-5.0 s - Pikachu and Squirtle trade attacks that collide in the middle; the left trainer cheers them on.
+Seamless loop. No engine cues.
 
-EXPORT: p2_04.aseprite, p2_04_bg.png, p2_04_beam.png, p2_04_agent_step.png, p2_04_zubat.png, p2_04.json
+EXPORT: p2_03.aseprite, p2_03_bg.png, p2_03_pikachu.png, p2_03_squirtle.png, p2_03_clash.png,
+p2_03_trainer.png, p2_03.json
 ```
 
-### `p2_05` — The ambition
-
-> Si recuperan esa tecnología, nada podrá detenerlos. Su dominio se extenderá por toda la región.
-
-*EN: If they recover that technology, nothing will be able to stop them. Their rule will spread across the whole
-region.*
-
-```text
-Create a 5-second SEAMLESSLY LOOPING layered pixel-art animation in Aseprite for a Game Boy Advance story scene.
-
-STYLE: 16-bit pixel art, Game Boy Advance era cinematic, limited palette, clean readable silhouettes, dramatic
-lighting, no text, no logos.
-CANVAS: 240x160 px, 1x scale, Indexed colour mode, no anti-aliasing, no semi-transparency.
-TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 ms or 100 ms).
-SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
-
-SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
-An extreme, unsettling close-up of a single cold eye filling the width of the frame: cool grey-violet skin, a heavy
-dark upper lid with sharp lashes and a deep crease above, a pale blue-grey sclera, and a large steel-blue iris with
-fine radial striations around a black pupil. Reflected across the whole surface of the eye is a red holographic map
-of a region, its coastline traced in glowing red lines over a faint red grid, as if the eye were already measuring
-what it wants to own. Cold, clinical light with a menacing red reflection, dramatic rim lighting, deep shadows,
-muted limited palette, no text, no logos, 3:2 composition with the eye centred in the upper four fifths and the skin
-below fading to near black in the bottom fifth.
-
-ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
-1. SPR_pupil - 32x32 box, 4 frames x 100 ms, ping-pong. The pupil contracts from radius 11 to radius 7 and back.
-   At (104,48).
-2. SPR_zone - 32x32 box, 6 frames x 100 ms, loop. A red zone spreading on the reflected map: a dot, then
-   concentric rings, then a filled red area. 3 copies, at (84,40) at 0.0 s, (122,54) at 1.5 s and (100,30) at
-   3.0 s.
-3. SPR_lid - two 64x32 boxes side by side (one 128x32 strip over the upper lid), 3 frames x 50 ms, played
-   forward and back (a slow, menacing half-blink). At (56,30); plays at 4.2 s.
-
-TIMELINE:
-0.0 s - engine: red pulse (slow, 1 cycle every 2 s).
-0.0-4.0 s - the red zones spread across the reflected map one after another; the pupil narrows.
-4.2 s - a slow half-blink.
-5.0 s - seamless loop.
-
-EXPORT: p2_05.aseprite, p2_05_bg.png, p2_05_pupil.png, p2_05_zone.png, p2_05_lid.png, p2_05.json
-```
-
-### `p2_06` — The beginning
+### `p2_04` — The beginning
 
 > Mientras tanto, en un pueblo tranquilo de KANTO…
 
@@ -766,29 +686,23 @@ TIMING: 5.0 s loop (300 GBA frames). Frame durations in multiples of 1/60 s (50 
 SAFE ZONE: the bottom 40 px (y 120-159) are covered by a text box. Keep them dark and simple; no sprites there.
 
 SCENE (layer BG, one static cel, max 224 colours, indices 0-223):
-A small, cozy bedroom at night in a quiet town, steeped in deep blue: on the right, a cross-framed window looks out
-on a starry sky, a bright full moon and the dark outline of a distant pine forest on the horizon. A shaft of pale
-moonlight slants from the window across the room. On the left, a wooden desk holds an unlit lamp and an envelope
-sealed with red wax, gleaming in the moonlight, and beneath the window a bed with a blue blanket waits empty. Deep
-in the forest beyond the glass, something faintly glows. Soft silver moonlight, gentle rim lighting, deep shadows,
-muted limited palette, no text, no logos, 3:2 composition with the window on the right, the sealed letter on the
-left, and the bottom fifth dark and simple.
+A quiet little town in KANTO on a sunny morning, seen from a low hillside: a lush green pine forest and soft green
+hills close the horizon under a light blue sky with white clouds. A handful of cosy houses with red roofs and white
+picket fences sit along a dirt road, with a larger white laboratory building in the middle. Round trees, flower
+patches and a small blue pond on the right. Warm, gentle daylight, soft rim lighting, muted limited palette, no
+text, no logos, 3:2 composition with the town across the middle, the green forest behind it and the bottom fifth
+dark and simple.
 
 ANIMATED LAYERS (each sprite: index 0 transparent + max 15 colours; max 4 sprite palettes in total):
-1. SPR_curtain - 32x64 box, 4 frames x 200 ms, loop. A light curtain swaying at the left edge of the window. At
-   (126,14).
-2. SPR_pinkglow - 16x16 box, 4 frames x 200 ms, ping-pong. A faint pink glow pulsing deep in the forest, seen
-   through the window (the hint of Mew). At (156,66).
-3. SPR_glint - 8x8 box, 3 frames x 50 ms, one-shot. A small glint on the wax seal. At (70,93); plays at 2.0 s.
-4. SPR_mote - 8x8 box, 4 frames x 100 ms, loop. Dust motes in the moonlight. 3 copies drifting slowly downward
-   (x 80-140, from y 40 to y 110, over 5 s).
+1. SPR_pidgey - 16x16 box, 4 frames x 100 ms, loop (wing flap). Two Pidgey crossing the sky from right to left.
+   Keyframes: (240,20) at 0.0 s, (-16,30) at 5.0 s.
+2. SPR_smoke - 8x16 box, 4 frames x 200 ms, loop. Smoke rising from a chimney. At (44,44).
+3. SPR_ripple - 16x8 box, 4 frames x 200 ms, loop. Ripples on the pond. At (200,108).
 
 TIMELINE:
-0.0-5.0 s - the curtain sways; the pink glow pulses in the forest; at 2.0 s the seal glints; the motes drift.
-Seamless loop. No engine cues.
+0.0-5.0 s - birds cross the sky; smoke rises; the pond ripples. Seamless loop. No engine cues.
 
-EXPORT: p2_06.aseprite, p2_06_bg.png, p2_06_curtain.png, p2_06_pinkglow.png, p2_06_glint.png, p2_06_mote.png,
-p2_06.json
+EXPORT: p2_04.aseprite, p2_04_bg.png, p2_04_pidgey.png, p2_04_smoke.png, p2_04_ripple.png, p2_04.json
 ```
 
 ---
@@ -800,9 +714,9 @@ p2_06.json
 - **Images**: in `graphics/cinematic/`. For now the engine only shows **one still image per scene**
   (`graphics/cinematic/<scene>.png`, which is the `<scene>_bg.png` of the animation). Playing the sprite layers,
   keyframes, palette cycling and the extra engine cues (shake, beeps, red flash timing) needs engine work later.
-- **Placeholder art**: all 18 images are drawn by code (procedural pixel art; `p1_08` and `p1_12` reuse the game's
+- **Placeholder art**: all the images are drawn by code (procedural pixel art; `p1_08` and `p1_12` reuse the game's
   Mew sprite, and `p1_12` reuses the POKéMON word from the FireRed logo) with
   `python3 tools/cinematic/gen_placeholder_art.py [folder] [scenes…]`. With no scenes it regenerates all of them;
   for example `python3 tools/cinematic/gen_placeholder_art.py graphics/cinematic p1_02` redoes only `p1_02`.
-  `p1_02` to `p1_09` are already final (made from `p1-02.png` … `p1-09.png` in the repo root), and the script skips them unless they are named
+  `p1_02` to `p1_09` and `p2_01` are already final (made from `p1-02.png` … `p1-09.png` and `p2-01.png` in the repo root), and the script skips them unless they are named
   explicitly. **Careful**: the script overwrites the PNGs; once the final images are in, don't run it over them.

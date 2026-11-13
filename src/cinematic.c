@@ -89,10 +89,7 @@ static const u32 sGfx_p2_03[] = INCBIN_U32("graphics/cinematic/p2_03.8bpp.lz");
 static const u16 sPal_p2_03[] = INCBIN_U16("graphics/cinematic/p2_03.gbapal");
 static const u32 sGfx_p2_04[] = INCBIN_U32("graphics/cinematic/p2_04.8bpp.lz");
 static const u16 sPal_p2_04[] = INCBIN_U16("graphics/cinematic/p2_04.gbapal");
-static const u32 sGfx_p2_05[] = INCBIN_U32("graphics/cinematic/p2_05.8bpp.lz");
-static const u16 sPal_p2_05[] = INCBIN_U16("graphics/cinematic/p2_05.gbapal");
-static const u32 sGfx_p2_06[] = INCBIN_U32("graphics/cinematic/p2_06.8bpp.lz");
-static const u16 sPal_p2_06[] = INCBIN_U16("graphics/cinematic/p2_06.gbapal");
+// p2_05 y p2_06 ya no se usan (la parte 2 tiene 4 escenas); sus PNG siguen en graphics/cinematic/
 
 // ---------------------------------------------------------------------------
 // Gengar atacando (gráficos de la intro original de FireRed, ver intro.c)
@@ -217,36 +214,27 @@ static const struct CinematicScene sIntroScenes[] =
 // ---------------------------------------------------------------------------
 // Parte 2 (líneas de 34 caracteres como máximo, 2 líneas por página)
 // ---------------------------------------------------------------------------
-static const u8 sText_P2_01a[] = _("Han pasado miles de años desde\nla gran guerra.");
-static const u8 sText_P2_01b[] = _("Ya no hay naves de guerra,\nni soldados de élite con");
-static const u8 sText_P2_01c[] = _("biotrajes POKéMON surcando\nel cielo.");
-static const u8 sText_P2_02a[] = _("Los POKéMON legendarios solo\nviven en cuentos y murales.");
-static const u8 sText_P2_02b[] = _("Leyendas que se fraguaron\ndurante siglos y que aún");
-static const u8 sText_P2_02c[] = _("esconden la verdad sobre los\nbiotrajes POKéMON…");
-static const u8 sText_P2_03a[] = _("Una poderosa tecnología militar\nque permite a los soldados");
-static const u8 sText_P2_03b[] = _("obtener capacidades\nextraordinarias.");
-static const u8 sText_P2_03c[] = _("Antaño, se la conocía como\nlos biotrajes POKéMON.");
-static const u8 sText_P2_04a[] = _("Desde hace siglos, el ALTO MANDO\ny sus agentes buscan en secreto");
-static const u8 sText_P2_04b[] = _("estos biotrajes POKéMON.");
-static const u8 sText_P2_05a[] = _("Si recuperan esa tecnología,\nnada podrá detenerlos.");
-static const u8 sText_P2_05b[] = _("Su dominio se extenderá\npor toda la región.");
-static const u8 sText_P2_06a[] = _("Mientras tanto, en un pueblo\ntranquilo de KANTO…");
+static const u8 sText_P2_01a[] = _("Han pasado miles de años desde\nla gran guerra…");
+static const u8 sText_P2_01b[] = _("Ya no hay naves de guerra,\nni soldados con biotrajes POKéMON…");
+static const u8 sText_P2_02a[] = _("Los POKéMON legendarios son leyendas\nque aún esconden la verdad…");
+static const u8 sText_P2_02b[] = _("La verdad sobre los POKéMONs…\nuna antigua y poderosa tecnología militar");
+static const u8 sText_P2_03a[] = _("Los descendientes directos de algunos\nsoldados que sobrevivieron a la guerra");
+static const u8 sText_P2_03b[] = _("recuperaron vestigios de aquella\nantigua tecnología militar…");
+static const u8 sText_P2_03c[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
+static const u8 sText_P2_03d[] = _("aunque tal vez aquella gran guerra\nnunca terminó del todo…");
+static const u8 sText_P2_04a[] = _("Mientras tanto, en un pueblo\ntranquilo de KANTO…");
 
-static const u8 *const sTexts_P2_01[] = { sText_P2_01a, sText_P2_01b, sText_P2_01c, NULL };
-static const u8 *const sTexts_P2_02[] = { sText_P2_02a, sText_P2_02b, sText_P2_02c, NULL };
-static const u8 *const sTexts_P2_03[] = { sText_P2_03a, sText_P2_03b, sText_P2_03c, NULL };
-static const u8 *const sTexts_P2_04[] = { sText_P2_04a, sText_P2_04b, NULL };
-static const u8 *const sTexts_P2_05[] = { sText_P2_05a, sText_P2_05b, NULL };
-static const u8 *const sTexts_P2_06[] = { sText_P2_06a, NULL };
+static const u8 *const sTexts_P2_01[] = { sText_P2_01a, sText_P2_01b, NULL };
+static const u8 *const sTexts_P2_02[] = { sText_P2_02a, sText_P2_02b, NULL };
+static const u8 *const sTexts_P2_03[] = { sText_P2_03a, sText_P2_03b, sText_P2_03c, sText_P2_03d, NULL };
+static const u8 *const sTexts_P2_04[] = { sText_P2_04a, NULL };
 
 static const struct CinematicScene sNewGameScenes[] =
 {
     { IMG(p2_01), .texts = sTexts_P2_01, .fadeDelay = 3 },
     { IMG(p2_02), .texts = sTexts_P2_02, .fadeDelay = 2 },
     { IMG(p2_03), .texts = sTexts_P2_03, .fadeDelay = 2 },
-    { IMG(p2_04), .texts = sTexts_P2_04, .fadeDelay = 2 },
-    { IMG(p2_05), .texts = sTexts_P2_05, .effect = FX_RED_PULSE, .fadeDelay = 2 },
-    { IMG(p2_06), .texts = sTexts_P2_06, .fadeDelay = 4 },
+    { IMG(p2_04), .texts = sTexts_P2_04, .fadeDelay = 4 },
 };
 
 static const u8 sText_PressStart[] = _("PULSA START");

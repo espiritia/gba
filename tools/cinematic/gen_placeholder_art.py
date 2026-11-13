@@ -961,73 +961,103 @@ def p2_02():  # leyendas
     save(img, "p2_02")
 
 
-def p2_03():  # el ALTO MANDO
-    rng = np.random.default_rng(203)
-    img = lerp(col(6, 8, 18), col(12, 14, 26), YY / H)
-    for x in range(10, W, 34):
-        w = 10
-        p = box(x, 0, x + w, 100)
-        fill_grad(img, p, (30, 36, 56), (14, 16, 28), 3)
-        fill(img, box(x + w - 1, 0, x + w, 100), (60, 110, 150), 0.5)
-    fill(img, ell(120, 118, 130, 30) & (YY >= 100), (16, 20, 34))
-    for (x, base, h) in ((76, 112, 62), (164, 112, 62)):
-        p = person(x, base, h, collar=True)
-        fill(img, p, (10, 10, 18))
-        fill(img, rim(p, 1 if x < 120 else -1, 0, 1) | rim(p, 0, -1, 1), (100, 220, 255), 0.6)
-    table = ell(120, 112, 60, 12)
-    fill_grad(img, table, (40, 48, 66), (16, 18, 28), 2)
-    fill(img, np.abs(((XX - 120) / 60.0) ** 2 + ((YY - 112) / 12.0) ** 2 - 1) < 0.08, (100, 220, 255), 0.8)
-    fill(img, poly([(108, 110), (132, 110), (164, 24), (76, 24)]), (80, 200, 255), 0.08)
-    bs = biosuit(np.zeros((H, W, 3)), 120, 64, 3.4, (0, 0, 0), (0, 0, 0), (0, 0, 0))
-    from scipy.ndimage import binary_erosion
-    edge = bs & ~binary_erosion(bs)
-    fill(img, bs, (40, 140, 200), 0.3)
-    fill(img, bs & ((XX % 6 == 0) | (YY % 6 == 0)), (120, 220, 255), 0.5)
-    fill(img, edge, (170, 245, 255))
-    halo(img, bs, (60, 180, 255), 4, 0.35)
-    glow(img, 120, 61, 5, (220, 255, 255), 1.0)
-    fill(img, lines([(146, 50), (176, 40), (196, 40)]), (120, 220, 255), 0.7)
-    fill(img, lines([(98, 76), (62, 86), (46, 86)]), (120, 220, 255), 0.7)
-    blend(img, (0, 0, 0), ((YY % 2 == 0) & bs).astype(float) * 0.2)
-    for (x, base, h) in ((24, 190, 140), (216, 190, 140)):
-        p = person(x, base, h, collar=True)
-        fill(img, p, (4, 4, 10))
-        fill(img, rim(p, 1 if x < 120 else -1, 0, 2), (90, 200, 240), 0.7)
+def pokeball(img, cx, cy, r):
+    fill(img, ell(cx, cy, r, r) & (YY < cy), (220, 40, 40))
+    fill(img, ell(cx, cy, r, r) & (YY >= cy), (240, 240, 240))
+    fill(img, (np.abs(np.hypot(XX - cx, YY - cy) - r) < 0.8) | (box(cx - r, cy - 0.5, cx + r, cy + 0.5) & ell(cx, cy, r, r)),
+         (30, 30, 30))
+    fill(img, ell(cx, cy, max(1, r * 0.35), max(1, r * 0.35)), (250, 250, 250))
+
+
+def p2_03():  # el mundo POKéMON actual: centro POKéMON y combate
+    rng = np.random.default_rng(213)
+    img = lerp(col(100, 170, 240), col(200, 230, 250), np.clip(YY / 80.0, 0, 1))
+    cl = noise(rng, 5, 3)
+    fill(img, (cl > 0.63) & (YY < 50), (255, 255, 255), 0.7)
+    trees = pine_forest(rng, lambda x: 62, 34, 10, 20)
+    fill_grad(img, trees & (YY < 80), (60, 140, 70), (30, 90, 50), 3)
+    ground = YY >= 72
+    fill_grad(img, ground, (130, 200, 100), (80, 150, 70), 4)
+    # centro POKéMON (fondo, centro)
+    cx0, cx1, top, base = 84, 156, 36, 76
+    fill_grad(img, box(cx0, top, cx1, base), (250, 246, 236), (210, 204, 196), 2)
+    fill(img, poly([(cx0 - 6, top + 2), (cx1 + 6, top + 2), (cx1 - 2, top - 10), (cx0 + 2, top - 10)]), (220, 50, 50))
+    fill(img, box(cx0 - 6, top + 2, cx1 + 6, top + 4), (160, 30, 30))
+    fill(img, box(108, 54, 132, base), (120, 200, 240))
+    fill(img, box(119, 54, 121, base), (80, 140, 180))
+    fill(img, box(90, 50, 102, 60) | box(138, 50, 150, 60), (120, 200, 240))
+    pokeball(img, 120, 30, 7)
+    # camino de tierra
+    fill(img, poly([(108, 76), (132, 76), (170, 160), (70, 160)]), (210, 190, 140))
+    # casas y árboles alrededor
+    kanto_house(img, 20, 78, 22, 12, (64, 104, 200))
+    kanto_house(img, 196, 78, 22, 12, (200, 120, 48))
+    for (tx, tb, r) in ((60, 82, 6), (172, 82, 6), (6, 86, 7), (232, 88, 6)):
+        round_tree(img, tx, tb, r, rng)
+    # combate: dos entrenadores (abajo a los lados) y sus POKéMON en el centro
+    for (px, base_y, h, d) in ((34, 122, 34, 1), (206, 118, 30, -1)):
+        pm = person(px, base_y, h, lean=0.05 * d)
+        fill(img, pm, (40, 40, 70) if d > 0 else (90, 30, 40))
+        fill(img, rim(pm, -1, -1, 1), (255, 240, 200), 0.6)
+        fill(img, ell(px, base_y - h + 2, h * 0.11, h * 0.06), (220, 40, 40) if d > 0 else (40, 120, 220))
+    # POKéMON izquierdo: criatura amarilla con orejas puntiagudas
+    lx, ly = 78, 104
+    pk = ell(lx, ly, 9, 8) | ell(lx + 2, ly - 10, 7, 6) | poly([(lx - 2, ly - 14), (lx - 6, ly - 26), (lx + 1, ly - 15)]) | \
+        poly([(lx + 5, ly - 14), (lx + 10, ly - 25), (lx + 7, ly - 13)]) | \
+        poly([(lx - 8, ly), (lx - 20, ly - 12), (lx - 16, ly - 14), (lx - 8, ly - 4)])
+    fill_grad(img, pk, (250, 220, 70), (210, 160, 30), 3)
+    fill(img, ell(lx + 4, ly - 11, 1.2, 1.2), (20, 20, 20))
+    fill(img, ell(lx + 7, ly - 8, 2, 1.6), (230, 70, 60))
+    # POKéMON derecho: criatura azul tipo tortuga
+    rx, ry = 162, 100
+    rp = ell(rx, ry, 11, 9) | ell(rx - 9, ry - 8, 6, 5) | ell(rx + 8, ry + 8, 3, 3) | ell(rx - 6, ry + 8, 3, 3)
+    fill_grad(img, rp, (120, 180, 240), (60, 110, 190), 3)
+    fill(img, ell(rx + 3, ry - 2, 8, 7), (170, 110, 60))
+    fill(img, ell(rx - 11, ry - 9, 1.2, 1.2), (20, 20, 20))
+    # choque de ataques en el centro
+    beam(img, [(lx + 8, ly - 10), (120, 96)], (255, 250, 150), 2, (255, 230, 80), 0.6)
+    beam(img, [(rx - 14, ry - 6), (122, 96)], (170, 230, 255), 2, (80, 180, 255), 0.6)
+    explosion(img, 121, 96, 6)
     text_band(img)
     save(img, "p2_03")
 
 
-def p2_04():  # la búsqueda
-    rng = np.random.default_rng(204)
-    img = lerp(col(10, 10, 30), col(34, 26, 54), YY / H)
-    stars(img, rng, 160, ymax=60, big=3)
-    planet(img, 34, 22, 7, (150, 150, 170), (240, 240, 230), (0.5, -0.3))
-    ridge = mountains(rng, 70, 50, 4, 2)
-    mt = YY >= ridge[XX]
-    rock = noise(rng, 5, 5)
-    rc = lerp(col(40, 36, 60), col(70, 62, 90), np.floor(rock * 4) / 4)
-    img[mt] = rc[mt]
-    fill(img, mt & ~np.roll(mt, 2, 0), (110, 110, 150), 0.6)
-    cave = ell(150, 92, 24, 24) & (YY < 104)
-    fill(img, ell(150, 92, 28, 28) & (YY < 104), (30, 26, 44))
-    fill(img, cave, (4, 4, 8))
-    ground = YY >= 104
-    fill_grad(img, ground, (50, 44, 66), (20, 18, 30), 3)
-    for i in range(14):
-        x, y = rng.integers(0, W), rng.integers(100, 124)
-        r = rng.integers(3, 9)
-        rk = ell(x, y, r, r * 0.6)
-        fill_grad(img, rk, (80, 74, 100), (30, 26, 44), 2)
-    for (x, base, h, tx, ty) in ((62, 120, 40, 96, 112), (112, 124, 46, 140, 104), (200, 118, 36, 176, 108)):
-        p = person(x, base, h, hood=True, coat=True)
-        fill(img, p, (14, 12, 20))
-        fill(img, rim(p, 0, -1, 1), (90, 90, 140), 0.6)
-        hx, hy = x + (8 if tx > x else -8), base - h * 0.55
-        cone = poly([(hx, hy), (tx - 9, ty + 3), (tx + 9, ty - 3)])
-        fill(img, cone, (255, 40, 40), 0.3)
-        fill(img, lines([(hx, hy), (tx, ty)]), (255, 90, 80))
-        fill(img, box(hx - 2, hy - 2, hx + 3, hy + 2), (60, 60, 70))
-        glow(img, tx, ty, 6, (255, 50, 40), 0.8)
+def p2_04():  # un pueblo tranquilo de KANTO
+    rng = np.random.default_rng(214)
+    img = lerp(col(120, 180, 240), col(210, 235, 245), np.clip(YY / 60.0, 0, 1))
+    cl = noise(rng, 5, 3)
+    fill(img, (cl > 0.64) & (YY < 40), (255, 255, 255), 0.7)
+    far = YY >= mountains(rng, 46, 16, 3, 2)[XX]
+    fill_grad(img, far, (110, 170, 120), (80, 140, 100), 2)
+    forest = pine_forest(rng, lambda x: 66, 40, 12, 26)
+    fill_grad(img, forest & (YY < 80), (50, 120, 60), (24, 76, 40), 3)
+    fill(img, rim(forest, 0, -1, 1) & (YY < 80), (110, 180, 90), 0.6)
+    ground = YY >= 68
+    fill_grad(img, ground, (140, 210, 110), (90, 170, 80), 4)
+    grass = (noise(rng, 5, 8) > 0.6) & ground
+    fill(img, grass, (110, 180, 90), 0.6)
+    # caminos
+    fill(img, box(0, 96, W, 104) | poly([(110, 104), (130, 104), (150, 160), (90, 160)]), (220, 200, 150))
+    fill(img, box(0, 96, W, 97), (190, 170, 120))
+    # casas
+    kanto_house(img, 30, 90, 30, 16)
+    kanto_house(img, 150, 90, 30, 16, (200, 56, 48))
+    kanto_house(img, 92, 86, 40, 20, (240, 240, 240))  # laboratorio
+    fill(img, box(92, 64, 132, 66), (150, 150, 160))
+    # vallas
+    for x0 in (20, 140):
+        fill(img, box(x0, 92, x0 + 50, 93), (240, 240, 230))
+        for x in range(x0, x0 + 51, 5):
+            fill(img, box(x, 90, x + 1, 95), (240, 240, 230))
+    # flores y árboles
+    for i in range(40):
+        x, y = rng.integers(0, W), rng.integers(106, 124)
+        fill(img, box(x, y, x + 1, y + 1), ((240, 90, 90), (250, 230, 90), (250, 250, 250))[i % 3])
+    for (tx, tb, r) in ((12, 92, 8), (78, 88, 6), (196, 90, 8), (226, 94, 9), (66, 120, 7), (186, 122, 7)):
+        round_tree(img, tx, tb, r, rng)
+    # lago pequeño
+    fill(img, ell(210, 112, 22, 6), (90, 160, 220))
+    fill(img, ell(206, 111, 10, 1.5), (200, 230, 250), 0.7)
     text_band(img)
     save(img, "p2_04")
 
@@ -1113,7 +1143,7 @@ SCENES = {f.__name__: f for f in (p1_01, p1_02, p1_03, p1_04, p1_05, p1_06, p1_0
                                   p1_11, p1_12, p2_01, p2_02, p2_03, p2_04, p2_05, p2_06)}
 
 # Escenas que ya tienen su imagen definitiva: no se regeneran salvo que se pidan por nombre.
-FINAL = {"p1_02", "p1_03", "p1_04", "p1_05", "p1_06", "p1_07", "p1_08", "p1_09"}
+FINAL = {"p1_02", "p1_03", "p1_04", "p1_05", "p1_06", "p1_07", "p1_08", "p1_09", "p2_01"}
 
 if __name__ == "__main__":
     for name in (sys.argv[2:] or [n for n in SCENES if n not in FINAL]):

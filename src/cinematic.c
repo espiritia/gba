@@ -216,21 +216,22 @@ static const struct CinematicScene sIntroScenes[] =
 // ---------------------------------------------------------------------------
 // Parte 2 (líneas de 34 caracteres como máximo, 2 líneas por página)
 // ---------------------------------------------------------------------------
-static const u8 sText_P2_01a[] = _("Han pasado miles de años desde\nla gran guerra…");
+static const u8 sText_P2_01a[] = _("Han pasado varios siglos desde\nla gran guerra…");
 static const u8 sText_P2_01b[] = _("Ya no hay naves de guerra,\nni soldados con biotrajes POKéMON…");
-static const u8 sText_P2_02a[] = _("Los POKéMON legendarios son leyendas\nque aún esconden la verdad…");
+static const u8 sText_P2_02a[] = _("Los POKéMON legendarios son un misterio\nque aún esconden la verdad…");
 static const u8 sText_P2_02b[] = _("La verdad sobre los POKéMONs…\nuna antigua y poderosa tecnología militar");
-static const u8 sText_P2_03a[] = _("Los descendientes directos de algunos\nsoldados que sobrevivieron a la guerra");
+static const u8 sText_P2_03a[] = _("Los descendientes de aquellos soldados\nque sobrevivieron a la guerra");
 static const u8 sText_P2_03b[] = _("recuperaron vestigios de aquella\nantigua tecnología militar…");
 static const u8 sText_P2_04a[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
 static const u8 sText_P2_04b[] = _("aunque tal vez aquella gran guerra\nnunca terminó del todo…");
-static const u8 sText_P2_05a[] = _("Mientras tanto, en un pueblo\ntranquilo de KANTO…");
+static const u8 sText_P2_05a[] = _("Pero eso son solo conspiraciones…\nque nadie cree ni puede demostrar…");
+static const u8 sText_P2_05b[] = _("En fin… ya casi es la hora\n¡debo darme prisa!…");
 
 static const u8 *const sTexts_P2_01[] = { sText_P2_01a, sText_P2_01b, NULL };
 static const u8 *const sTexts_P2_02[] = { sText_P2_02a, sText_P2_02b, NULL };
 static const u8 *const sTexts_P2_03[] = { sText_P2_03a, sText_P2_03b, NULL };
 static const u8 *const sTexts_P2_04[] = { sText_P2_04a, sText_P2_04b, NULL };
-static const u8 *const sTexts_P2_05[] = { sText_P2_05a, NULL };
+static const u8 *const sTexts_P2_05[] = { sText_P2_05a, sText_P2_05b, NULL };
 
 static const struct CinematicScene sNewGameScenes[] =
 {

@@ -224,7 +224,7 @@ static const u8 sText_P2_03a[] = _("Los descendientes de aquellos soldados\nque 
 static const u8 sText_P2_03b[] = _("recuperaron vestigios de aquella\nantigua tecnología militar…");
 static const u8 sText_P2_04a[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
 static const u8 sText_P2_04b[] = _("aunque tal vez aquella gran guerra\nnunca terminó del todo…");
-static const u8 sText_P2_05a[] = _("Pero eso son solo conspiraciones…\nque nadie cree ni puede demostrar…");
+static const u8 sText_P2_05a[] = _("Pero eso son solo historias\nque nadie cree ni puede demostrar…");
 static const u8 sText_P2_05b[] = _("En fin… ya casi es la hora\n¡debo darme prisa!…");
 
 static const u8 *const sTexts_P2_01[] = { sText_P2_01a, sText_P2_01b, NULL };

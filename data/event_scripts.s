@@ -1384,3 +1384,6 @@ Text_TestMsg::
 
 	.include "data/maps/MT_MOON_LADERA_PARTE_1/scripts.inc"
 	.include "data/maps/MT_MOON_LADERA_PARTE_1/text.inc"
+
+	.include "data/maps/Gimnasio_Celeste_Parte_Secreta/scripts.inc"
+	.include "data/maps/Gimnasio_Celeste_Parte_Secreta/text.inc"

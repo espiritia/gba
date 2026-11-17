@@ -42,7 +42,8 @@
     "gMapGroup_IndoorFiveIslandRoute",
     "gMapGroup_IndoorTwoIslandRoute",
     "gMapGroup_IndoorSixIslandRoute",
-    "gMapGroup_IndoorSevenIslandRoute"
+    "gMapGroup_IndoorSevenIslandRoute",
+    "Gimnasio_Celeste_Pt_Secreta"
   ],
   "gMapGroup_Link": [
     "BattleColosseum_2P",
@@ -56,7 +57,8 @@
     "MtMoonEXTERIOR_PARTE_FINAL",
     "MT_MOON_PARTE_1",
     "MT_MOON_PARTE_2",
-    "MT_MOON_LADERA_PARTE_1"
+    "MT_MOON_LADERA_PARTE_1",
+    "Gimnasio_Celeste_Parte_Secreta"
   ],
   "gMapGroup_Dungeons": [
     "ViridianForest",
@@ -561,5 +563,6 @@
   ],
   "gMapGroup_IndoorSevenIslandRoute": [
     "SevenIsland_SevaultCanyon_House"
-  ]
+  ],
+  "Gimnasio_Celeste_Pt_Secreta": []
 }

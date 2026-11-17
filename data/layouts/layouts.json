@@ -4456,14 +4456,26 @@
     {
       "id": "LAYOUT_MT_MOON_LADERA_PARTE_1",
       "name": "MT_MOON_LADERA_PARTE_1_Layout",
-      "width": 36,
-      "height": 36,
+      "width": 53,
+      "height": 45,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/MT_MOON_LADERA_PARTE_1/border.bin",
       "blockdata_filepath": "data/layouts/MT_MOON_LADERA_PARTE_1/map.bin"
+    },
+    {
+      "id": "LAYOUT_GIMNASIO_CELESTE_PARTE_SECRETA",
+      "name": "Gimnasio_Celeste_Parte_Secreta_Layout",
+      "width": 20,
+      "height": 15,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Lab",
+      "border_filepath": "data/layouts/Gimnasio_Celeste_Parte_Secreta/border.bin",
+      "blockdata_filepath": "data/layouts/Gimnasio_Celeste_Parte_Secreta/map.bin"
     }
   ]
 }

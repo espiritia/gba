@@ -82,7 +82,7 @@
     },
     {
       "x": 8,
-      "y": 18,
+      "y": 20,
       "elevation": 3,
       "dest_map": "MAP_CERULEAN_CITY",
       "dest_warp_id": "4"

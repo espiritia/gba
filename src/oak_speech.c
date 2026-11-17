@@ -56,6 +56,8 @@ static void Task_PikachuIntro_HandleInput(u8);
 static void Task_PikachuIntro_Clear(u8);
 
 static void Task_OakSpeech_Init(u8);
+static void Task_SkipOakSpeech_ShowPlayer(u8);
+static void Task_SkipOakSpeech_WaitFadeIn(u8);
 static void Task_OakSpeech_WelcomeToTheWorld(u8);
 static void Task_OakSpeech_ThisWorld(u8);
 static void Task_OakSpeech_ReleaseNidoranFFromPokeBall(u8);
@@ -663,6 +665,19 @@ void StartNewGameScene(void)
     // GREEN/RED for display when the name is empty.
     gSaveBlock1Ptr->rivalName[0] = EOS;
 
+    // El discurso de Oak está deshabilitado: ya no se pregunta ni el género
+    // ni el nombre, así que se fijan aquí (chico, Liam).
+    {
+        static const u8 sPlayerName[] = _("Liam");
+        u8 i;
+
+        gSaveBlock2Ptr->playerGender = MALE;
+        for (i = 0; i < PLAYER_NAME_LENGTH && sPlayerName[i] != EOS; i++)
+            gSaveBlock2Ptr->playerName[i] = sPlayerName[i];
+        for (; i < PLAYER_NAME_LENGTH + 1; i++)
+            gSaveBlock2Ptr->playerName[i] = EOS;
+    }
+
     gPlttBufferUnfaded[0] = RGB_BLACK;
     gPlttBufferFaded[0]   = RGB_BLACK;
     CreateTask(Task_NewGameScene, 0);
@@ -759,7 +774,10 @@ static void Task_NewGameScene(u8 taskId)
         ShowBg(1);
         SetVBlankCallback(VBlankCB_NewGameScene);
         gTasks[taskId].tTimer = 20;
-        gTasks[taskId].func = Task_OakSpeech_Init;
+        // El discurso de Oak (Task_OakSpeech_Init … Task_OakSpeech_FadeOutBGM) está
+        // deshabilitado: tras la cinemática solo se muestra al jugador y la animación
+        // final. Para recuperarlo, volver a poner aquí Task_OakSpeech_Init.
+        gTasks[taskId].func = Task_SkipOakSpeech_ShowPlayer;
         gMain.state = 0;
         return;
     }
@@ -1067,6 +1085,35 @@ static void Task_PikachuIntro_Clear(u8 taskId)
         tTimer = 80;
         gTasks[taskId].func = Task_OakSpeech_Init;
     }
+}
+
+// Sustituye al discurso de Oak: muestra al jugador sobre fondo negro (sin el fondo
+// verde ni la plataforma) y enlaza directamente con la animación final (encoge, se
+// vuelve blanco y funde a negro).
+static void Task_SkipOakSpeech_ShowPlayer(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    if (tTimer != 0)
+    {
+        tTimer--;
+    }
+    else
+    {
+        HideBg(1);
+        gPlttBufferUnfaded[0] = RGB_BLACK;
+        gPlttBufferFaded[0]   = RGB_BLACK;
+        LoadTrainerPic(MALE_PLAYER_PIC, 0);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+        ShowBg(2);
+        gTasks[taskId].func = Task_SkipOakSpeech_WaitFadeIn;
+    }
+}
+
+static void Task_SkipOakSpeech_WaitFadeIn(u8 taskId)
+{
+    if (!gPaletteFade.active)
+        gTasks[taskId].func = Task_OakSpeech_SetUpExitAnimation;
 }
 
 static void Task_OakSpeech_Init(u8 taskId)

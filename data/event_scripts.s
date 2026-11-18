@@ -878,11 +878,11 @@ Text_LinkWasCanceled::
 
 @ Unused
 Text_GiveNicknameToReceivedMon::
-	.string "Want to give a nickname to the\n"
-	.string "{STR_VAR_2} you received?$"
+		.string "¿Quieres darle un mote al\n"
+	.string "{STR_VAR_2} que recibiste?$"
 
 gText_PkmnFainted3::
-	.string "{STR_VAR_1} fainted…\p"
+	.string "{STR_VAR_1} se debilitó…\p"
 	.string "$"
 
 Text_WelcomeWantToHealPkmn::

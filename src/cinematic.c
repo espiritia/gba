@@ -225,9 +225,9 @@ static const u8 sText_P2_03b[] = _("recuperaron los vestigios de\naquella tecnol
 static const u8 sText_P2_04a[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
 static const u8 sText_P2_04b[] = _("en el que nos manipulan y\nocultan la verdadera historia POKéMON…");
 
-static const u8 sText_P2_05a[] = _("Eso es lo que piensan muchos… \npero yo no creo en tonterías de PikaFlautas…");
-static const u8 sText_P2_05b[] = _("Mi objetivo es ser el mejor entrenador Pokemon\n…y llegar hasta lo más alto");
-static const u8 sText_P2_05c[] = _("Hoy comienza mi nueva vida como entrenador Pokemon…\ndeseame suerte, ¡querido diario!");
+static const u8 sText_P2_05a[] = _("Eso es lo que piensan muchos, pero yo… \nno creo en tonterías de PikaFlautas…");
+static const u8 sText_P2_05b[] = _("Mi objetivo es ser el mejor entrenador\n…y llegar hasta lo más alto");
+static const u8 sText_P2_05c[] = _("Hoy comienza mi nueva vida como entrenador\ndeseame suerte, ¡querido diario!");
 // static const u8 sText_P2_05d[] = _("¡PERO QUÉ MEJOR ENTRENADOR NI CARAMELORAROS!\nsi no sales de tu cuarto, todo el día leyendo pokebook y viendo pokenime");
 // static const u8 sText_P2_05d[] = _("Ven ya a desayunar y \nvete a buscar un trabajo pokegorron");
 

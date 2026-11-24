@@ -218,15 +218,16 @@ static const struct CinematicScene sIntroScenes[] =
 // ---------------------------------------------------------------------------
 static const u8 sText_P2_01a[] = _("Han pasado varios siglos desde\nla gran guerra…");
 static const u8 sText_P2_01b[] = _("Ya no existen naves de combate,\nni soldados con biotrajes POKéMON…");
-static const u8 sText_P2_02a[] = _("La historia POKéMON es un oax\ny pocos saben que en realidad…");
+static const u8 sText_P2_02a[] = _("La historia POKéMON está manipulada\ny pocos saben que en realidad…");
 static const u8 sText_P2_02b[] = _("Los POKéMONs son una antigua y\npoderosa tecnología militar");
 static const u8 sText_P2_03a[] = _("Los descendientes de aquellos\nque sobrevivieron a la gran guerra");
 static const u8 sText_P2_03b[] = _("recuperaron los vestigios de\naquella tecnología perdida…");
 static const u8 sText_P2_04a[] = _("y con ella reconstruyeron\nun nuevo y feliz mundo POKéMON…");
 static const u8 sText_P2_04b[] = _("en el que nos manipulan y\nocultan la verdadera historia POKéMON…");
-static const u8 sText_P2_05a[] = _("Eso es lo que siempre he pensado… \nincluso intenté hacerme PiKatuber…");
-static const u8 sText_P2_05b[] = _("pero todos me llamaban conspirachunista\n…mucho PiKaHate… y mucha PiKaCensura");
-static const u8 sText_P2_05c[] = _("Vaya… ¡casi lo olvido!\nhoy es la entrevista de trabajo…");
+
+static const u8 sText_P2_05a[] = _("Eso es lo que piensan muchos… \npero yo no creo en tonterías de PikaFlautas…");
+static const u8 sText_P2_05b[] = _("Mi objetivo es ser el mejor entrenador Pokemon\n…y llegar hasta lo más alto");
+static const u8 sText_P2_05c[] = _("Hoy comienza mi nueva vida como entrenador Pokemon…\ndeseame suerte, ¡querido diario!");
 // static const u8 sText_P2_05d[] = _("¡PERO QUÉ MEJOR ENTRENADOR NI CARAMELORAROS!\nsi no sales de tu cuarto, todo el día leyendo pokebook y viendo pokenime");
 // static const u8 sText_P2_05d[] = _("Ven ya a desayunar y \nvete a buscar un trabajo pokegorron");
 

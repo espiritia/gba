@@ -5,16 +5,16 @@ ViridianForest_Text_FriendsItchingToBattle::
     .string "some POKéMON battles!$"
 
 ViridianForest_Text_RickIntro::
-    .string "Hey! You have POKéMON!\n"
-    .string "Come on!\l"
-    .string "Let's battle 'em!$"
+    .string "¡Oye! ¡Tú tienes POKéMON!\n"
+    .string "¡Vamos!\l"
+    .string "¡Combatamos!$"
 
 ViridianForest_Text_RickDefeat::
-    .string "No!\nCATERPIE can't hack it!$"
+    .string "¡NO!\nCATERPIE no es capaz de esto$"
 
 ViridianForest_Text_RickPostBattle::
-    .string "Ssh! You'll scare the bugs away.\n"
-    .string "Another time, okay?$"
+    .string "¡Shh! vas a asustar a los bichos.\n"
+    .string "Hablamos luego,¿Okay?$"
 
 ViridianForest_Text_DougIntro::
     .string "Yo!\n"
@@ -100,7 +100,7 @@ ViridianForest_Text_WeakenMonsBeforeCapture::
     .string "Pero no los debilites¡Cuidado!$"
 
 ViridianForest_Text_LeavingViridianForest::
-    .string "SALIDA DEL BOLSQUE VERDE\n"
+    .string "SALIDA DEL BOQUE VERDE\n"
     .string "CAMINO A CIUDAD PLATEADA$"
 
 ViridianForest_Text_CrystalSound::
